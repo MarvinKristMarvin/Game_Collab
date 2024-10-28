@@ -1,0 +1,17 @@
+visiteur peut :
+- accèder à toutes les pages
+- voir les profils sans pouvoir voir le mail
+- s'inscrire
+- se connecter
+
+utilisateur connecté peut :
+- modifier son profil
+- voir les profils (photo, description, jobs, language, rémunération)
+- voir un profil et le mail
+- aller au suivant ou au précédant profil
+- filtrer sa recherche de profils (liked me, matched me, jobs, rémunération, language, age)
+- se déconnecter
+- se désinscrire
+
+admin peut :
+- supprimer profil
