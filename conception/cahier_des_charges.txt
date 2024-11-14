@@ -54,12 +54,22 @@ profile/connection/
 profile/inscription/
 profile/modification/
 
-Analyse des risques : 
+Analyse des risques :
 
 Pas dans le CDC ==> 
+
 Un diagramme de séquence d'une fonctionnalité complexe :
+
 Les Use Cases :
+
 Charte graphique :
+
+Dictionnaire de données : faut faire un recueil ?
+Table utilisateur
+- id integer pknotnull identifiant de l'utilisateur (commentaire)
+- age smallint notnull age de l'utilisateur (commentaire)
+Table job
+- id integer pknotnull identifiant du job (commentaire)
 
 Autres points à respecter :
 - Sécurité : authentification sécurisée, protection contre les failles courantes (XSS, injections SQL, etc.).
