@@ -7,9 +7,19 @@
    [x] - erd 
    [x] - mcd
    [x] - description du projet
-   [ ] - charte graphique (fonts, couleurs, infos, logos)
-   [ ] - spécifications techniques
    [ ] - cahier des charges
+      [x] - présentation du projet
+      [x] - besoins et objectifs
+      [x] - cible
+      [x] - produit minimum viable
+      [x] - améliorations futures possibles
+      [x] - technologies utilisées
+      [x] - routes
+      [x] - routes API
+      [x] - charte graphique
+      [x] - recueil de données
+      [x] - dictionnaire de données
+      [x] - autres spécifications
 [ ] 4 : Creer l'integration de base
 [ ] 5 : Créer la bdd
 [ ] 6 : Seeder la bdd

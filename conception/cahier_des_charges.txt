@@ -1,30 +1,14 @@
-Présentation : Game Hearts est une application de rencontre entre les personnes travaillant dans le secteur du jeu video, afin de former
-des equipes. Les utilisateurs peuvent s'inscrire et creer un profil pour se rendre disponibles, mais aussi swiper les différents profils inscrits et les contacter par mail
-Il est possible d'utiliser des filtres de recherche (métiers, description, age, langues etc) afin de trouver les collaborateurs les plus adaptés à son projet
+Présentation du projet : Game Hearts est une application de rencontre entre les personnes travaillant dans le secteur du jeu video, afin de former
+des equipes. Les utilisateurs peuvent s'inscrire et creer un profil pour se rendre disponible au recrutement, mais aussi découvrir tous les profils et les contacter.
+Il est possible d'utiliser des filtres de recherche (métiers, description, age, langues etc) afin de trouver des collaborateurs adaptés à son projet.
 
 Besoins et objectifs : Souvent, les développeurs sont contraints de créer des jeux seuls, car ils ne trouvent parsonne avec qui travailler. Avec Game Hearts,
-il sera possible de se regrouper autour de projets de jeux vidéos, afin de créer des jeux vidéos de meilleure qualité et sans être isolé.
-Game Hearts doit simplifier la recherche de profils/projets au maximum.
+il sera possible de se regrouper autour de projets de jeux vidéos, afin de créer des jeux vidéos de meilleure qualité, plus rapidement et sans isolement.
+Game Hearts doit simplifier la recherche de profils au maximum.
 
-Cible : L'application cible tous les acteurs du jeu vidéo (developpeur, artiste, modeliste, musicien, sound designer etc...)
+Cible : L'application cible tous les acteurs du jeu vidéo (developpeur, artiste, modeliste, musicien, sound designer, compositeur, etc...)
 
-Minimum viable product (user stories minimales) :
-    visiteur peut :
-    - accèder à toutes les pages
-    - voir les profils sans pouvoir voir les informations de contact
-    - s'inscrire
-    - se connecter
-
-    utilisateur connecté peut :
-    - modifier son profil
-    - voir les profils et les informations de contact
-    - aller au suivant ou au précédant profil
-    - filtrer sa recherche de profils (jobs, rémunération, language, age, mots clés)
-    - se déconnecter
-    - se désinscrire
-
-    admin peut :
-    - supprimer un profil
+Minimum viable product : permettre aux utilisateurs de trouver des profils qui correspondent au besoinx de leur projet de jeu vidéo, notemment grâce à des filtres de recherche.
 
 Améliorations futures possibles :
 - Chat direct dans l'application à la place du mail
@@ -36,43 +20,67 @@ Améliorations futures possibles :
 - Ajout d'un systeme d'abonnement premium (pour poster + de projets ou avoir plus de visibilité par exemple)
 
 Technologies :
-- React : 
-- PostgresSQL : besoin de modifier les données
+- React :  pour le front
+- Express & Node : pour le back
+- PostgresSQL : besoin de modifier les données des utilisateurs
 - Typescript : simplifie la maintenance du projet
 
-Arborescence de l'application :
-Logo(accueil)
-Search(find profiles)
-Profile(connection/inscription/modify profile)
+Routes :
+homepage/ -> accueil et explications de l'app
+search/ -> page de filtrage de la recherche de profil
+search/users?name=xxx&age=xxx,xxx&language=xxx,xxx&jobs=xxx,xxx&keywords=xxx,xxx&remuneration=xxx,xxx -> Recherche des profils en utilisant des filtres
+profile/ -> connexion et inscription, si connecté montre son propre profil
 
-Liste des routes :
-homepage/
-search/
-search/profiles
-profile/
-profile/connection/
-profile/inscription/
-profile/modification/
-
-Analyse des risques :
-
-Pas dans le CDC ==> 
-
-Un diagramme de séquence d'une fonctionnalité complexe :
-
-Les Use Cases :
+Routes API :
+GET /users?name=xxx&age=xxx,xxx&language=xxx,xxx&jobs=xxx,xxx&keywords=xxx,xxx&remuneration=xxx,xxx -> Recherche des profils en utilisant des filtres
+GET /users/userId -> Récupérer son propre profil
+POST /users -> Créer son profil
+PATCH /users/userId -> Modifier son profil
+DELETE /users/userId -> Supprimer son profil
 
 Charte graphique :
+- description : l'application doit rappeler le secteur du jeu vidéo -> couleurs contrastées, thème principal sombre. Interface très épurée et rapide à comprendre, la version 
+desktop sera visuellement similaire à la version mobile (respecter le ratio longueur largeur d'un smartphone, simuler les bordures du smartphone par une bordure de couleur),
+cela changera probalement dans le futur.
+- couleurs : rouge #F1005C, violet #BB0072, jaune #FFD840, orange #FF9900, noir rougeâtre #0A0808
+- fonts : Noto Sans
 
-Dictionnaire de données : faut faire un recueil ?
+Recueil de données :
+NOM | DESCRIPTION | TYPE | ENTITE
+- name | nom de l'utilisateur | text court | utilisateur
+- age | age de l'utilisateur | nombre | utilisateur
+- visible | disponibilité de l'utilisateur pour recrutement | booléen | utilisateur
+- profile_picture | image de profil de l'utilisateur | text court | utilisateur
+- description | description de l'utilisateur | text | utilisateur
+- name | nom du job | text court | job
+- name | nom du language | text court | language
+- name | nom du role | text court | role 
+- type | type de la remuneration | text court | remuneration
+
+Dictionnaire de données :
 Table utilisateur
-- id integer pknotnull identifiant de l'utilisateur (commentaire)
-- age smallint notnull age de l'utilisateur (commentaire)
+- id integer pknotnull identifiant de l'utilisateur
+- name text notnull nom de l'utilisateur
+- age smallint notnull age de l'utilisateur
+- visible boolean notnull disponibilité de l'utilisateur pour être recruté
+- profile_picture text notnull url de l'image de profil
+- description text notnull description des compétences de l'utilisateur
+- role entity notnull role de l'utilisateur (id_role)
+Table role
+- id integer pknotnull identifiant du role
+- name text notnull nom du role
 Table job
-- id integer pknotnull identifiant du job (commentaire)
+- id integer pknotnull identifiant du job
+- name text notnull nom du job
+Table language
+- id integer pknotnull identifiant du language
+- name text notnull nom du language
+Table remuneration
+- id integer pknotnull identifiant du type de remuneration
+- type text notnull type de remuneration
 
 Autres points à respecter :
-- Sécurité : authentification sécurisée, protection contre les failles courantes (XSS, injections SQL, etc.).
+- Sécurité : authentification sécurisée, protection contre les failles courantes (XSS, injections SQL, etc.), CORS.
 - Déploiement : rédaction a minima d'une procédure de déploiement (CI/CD en bonus).
 - Responsive : application développée en mobile first et responsive.
 - Accessibilité : respect des normes d'accessibilité web WCAG.
