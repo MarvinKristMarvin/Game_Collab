@@ -41,10 +41,25 @@ Technologies :
 - Typescript : simplifie la maintenance du projet
 
 Arborescence de l'application :
+Logo(accueil)
+Search(find profiles)
+Profile(connection/inscription/modify profile)
 
 Liste des routes :
+homepage/
+search/
+search/profiles
+profile/
+profile/connection/
+profile/inscription/
+profile/modification/
 
-Risques : 
+Analyse des risques : 
+
+Pas dans le CDC ==> 
+Un diagramme de séquence d'une fonctionnalité complexe :
+Les Use Cases :
+Charte graphique :
 
 Autres points à respecter :
 - Sécurité : authentification sécurisée, protection contre les failles courantes (XSS, injections SQL, etc.).
