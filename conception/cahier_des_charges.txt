@@ -1,0 +1,60 @@
+Présentation : Game Hearts est une application de rencontre entre les personnes travaillant dans le secteur du jeu video, afin de former
+des equipes. Les utilisateurs peuvent s'inscrire et creer un profil pour se rendre disponibles, mais aussi swiper les différents profils inscrits et les contacter par mail
+Il est possible d'utiliser des filtres de recherche (métiers, description, age, langues etc) afin de trouver les collaborateurs les plus adaptés à son projet
+
+Besoins et objectifs : Souvent, les développeurs sont contraints de créer des jeux seuls, car ils ne trouvent parsonne avec qui travailler. Avec Game Hearts,
+il sera possible de se regrouper autour de projets de jeux vidéos, afin de créer des jeux vidéos de meilleure qualité et sans être isolé.
+Game Hearts doit simplifier la recherche de profils/projets au maximum.
+
+Cible : L'application cible tous les acteurs du jeu vidéo (developpeur, artiste, modeliste, musicien, sound designer etc...)
+
+Minimum viable product (user stories minimales) :
+    visiteur peut :
+    - accèder à toutes les pages
+    - voir les profils sans pouvoir voir les informations de contact
+    - s'inscrire
+    - se connecter
+
+    utilisateur connecté peut :
+    - modifier son profil
+    - voir les profils et les informations de contact
+    - aller au suivant ou au précédant profil
+    - filtrer sa recherche de profils (jobs, rémunération, language, age, mots clés)
+    - se déconnecter
+    - se désinscrire
+
+    admin peut :
+    - supprimer un profil
+
+Améliorations futures possibles :
+- Chat direct dans l'application à la place du mail
+- Ajout de lien de portfolio
+- Ajout d'images dans le profil
+- Acces à un profil détaillé
+- Possibilité de créer des présentations de projets, sur lesquels les utilisateurs peuvent swiper et demander de participer
+(Au lieu de contacter par mail, cela pourrait devenir une invitation à participer au projet, si le profil accepte, alors les participants au projet peuvent chatter ensemble)
+- Ajout d'un systeme d'abonnement premium (pour poster + de projets ou avoir plus de visibilité par exemple)
+
+Technologies :
+- React : 
+- PostgresSQL : besoin de modifier les données
+- Typescript : simplifie la maintenance du projet
+
+Arborescence de l'application :
+
+Liste des routes :
+
+Risques : 
+
+Autres points à respecter :
+- Sécurité : authentification sécurisée, protection contre les failles courantes (XSS, injections SQL, etc.).
+- Déploiement : rédaction a minima d'une procédure de déploiement (CI/CD en bonus).
+- Responsive : application développée en mobile first et responsive.
+- Accessibilité : respect des normes d'accessibilité web WCAG.
+- RGPD et mentions légales : mettre en place les mentions légales liées au règlement général sur la protection des données (RGPD).
+- Versionning : utilisation de Git et GitHub.
+- API : en consommer au moins une (qu’elle soit interne ou externe). Un seul appel peut être suffisant, l’API ne doit pas forcément être utilisée pour tout le projet.
+- SEO : appliquer les bonnes pratiques visant à maximiser le référencement du projet.
+- Tests : plan de tests couvrant les fonctionnalités principales du projet.
+- Conteneurisation (Docker) : pour l'environnement de développement voire pour le déploiement
+- Démarche d'éco-conception (optimisation des images, minification des fichiers, etc.).

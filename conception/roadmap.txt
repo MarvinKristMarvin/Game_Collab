@@ -1,15 +1,19 @@
-1 : Creer repo github [OK]
-2 : Lier repo [OK]
-3 : Faire le dossier de conception 
-    - roadmap
-    - user stories 
-    - maquettes papier 
-    - mcd mld erd 
-    - description du projet
-4 : Creer l'integration de base
-5 : Créer la bdd
-6 : Seeder la bdd
-7 : Développer
-8 : Sécuriser
-9 : Dockeriser
-10 : Déployer
+[x] 1 : Creer repo github
+[x] 2 : Lier repo
+[x] 3 : Faire le dossier de conception 
+   [x] - roadmap
+   [x] - user stories 
+   [x] - wireframe 
+   [x] - erd 
+   [x] - mcd
+   [x] - description du projet
+   [ ] - charte graphique (fonts, couleurs, infos, logos)
+   [ ] - spécifications techniques
+   [ ] - cahier des charges
+[ ] 4 : Creer l'integration de base
+[ ] 5 : Créer la bdd
+[ ] 6 : Seeder la bdd
+[ ] 7 : Développer
+[ ] 8 : Sécuriser (Failles courantes)
+[ ] 9 : Dockeriser
+[ ] 10 : Déployer

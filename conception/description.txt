@@ -1,7 +1,0 @@
-GameLove est une application de rencontre entre les personnes travaillant dans le secteur du jeu video, afin de former des equipes.
-Des filtres de recherche permettent de trouver les membres adaptés (métiers, description, age, langues etc)
-
-Minimum Viable Product
-- inscription pour creer profil (nom + description + jobs)
-- bdd
-- pages html
