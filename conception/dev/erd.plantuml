@@ -8,37 +8,37 @@ skinparam linetype ortho
 hide circle
 
 entity "User" {
-  *id : number <<generated>>
-  --
-  *name : text
+  *#id : number <<PK>>
+  *#mail : text
+  *password : text
+  name : text
   age : number
-  visible : boolean
-  profile_picture_url : text
+  available : boolean
   description : text
+  portfolio_url : text
+  profile_mail : text
+  created_at : date
+  updated_at : date
   *role_id: number <<FK>>
 }
 
 entity "Job" {
-  *id : number <<generated>>
-  --
+  *#id : number <<PK>>
   name: text
 }
 
 entity "Language" {
-  *id : number <<generated>>
-  --
+  *#id : number <<PK>>
   name: text
 }
 
 entity "Role" {
-  *id : number <<generated>>
-  --
+  *#id : number <<PK>>
   name : text
 }
 
 entity "Remuneration" {
-  *id : number <<generated>>
-  --
+  *#id : number <<PK>>
   type : text
 }
 
@@ -46,4 +46,4 @@ User }o--|{ Job
 User }o--|{ Language
 User }o--|{ Remuneration
 User }o--|| Role
-@endum
+@enduml

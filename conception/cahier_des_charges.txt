@@ -12,7 +12,6 @@ Minimum viable product : permettre aux utilisateurs de trouver des profils qui c
 
 Améliorations futures possibles :
 - Chat direct dans l'application à la place du mail
-- Ajout de lien de portfolio
 - Ajout d'images dans le profil
 - Acces à un profil détaillé
 - Possibilité de créer des présentations de projets, sur lesquels les utilisateurs peuvent swiper et demander de participer
@@ -20,7 +19,7 @@ Améliorations futures possibles :
 - Ajout d'un systeme d'abonnement premium (pour poster + de projets ou avoir plus de visibilité par exemple)
 
 Technologies :
-- React :  pour le front
+- React : pour le front
 - Express & Node : pour le back
 - PostgresSQL : besoin de modifier les données des utilisateurs
 - Typescript : simplifie la maintenance du projet
@@ -47,11 +46,16 @@ cela changera probalement dans le futur.
 
 Recueil de données :
 NOM | DESCRIPTION | TYPE | ENTITE
+- password | mot de passe de l'utilisateur | text | utilisateur
+- mail | email d'inscription de l'utilisateur | text | utilisateur
 - name | nom de l'utilisateur | text court | utilisateur
 - age | age de l'utilisateur | nombre | utilisateur
-- visible | disponibilité de l'utilisateur pour recrutement | booléen | utilisateur
-- profile_picture | image de profil de l'utilisateur | text court | utilisateur
+- available | disponibilité de l'utilisateur pour recrutement | booléen | utilisateur
 - description | description de l'utilisateur | text | utilisateur
+- portfolio_url | url du portfolio de l'utilisateur | text | utilisateur
+- profile_mail | email de contact de l'utilisateur | text | utilisateur
+- created_at | date de création de l'utilisateur | date | utilisateur
+- updated_at | date de modification de l'utilisateur | date | utilisateur
 - name | nom du job | text court | job
 - name | nom du language | text court | language
 - name | nom du role | text court | role 
@@ -59,25 +63,30 @@ NOM | DESCRIPTION | TYPE | ENTITE
 
 Dictionnaire de données :
 Table utilisateur
-- id integer pknotnull identifiant de l'utilisateur
-- name text notnull nom de l'utilisateur
-- age smallint notnull age de l'utilisateur
-- visible boolean notnull disponibilité de l'utilisateur pour être recruté
-- profile_picture text notnull url de l'image de profil
-- description text notnull description des compétences de l'utilisateur
-- role entity notnull role de l'utilisateur (id_role)
+- id INTEGER PK NOT NULL identifiant de l'utilisateur
+- password TEXT NOT NULL mot de pass de l'utilisateur
+- mail TEXT UNIQUE NOT NULL email d'inscription de l'utilisateur
+- name TEXT NOT NULL nom de l'utilisateur
+- age INTEGER NOT NULL age de l'utilisateur
+- available BOOLEAN NOT NULL disponibilité de l'utilisateur pour être recruté
+- description TEXT NOT NULL description des compétences de l'utilisateur
+- portfolio_url TEXT url du portfolio de l'utilisateur
+- profile_mail TEXT NOT NULL adresse email de contact
+- created_at DATE NOT NULL date de création de l'utilisateur
+- updated_ at DATE date de modification du profil de l'utilisateur
+- role ENTITY NOT NULL role de l'utilisateur (id_role)
 Table role
-- id integer pknotnull identifiant du role
-- name text notnull nom du role
+- id INTEGER PK NOT NULL identifiant du role
+- name TEXT NOT NULL nom du role
 Table job
-- id integer pknotnull identifiant du job
-- name text notnull nom du job
+- id INTEGER PK NOT NULL identifiant du job
+- name TEXT NOT NULL nom du job
 Table language
-- id integer pknotnull identifiant du language
-- name text notnull nom du language
+- id INTEGER PK NOT NULL identifiant du language
+- name TEXT NOT NULL nom du language
 Table remuneration
-- id integer pknotnull identifiant du type de remuneration
-- type text notnull type de remuneration
+- id INTEGER PK NOT NULL identifiant du type de remuneration
+- type TEXT NOT NULL type de remuneration
 
 Autres points à respecter :
 - Sécurité : authentification sécurisée, protection contre les failles courantes (XSS, injections SQL, etc.), CORS.

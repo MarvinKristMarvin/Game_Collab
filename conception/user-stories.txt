@@ -1,15 +1,14 @@
 visiteur peut :
 - accèder à toutes les pages
-- voir les profils sans pouvoir voir le mail
+- voir les profils (description, jobs, languages, rémunérations, nom, age, lien portfolio, adresse mail)
 - s'inscrire
 - se connecter
 
 utilisateur connecté peut :
 - modifier son profil
-- voir les profils (photo, description, jobs, language, rémunération)
-- voir un profil et le mail
+- voir les profils
 - aller au suivant ou au précédant profil
-- filtrer sa recherche de profils (liked me, matched me, jobs, rémunération, language, age)
+- filtrer sa recherche de profils (jobs, rémunérations, languages, age, mots clés)
 - se déconnecter
 - se désinscrire
 
