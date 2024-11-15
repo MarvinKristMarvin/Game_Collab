@@ -1,29 +1,39 @@
-[x] 1 : Creer repo github
-[x] 2 : Lier repo
-[x] 3 : Faire le dossier de conception 
-   [x] - roadmap
-   [x] - user stories 
-   [x] - wireframe 
-   [x] - erd 
-   [x] - mcd
-   [x] - description du projet
-   [ ] - cahier des charges
-      [x] - présentation du projet
-      [x] - besoins et objectifs
-      [x] - cible
-      [x] - produit minimum viable
-      [x] - améliorations futures possibles
-      [x] - technologies utilisées
-      [x] - routes
-      [x] - routes API
-      [x] - charte graphique
-      [x] - recueil de données
-      [x] - dictionnaire de données
-      [x] - autres spécifications
-[ ] 4 : Creer l'integration de base
-[ ] 5 : Créer la bdd
-[ ] 6 : Seeder la bdd
-[ ] 7 : Développer
-[ ] 8 : Sécuriser (Failles courantes)
-[ ] 9 : Dockeriser
-[ ] 10 : Déployer
+[ ] pas commencé
+[-] commencé
+[x] fini
+
+[x] creer repo github
+[x] lier repo
+[x] faire le dossier de conception 
+   [x] roadmap
+   [x] user stories
+   [x] use cases
+   [-] wireframe 
+   [-] maquette 
+   [x] erd 
+   [x] mcd
+   [ ] mld ?
+   [x] diagramme de sequence
+   [x] arborescence
+   [x] description du projet
+   [x] cahier des charges
+      [x] présentation du projet
+      [x] besoins et objectifs
+      [x] cible
+      [x] produit minimum viable
+      [x] améliorations futures possibles
+      [x] technologies utilisées
+      [x] routes
+      [x] routes API
+      [x] charte graphique
+      [x] recueil de données
+      [x] dictionnaire de données
+      [x] autres spécifications
+[ ] préparer l'environnement de travail
+[ ] creer l'integration de base
+[ ] creer la bdd
+[ ] hydrater la bdd
+[ ] développer
+[ ] sécuriser (failles courantes)
+[ ] dockeriser
+[ ] déployer
