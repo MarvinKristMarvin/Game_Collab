@@ -19,10 +19,12 @@ Améliorations futures possibles :
 - Ajout d'un systeme d'abonnement premium (pour poster + de projets ou avoir plus de visibilité par exemple)
 
 Technologies :
-- React : pour le front
-- Express & Node : pour le back
-- PostgresSQL : besoin de modifier les données des utilisateurs
-- Typescript : simplifie la maintenance du projet
+- React : simplifie la création et la gestion des composants, favorise leur réutilisabilité et garantit la scalabilité si l'application se développe.
+- Express : léger et simple à configurer, permet de gérer facilement les routes et les requêtes.
+- Node : léger et permet d'utiliser du javascript côté serveur, simplifiant le développement avec un langage unique.
+- PostgresSQL : besoin de stocker et modifier les données des utilisateurs, donc il faut une bdd relationnelle, de plus, c'est fiable, puissant, open source, et offre des
+fonctionnalités avancées tout en restant adapté aux petits projets.
+- Typescript : améliore la fiabilité grâce au typage, facilite la maintenance du code et réduit les erreurs dès le développement.
 
 Routes :
 homepage/ -> accueil et explications de l'app
