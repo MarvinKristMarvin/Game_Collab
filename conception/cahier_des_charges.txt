@@ -45,6 +45,7 @@ desktop sera visuellement similaire à la version mobile (respecter le ratio lon
 cela changera probalement dans le futur.
 - couleurs : rouge #F1005C, violet #BB0072, jaune #FFD840, orange #FF9900, noir rougeâtre #0A0808
 - fonts : Noto Sans
+- drapeaux : https://flagpedia.net/download/icons
 
 Recueil de données :
 NOM | DESCRIPTION | TYPE | ENTITE

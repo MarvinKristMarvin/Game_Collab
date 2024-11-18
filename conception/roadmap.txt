@@ -2,13 +2,15 @@
 [-] commencé
 [x] fini
 
+Kanban : https://github.com/orgs/O-clock-Mimir/projects/32/views/1
+
 [x] creer repo github
 [x] lier repo
 [x] faire le dossier de conception 
    [x] roadmap
    [x] user stories
    [x] use cases
-   [-] wireframe 
+   [x] wireframe 
    [-] maquette 
    [x] erd 
    [x] mcd
@@ -17,7 +19,7 @@
    [x] arborescence
    [x] description du projet
    [x] cahier des charges
-      [x] présentation du projet
+      [x] présentation du projet 
       [x] besoins et objectifs
       [x] cible
       [x] produit minimum viable
