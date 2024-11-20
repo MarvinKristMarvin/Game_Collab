@@ -1,0 +1,8 @@
+psql -d postgres -U postgres => G7*
+\du => voir roles et permissions
+\q => quitter postgres
+psql -d postgres -U marvin; => connection postgres avec role marvin
+\c gameheartsdb => connection à la base de données
+\list => lister les bdd
+\dt => montrer les tables de la bdd
+\i C:/Tout/Projets_Dev/collabjv/db/create_tables.sql => executer script sql
