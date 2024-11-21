@@ -20,6 +20,7 @@ Améliorations futures possibles :
 
 Technologies :
 - React : simplifie la création et la gestion des composants, favorise leur réutilisabilité et garantit la scalabilité si l'application se développe.
+- Vite : bundler et transpiler.
 - Express : léger et simple à configurer, permet de gérer facilement les routes et les requêtes.
 - Node : léger et permet d'utiliser du javascript côté serveur, simplifiant le développement avec un langage unique.
 - PostgresSQL : besoin de stocker et modifier les données des utilisateurs, donc il faut une bdd relationnelle, de plus, c'est fiable, puissant, open source, et offre des

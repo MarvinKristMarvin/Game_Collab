@@ -15,7 +15,7 @@ CREATE TABLE "utilisateur" (
     "description" TEXT NOT NULL,                           
     "portfolio_url" TEXT,                                   
     "profile_mail" TEXT NOT NULL,                          
-    "created_at" TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,                             -
+    "created_at" TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,                     
     "updated_at" TIMESTAMP,                                     
     "role" INT NOT NULL,                                    
     CONSTRAINT fk_role FOREIGN KEY ("role") REFERENCES "role"("id")
