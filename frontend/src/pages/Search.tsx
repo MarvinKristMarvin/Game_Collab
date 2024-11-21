@@ -1,7 +1,9 @@
-// import components
+import FixedButtons from "../components/FixedButtons/FixedButtons";
+
 function Search() {
   return (
-    <div>
+    <div className="searchPage">
+      <FixedButtons />
       <p>Search</p>
     </div>
   );

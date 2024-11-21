@@ -1,7 +1,9 @@
-// import components
+import FixedButtons from "../components/FixedButtons/FixedButtons";
+
 function Profile() {
   return (
-    <div>
+    <div className="profilePage">
+      <FixedButtons />
       <p>Profile</p>
     </div>
   );
