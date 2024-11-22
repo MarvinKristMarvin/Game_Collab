@@ -1,0 +1,7 @@
+.labelComponent {
+  border: dashed 1px white;
+  padding: 1rem;
+  border-radius: 0.5rem 0.5rem 0 0;
+  border-bottom: none;
+  margin-bottom: 0.5rem;
+}
