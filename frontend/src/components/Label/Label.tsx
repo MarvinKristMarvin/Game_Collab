@@ -1,10 +1,15 @@
 import "./Label.css";
 
-function Label() {
+interface props {
+  text: string;
+  htmlFor: string;
+}
+
+function Label({ text, htmlFor }: props) {
   return (
-    <div className="labelComponent">
-      <p>Log in to edit your profile</p>
-    </div>
+    <label className="labelComponent" htmlFor={htmlFor}>
+      <p>{text}</p>
+    </label>
   );
 }
 

@@ -1,10 +1,21 @@
 import "./InputField.css";
 
-function InputField() {
+interface props {
+  placeholder: string;
+  inputType: string;
+  inputId: string;
+  inputName: string;
+}
+
+function InputField({ placeholder, inputType, inputId, inputName }: props) {
   return (
-    <div className="inputFieldComponent">
-      <p>mail</p>
-    </div>
+    <input
+      type={inputType}
+      id={inputId}
+      name={inputName}
+      placeholder={placeholder}
+      className="inputFieldComponent"
+    ></input>
   );
 }
 

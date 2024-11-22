@@ -17,6 +17,10 @@ body {
   width: 100vw;
 }
 
+* {
+  box-sizing: border-box;
+}
+
 a {
   /* disable links default styling */
   color: white;
@@ -35,6 +39,17 @@ a {
   font-weight: 200;
   .homeMessage {
     margin-top: 0.5rem;
+  }
+}
+
+.profilePage {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  form {
+    width: 100%;
+    padding-inline: 1rem;
+    margin-bottom: 1.25rem;
   }
 }
 

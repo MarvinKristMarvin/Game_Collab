@@ -1,9 +1,15 @@
 import "./Button.css";
 
-function Button() {
+interface props {
+  text: string;
+  func: () => void;
+  color?: string;
+}
+
+function Button({ text, func, color }: props) {
   return (
-    <div className="buttonComponent">
-      <p>Log in</p>
+    <div className={`buttonComponent ${color}`} onClick={func}>
+      <p>{text}</p>
     </div>
   );
 }
