@@ -132,9 +132,9 @@ function Profile() {
           <section className="spacingSection">
             <Label text="What are you working for" htmlFor="free" />
             <div className="remunerationList">
-              <CheckableItem text="Free" inputId="free" />
-              <CheckableItem text="Shares" inputId="shares" />
-              <CheckableItem text="Gratification" inputId="gratification" />
+              <CheckableItem text="Fun" inputId="free" />
+              <CheckableItem text="Revenue shares" inputId="shares" />
+              <CheckableItem text="Fixed amount" inputId="gratification" />
               <CheckableItem text="Salary" inputId="salary" />
             </div>
           </section>

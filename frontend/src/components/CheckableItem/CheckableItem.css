@@ -60,6 +60,7 @@
   &.checkbox:checked:before {
     background-color: rgba(255, 208, 0, 0.2);
   }
+
   &.checkbox:checked:after {
   }
   /* border when checked */
@@ -70,7 +71,7 @@
     &.german,
     &.japanese,
     &.russian {
-      border: solid 3px rgb(255, 232, 129);
+      border: solid 2px rgb(255, 232, 129);
     }
   }
 }

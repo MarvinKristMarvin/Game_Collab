@@ -1,23 +1,4 @@
 .fixedButtonsComponent {
-  width: 100%;
   border-radius: 0.5rem;
-  margin-bottom: 0.75rem;
   width: calc(100% - 2rem);
-  display: grid;
-  grid-template-columns: 0.7fr 1fr 1.7fr;
-  gap: 0.75rem; /* Space between items */
-  /*grid-template-columns: repeat(
-    auto-fit,
-    minmax(9rem, 1fr)
-  );*/ /* Default: items flow row-wise and wrap */ /* Default: items flow row-wise and wrap */
-  div {
-    border: solid 1px rgb(93, 211, 93);
-    border-bottom: solid 4px rgb(93, 211, 93);
-    color: rgb(93, 211, 93);
-    align-content: center;
-    text-align: center;
-    padding-block: 1rem;
-    border-radius: 0.5rem;
-    font-weight: 600;
-  }
 }

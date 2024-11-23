@@ -1,12 +1,14 @@
 import "./FixedButtons.css";
+import Button from "../Button/Button";
 
 function FixedButtons() {
+  function searchProfiles() {
+    console.log("search profiles function");
+  }
   return (
     <div className="fixedButtonsComponent">
       {/* ici les fixedButtons à importer */}
-      <div>Save</div>
-      <div>Log out</div>
-      <div>Delete account</div>
+      <Button text="Search profiles" func={searchProfiles} />
     </div>
   );
 }
