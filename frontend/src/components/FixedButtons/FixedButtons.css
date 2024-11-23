@@ -1,4 +1,9 @@
 .fixedButtonsComponent {
   border-radius: 0.5rem;
   width: calc(100% - 2rem);
+  &.grid {
+    display: grid;
+    grid-template-columns: 3.5rem 1fr 3.5rem;
+    gap: 0.75rem;
+  }
 }
