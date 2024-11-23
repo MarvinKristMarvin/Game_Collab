@@ -12,6 +12,12 @@
   color: rgba(255, 255, 255, 0.9);
   font-size: 1rem;
   color: #cec071;
+  resize: vertical;
+  min-height: 3.5rem;
+  &textarea {
+    display: block;
+  }
+
   &::placeholder {
     color: rgba(255, 255, 255, 0.5);
   }

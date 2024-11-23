@@ -51,6 +51,29 @@ a {
     padding-inline: 1rem;
     margin-bottom: 1.25rem;
   }
+  .jobList {
+    display: grid;
+    gap: 0.75rem;
+    grid-template-columns: repeat(auto-fit, minmax(8rem, 1fr));
+    margin-bottom: 2rem;
+  }
+  .remunerationList {
+    display: grid;
+    gap: 0.75rem;
+    grid-template-columns: repeat(auto-fit, minmax(8rem, 1fr));
+    margin-bottom: 2rem;
+  }
+
+  .flagList {
+    display: grid;
+    gap: 0.75rem;
+    grid-template-columns: repeat(auto-fit, minmax(4rem, 1fr));
+    margin-bottom: 2rem;
+  }
+
+  .spacingSection {
+    margin-bottom: 2rem;
+  }
 }
 
 @media screen and (width >= 640px) {

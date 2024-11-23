@@ -3,6 +3,7 @@ import Label from "../components/Label/Label";
 import InputField from "../components/InputField/InputField";
 import Button from "../components/Button/Button";
 import PositiveMessage from "../components/PositiveMessage/PositiveMessage";
+import CheckableItem from "../components/CheckableItem/CheckableItem";
 import { useState } from "react";
 
 function Profile() {
@@ -77,21 +78,90 @@ function Profile() {
       <div className="profilePage">
         <PositiveMessage text="You are successfully logged in, you can edit your profile and share it to others" />
         <form action="">
-          <Label text="Enter your name and age" htmlFor="name" />
-          <InputField
-            placeholder="Name"
-            inputType="text"
-            inputId="name"
-            inputName="name"
-          />
-          <InputField
-            placeholder="Age"
-            inputType="text"
-            inputId="age"
-            inputName="age"
-          />
-          <Label text="Select your working languages" htmlFor="name" />
-          <Label text="What jobs can you do" htmlFor="name" />
+          {/* NAME AND AGE */}
+          <section className="spacingSection">
+            <Label text="Enter your name and age" htmlFor="name" />
+            <InputField
+              placeholder="Name"
+              inputType="text"
+              inputId="name"
+              inputName="name"
+            />
+            <InputField
+              placeholder="Age"
+              inputType="text"
+              inputId="age"
+              inputName="age"
+            />
+          </section>
+
+          {/* LANGUAGES */}
+          <section className="spacingSection">
+            <Label text="Select your working languages" htmlFor="english" />
+            <div className="flagList">
+              <CheckableItem text="" inputId="english" language="english" />
+              <CheckableItem text="" inputId="french" language="french" />
+              <CheckableItem text="" inputId="german" language="german" />
+              <CheckableItem text="" inputId="japanese" language="japanese" />
+              <CheckableItem text="" inputId="russian" language="russian" />
+              <CheckableItem text="" inputId="english" language="english" />
+              <CheckableItem text="" inputId="french" language="french" />
+              <CheckableItem text="" inputId="german" language="german" />
+              <CheckableItem text="" inputId="japanese" language="japanese" />
+              <CheckableItem text="" inputId="russian" language="russian" />
+            </div>
+          </section>
+
+          {/* JOBS */}
+          <section className="spacingSection">
+            <Label text="What jobs can you do" htmlFor="code" />
+            <div className="jobList">
+              <CheckableItem text="Code" inputId="code" />
+              <CheckableItem text="Art" inputId="art" />
+              <CheckableItem text="Modelling" inputId="modelling" />
+              <CheckableItem text="Animation" inputId="animation" />
+              <CheckableItem text="Music" inputId="music" />
+              <CheckableItem text="Composition" inputId="composition" />
+              <CheckableItem text="Sound" inputId="sound" />
+              <CheckableItem text="Test" inputId="test" />
+              <CheckableItem text="Other" inputId="other" />
+            </div>
+          </section>
+
+          {/* REMUNERATION */}
+          <section className="spacingSection">
+            <Label text="What are you working for" htmlFor="free" />
+            <div className="remunerationList">
+              <CheckableItem text="Free" inputId="free" />
+              <CheckableItem text="Shares" inputId="shares" />
+              <CheckableItem text="Gratification" inputId="gratification" />
+              <CheckableItem text="Salary" inputId="salary" />
+            </div>
+          </section>
+
+          {/* OTHER INFORMATIONS */}
+          <section className="spacingSection ">
+            <Label text="Other informations" htmlFor="description" />
+            <InputField
+              placeholder="Describe yourself"
+              inputType="textarea"
+              inputId="description"
+              inputName="description"
+            />
+            <InputField
+              placeholder="Portfolio Link"
+              inputType="text"
+              inputId="portfolio"
+              inputName="portfolio"
+            />
+            <InputField
+              placeholder="Contact mail"
+              inputType="text"
+              inputId="mail"
+              inputName="mail"
+            />
+          </section>
+
           <Button text="Save" func={save} />
           <Button text="Log out" func={logOut} color="orangeButton" />
           <Button
