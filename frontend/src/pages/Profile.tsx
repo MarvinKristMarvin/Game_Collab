@@ -81,18 +81,20 @@ function Profile() {
           {/* NAME AND AGE */}
           <section className="spacingSection">
             <Label text="Enter your name and age" htmlFor="name" />
-            <InputField
-              placeholder="Name"
-              inputType="text"
-              inputId="name"
-              inputName="name"
-            />
-            <InputField
-              placeholder="Age"
-              inputType="text"
-              inputId="age"
-              inputName="age"
-            />
+            <div className="nameAndAgeList">
+              <InputField
+                placeholder="Name"
+                inputType="text"
+                inputId="name"
+                inputName="name"
+              />
+              <InputField
+                placeholder="Age"
+                inputType="text"
+                inputId="age"
+                inputName="age"
+              />
+            </div>
           </section>
 
           {/* LANGUAGES */}
@@ -140,7 +142,7 @@ function Profile() {
           </section>
 
           {/* OTHER INFORMATIONS */}
-          <section className="spacingSection ">
+          <section className="spacingSection">
             <Label text="Other informations" htmlFor="description" />
             <InputField
               placeholder="Describe yourself"

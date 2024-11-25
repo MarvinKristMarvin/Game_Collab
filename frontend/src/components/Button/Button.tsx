@@ -2,7 +2,7 @@ import "./Button.css";
 
 interface props {
   text: string;
-  func: () => void;
+  func?: () => void;
   color?: string;
 }
 

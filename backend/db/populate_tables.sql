@@ -16,9 +16,9 @@ INSERT INTO "job" ("id", "name") VALUES
 (3, 'Dev');
 
 INSERT INTO "language" ("id", "name") VALUES 
-(1, 'English'),
-(2, 'French'),
-(3, 'Russian');
+(1, 'English.gb'),
+(2, 'French.fr'),
+(3, 'Russian.ru');
 
 INSERT INTO "remuneration" ("id", "type") VALUES 
 (1, 'Nothing'),

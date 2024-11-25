@@ -15,7 +15,7 @@ function Header() {
             </NavLink>
           </li>
           <li className="logo">
-            <NavLink to="/" className="navlink">
+            <NavLink to="/" className="navlink logolink">
               <img src={logo} alt="" />
             </NavLink>
           </li>

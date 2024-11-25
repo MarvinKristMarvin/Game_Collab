@@ -1,0 +1,59 @@
+[
+  {
+    "id": 1,
+    "password": "hashed_password1",
+    "mail": "alice@example.com",
+    "name": "Alice",
+    "age": 30,
+    "available": true,
+    "description": "Skilled full-stack developer.",
+    "portfolio_url": "http://alice.dev",
+    "profile_mail": "contact@alice.dev",
+    "created_at": "CURRENT_DATE",
+    "role": "Admin",
+    "jobs": [
+      { "id": 1, "name": "Artist" },
+      { "id": 3, "name": "Dev" }
+    ],
+    "languages": [{ "id": 1, "name": "English.gb" }],
+    "remunerations": [{ "id": 1, "type": "Nothing" }]
+  },
+  {
+    "id": 2,
+    "password": "hashed_password2",
+    "mail": "bob@example.com",
+    "name": "Bob",
+    "age": 25,
+    "available": false,
+    "description": "Front-end specialist.",
+    "portfolio_url": "http://bob.dev",
+    "profile_mail": "contact@bob.dev",
+    "created_at": "CURRENT_DATE",
+    "role": "User",
+    "jobs": [{ "id": 1, "name": "Artist" }],
+    "languages": [
+      { "id": 2, "name": "French.fr" },
+      { "id": 3, "name": "Russian.ru" }
+    ],
+    "remunerations": [
+      { "id": 2, "type": "Freelance" },
+      { "id": 4, "type": "Salary" }
+    ]
+  },
+  {
+    "id": 3,
+    "password": "hashed_password3",
+    "mail": "charlie@example.com",
+    "name": "Charlie",
+    "age": 28,
+    "available": true,
+    "description": "Backend and API developer.",
+    "portfolio_url": null,
+    "profile_mail": "contact@charlie.dev",
+    "created_at": "CURRENT_DATE",
+    "role": "User",
+    "jobs": [{ "id": 2, "name": "Sounds" }],
+    "languages": [{ "id": 3, "name": "Russian.ru" }],
+    "remunerations": [{ "id": 3, "type": "Shares" }]
+  }
+]

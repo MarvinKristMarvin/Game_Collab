@@ -1,6 +1,18 @@
 .fixedButtonsComponent {
-  border-radius: 0.5rem;
-  width: calc(100% - 2rem);
+  width: 100%;
+  background-color: black;
+  position: sticky;
+  top: 8rem;
+  z-index: 2;
+  display: flex;
+  justify-content: center;
+  padding-bottom: 0.25rem;
+  margin-bottom: 1rem;
+
+  .buttonsContainer {
+    width: 100%;
+  }
+
   &.grid {
     display: grid;
     grid-template-columns: 3.5rem 1fr 3.5rem;

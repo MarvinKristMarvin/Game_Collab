@@ -5,19 +5,41 @@ import Button from "../components/Button/Button";
 import PositiveMessage from "../components/PositiveMessage/PositiveMessage";
 import CheckableItem from "../components/CheckableItem/CheckableItem";
 import { useState } from "react";
+import jsonUsers from "../dummydata/users.json";
 
 function Search() {
   const [filtering, setFiltering] = useState(false);
+  const updateFilteringToTrue = () => {
+    setFiltering(true);
+  };
+  const updateFilteringToFalse = () => {
+    setFiltering(false);
+  };
+  const [userId, setUserId] = useState(0);
+  const goToNextUser = () => {
+    /* get the next user in the user array */
+    /* pourquoi ca fonctionne wtf (coup de chance car userId = 0 et Alice id = 1, ducoup userId devient 1 et Bob 2) ???? */
+    console.log("userId " + userId);
+    const nextUser = jsonUsers[userId];
+    console.log("nextUser " + nextUser);
+    setUserId(nextUser.id);
+    console.log("nextUser.id " + nextUser.id);
+    console.log("next user please");
+  };
 
+  /* if filtering show filters, else show profiles */
   if (filtering === true) {
     return (
       <div className="searchPage">
-        <FixedButtons filtering={filtering} />
+        <FixedButtons
+          filtering={filtering}
+          updateFilteringToFalse={updateFilteringToFalse}
+        />
         <form action="">
           {/* NAME AND AGE */}
           <section className="spacingSection">
             <Label text="Search for minimum and maximum age" htmlFor="minAge" />
-            <div className="jobList">
+            <div className="nameAndAgeList">
               <InputField
                 placeholder="Minimum age"
                 inputType="text"
@@ -100,8 +122,69 @@ function Search() {
     );
   } else {
     return (
+      /* OTHER FOUND PROFILE */
       <div className="searchPage">
-        <FixedButtons />
+        <FixedButtons
+          filtering={filtering}
+          updateFilteringToTrue={updateFilteringToTrue}
+          goToNextUser={goToNextUser}
+        />
+        <div className="profileInformations">
+          <section className="basicInformations">
+            <p className={"nameAge"}>
+              {jsonUsers[userId].name}, {jsonUsers[userId].age}
+            </p>
+            <div className="languages">
+              {jsonUsers[userId].languages.map((language) => {
+                const [languageName, languageCode] = language.name.split(".");
+                return (
+                  <div className="language">
+                    <img
+                      src={`https://flagcdn.com/w40/${languageCode}.png`}
+                      width="40"
+                      alt={languageName}
+                    />
+                  </div>
+                );
+              })}
+            </div>
+          </section>
+          <section className="jobs">
+            {jsonUsers[userId].jobs.map((job) => (
+              <div className="job">{job.name}</div>
+            ))}
+          </section>
+          <section className="remunerations">
+            {jsonUsers[userId].remunerations.map((remuneration) => (
+              <div className="remuneration">{remuneration.type}</div>
+            ))}
+          </section>
+          <section className="description">
+            <p>{jsonUsers[userId].description}</p>
+          </section>
+          <section className="portfolio">
+            {jsonUsers[userId].portfolio_url ? (
+              <a
+                href={
+                  /* ajouter http si pas présent dans l'url */
+                  jsonUsers[userId].portfolio_url.startsWith("http")
+                    ? jsonUsers[userId].portfolio_url
+                    : `https://${jsonUsers[userId].portfolio_url}`
+                }
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                {jsonUsers[userId].portfolio_url}
+              </a>
+            ) : (
+              <span>No portfolio available</span>
+            )}
+            <span> &#x2197;</span>
+          </section>
+          <section className="mail">
+            <p>{jsonUsers[userId].profile_mail}</p>
+          </section>
+        </div>
       </div>
     );
   }

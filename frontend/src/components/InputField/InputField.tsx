@@ -14,7 +14,9 @@ function InputField({ placeholder, inputType, inputId, inputName }: props) {
         id={inputId}
         name={inputName}
         placeholder={placeholder}
-        className="inputFieldComponent"
+        className="inputFieldComponent textarea"
+        rows={8}
+        maxLength={800}
       />
     );
   } else {

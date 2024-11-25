@@ -5,7 +5,6 @@
   border: solid 1px rgba(255, 255, 255, 0.7);
   border-radius: 0.5rem;
   padding: 1rem;
-  margin-bottom: 0.75rem;
   display: block;
   background-color: rgba(0, 0, 0, 0);
   width: 100%;
@@ -14,8 +13,9 @@
   color: #cec071;
   resize: vertical;
   min-height: 3.5rem;
-  &textarea {
+  &.textarea {
     display: block;
+    resize: none;
   }
 
   &::placeholder {
@@ -26,5 +26,8 @@
     outline: none !important;
     border-color: #cec071;
     box-shadow: 0 0 4px #cecc71;
+  }
+  &.spaced {
+    margin-bottom: 0.75rem;
   }
 }

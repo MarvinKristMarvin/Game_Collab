@@ -1,5 +1,9 @@
 .headerComponent {
-  margin-block: 1.5rem;
+  padding-block: 1.5rem;
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  background-color: black;
 
   nav {
     ul {
@@ -11,25 +15,41 @@
 
       li {
         height: 100%;
+
         width: auto;
-        flex: 1;
 
         .navlink {
           display: flex;
           flex-direction: column;
           align-items: center;
           font-weight: 600;
+          padding: 0.75rem;
+          border: solid 1px #00000000;
+          font-size: 0.75rem;
+
+          &.active:not(.logolink) {
+            color: #ffe139;
+            border: solid 1px #ffe139;
+            box-shadow: 0 0 6px #ffe139;
+            border-radius: 0.5rem;
+            img {
+              filter: brightness(0) saturate(100%) invert(91%) sepia(71%)
+                saturate(775%) hue-rotate(330deg) brightness(101%)
+                contrast(102%);
+            }
+          }
 
           img {
-            height: 2.5rem;
+            height: 2rem;
           }
         }
       }
       li.logo {
+        margin-inline: calc(17% - 2.75rem);
         img {
-          height: 5rem;
+          width: rem;
+          height: 4rem;
         }
-        flex: 0;
       }
     }
   }

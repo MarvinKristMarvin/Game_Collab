@@ -2,8 +2,9 @@
   border: dashed 1px rgba(149, 219, 83, 0.9);
   padding: 1rem;
   border-radius: 0.5rem;
-  margin-bottom: 0.75rem;
-  width: calc(100% - 2rem);
+  margin-bottom: 2rem;
+  width: 100%;
+
   p {
     color: rgba(149, 219, 83, 0.9);
   }

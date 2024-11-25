@@ -11,10 +11,9 @@ Kanban : https://github.com/orgs/O-clock-Mimir/projects/32/views/1
    [x] user stories
    [x] use cases
    [x] wireframe 
-   [-] maquette 
+   [x] maquette 
    [x] erd 
    [x] mcd
-   [ ] mld ?
    [x] diagramme de sequence
    [x] arborescence
    [x] description du projet
@@ -31,11 +30,11 @@ Kanban : https://github.com/orgs/O-clock-Mimir/projects/32/views/1
       [x] recueil de données
       [x] dictionnaire de données
       [x] autres spécifications
-[ ] préparer l'environnement de travail
-[ ] creer l'integration de base
-[ ] creer la bdd
-[ ] hydrater la bdd
-[ ] développer
+[x] préparer l'environnement de travail
+[x] creer l'integration de base
+[x] creer la bdd
+[x] hydrater la bdd
+[-] développer
 [ ] sécuriser (failles courantes)
 [ ] dockeriser
 [ ] déployer
