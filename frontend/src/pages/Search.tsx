@@ -1,11 +1,25 @@
 import FixedButtons from "../components/FixedButtons/FixedButtons";
 import Label from "../components/Label/Label";
 import InputField from "../components/InputField/InputField";
-import Button from "../components/Button/Button";
-import PositiveMessage from "../components/PositiveMessage/PositiveMessage";
 import CheckableItem from "../components/CheckableItem/CheckableItem";
-import { useState } from "react";
+import React, { useEffect, useState } from "react";
 import jsonUsers from "../dummydata/users.json";
+import axios from "axios";
+
+interface userInterface {
+  id: number;
+  password: string;
+  mail: string;
+  name: string;
+  age: number;
+  available: boolean;
+  description: string;
+  portfolio_url?: string;
+  profile_mail: string;
+  created_at: string;
+  updated_at?: string;
+  role: number;
+}
 
 function Search() {
   const [filtering, setFiltering] = useState(false);
@@ -26,6 +40,22 @@ function Search() {
     console.log("nextUser.id " + nextUser.id);
     console.log("next user please");
   };
+
+  const [data, setData] = useState<userInterface[]>([]);
+
+  useEffect(() => {
+    axios
+      .get<userInterface[]>("http://localhost:5000/api/users")
+      .then((response) => {
+        setData(response.data);
+      })
+      .catch((error) => {
+        console.error("Error fetching data:", error);
+      });
+    console.log(data);
+  }, []);
+
+  console.log(data);
 
   /* if filtering show filters, else show profiles */
   if (filtering === true) {
