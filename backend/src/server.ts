@@ -2,6 +2,7 @@ import express, { Request, Response } from "express";
 import cors from "cors";
 import { query } from "./db";
 import router from "./routes/router";
+import error404 from "./middlewares/error404";
 
 const app = express();
 
@@ -22,6 +23,8 @@ app.use(router);
     res.status(500).json({ error: "Internal Server Error" });
   }
 });*/
+
+app.use(error404);
 
 const PORT = 5000;
 

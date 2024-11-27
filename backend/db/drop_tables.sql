@@ -1,10 +1,10 @@
 BEGIN;
-DROP TABLE IF EXISTS "utilisateur",
+DROP TABLE IF EXISTS "user",
 "role",
 "job",
 "language",
 "remuneration",
-"utilisateur_job",
-"utilisateur_language",
-"utilisateur_remuneration";
+"user_job",
+"user_language",
+"user_remuneration";
 COMMIT;

@@ -6,3 +6,4 @@ psql -d postgres -U marvin; => connection postgres avec role marvin
 \list => lister les bdd
 \dt => montrer les tables de la bdd
 \i C:/Tout/Projets_Dev/collabjv/db/create_tables.sql => executer script sql
+npx ts-node paramrequest.ts => execute un fichier .ts

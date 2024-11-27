@@ -3,7 +3,6 @@ import Label from "../components/Label/Label";
 import InputField from "../components/InputField/InputField";
 import CheckableItem from "../components/CheckableItem/CheckableItem";
 import React, { useEffect, useState } from "react";
-import jsonUsers from "../dummydata/users.json";
 import axios from "axios";
 
 interface userInterface {
@@ -19,43 +18,89 @@ interface userInterface {
   created_at: string;
   updated_at?: string;
   role: number;
+  jobs: string;
+  languages: string;
+  remunerations: string;
 }
 
 function Search() {
+  /* utils */
+  const stringToArray = (str: string): string[] => {
+    return str.split(",").map((item) => item.trim());
+  };
+
   const [filtering, setFiltering] = useState(false);
+
   const updateFilteringToTrue = () => {
     setFiltering(true);
   };
   const updateFilteringToFalse = () => {
     setFiltering(false);
   };
-  const [userId, setUserId] = useState(0);
+
+  const [showProfileNumber, setShowProfileNumber] = useState(0);
+
   const goToNextUser = () => {
-    /* get the next user in the user array */
-    /* pourquoi ca fonctionne wtf (coup de chance car userId = 0 et Alice id = 1, ducoup userId devient 1 et Bob 2) ???? */
-    console.log("userId " + userId);
-    const nextUser = jsonUsers[userId];
-    console.log("nextUser " + nextUser);
-    setUserId(nextUser.id);
-    console.log("nextUser.id " + nextUser.id);
-    console.log("next user please");
+    if (showProfileNumber < loadedProfiles.length - 1) {
+      setShowProfileNumber(showProfileNumber + 1);
+    }
   };
 
-  const [data, setData] = useState<userInterface[]>([]);
+  const goToPreviousUser = () => {
+    if (showProfileNumber > 0) {
+      setShowProfileNumber(showProfileNumber - 1);
+    }
+  };
 
-  useEffect(() => {
+  const dataURL = "http://localhost:5000/";
+  const filterString =
+    "api/users/filtered?jobs=Artist,Dev&remunerations=Salary";
+  /* when click on search profiles button => load filtered profiles and change page to browse profiles */
+  const getFilteredProfiles = () => {
     axios
-      .get<userInterface[]>("http://localhost:5000/api/users")
+      .get<userInterface[]>(
+        /* http://localhost:5000/api/users/filtered?jobs=Artist,Dev&languages=English.gb,French.fr&remunerations=Freelance,Salary */
+        dataURL + filterString
+      )
       .then((response) => {
-        setData(response.data);
+        if (response.data && response.data.length > 0) {
+          setLoadedProfiles(response.data);
+        }
       })
       .catch((error) => {
         console.error("Error fetching data:", error);
       });
-    console.log(data);
+    updateFilteringToFalse();
+  };
+
+  const [loadedProfiles, setLoadedProfiles] = useState<userInterface[]>([]);
+
+  useEffect(() => {
+    axios
+      .get<userInterface[]>(
+        /* http://localhost:5000/api/users/filtered?jobs=Artist,Dev&languages=English.gb,French.fr&remunerations=Freelance,Salary */
+        "http://localhost:5000/api/users/filtered?jobs=Artist,Dev&remunerations=Salary,Freelance"
+      )
+      .then((response) => {
+        if (response.data && response.data.length > 0) {
+          setLoadedProfiles(response.data);
+        }
+      })
+      .catch((error) => {
+        console.error("Error fetching data:", error);
+      });
   }, []);
 
-  console.log(data);
+  console.log(loadedProfiles);
+  const languages = loadedProfiles[showProfileNumber]?.languages
+    ? stringToArray(loadedProfiles[showProfileNumber].languages)
+    : [];
+  const jobs = loadedProfiles[showProfileNumber]?.jobs
+    ? stringToArray(loadedProfiles[showProfileNumber].jobs)
+    : [];
+  const remunerations = loadedProfiles[showProfileNumber]?.remunerations
+    ? stringToArray(loadedProfiles[showProfileNumber].remunerations)
+    : [];
 
   /* if filtering show filters, else show profiles */
   if (filtering === true) {
@@ -63,7 +108,7 @@ function Search() {
       <div className="searchPage">
         <FixedButtons
           filtering={filtering}
-          updateFilteringToFalse={updateFilteringToFalse}
+          getFilteredProfiles={getFilteredProfiles}
         />
         <form action="">
           {/* NAME AND AGE */}
@@ -158,63 +203,72 @@ function Search() {
           filtering={filtering}
           updateFilteringToTrue={updateFilteringToTrue}
           goToNextUser={goToNextUser}
+          goToPreviousUser={goToPreviousUser}
         />
-        <div className="profileInformations">
-          <section className="basicInformations">
-            <p className={"nameAge"}>
-              {jsonUsers[userId].name}, {jsonUsers[userId].age}
-            </p>
-            <div className="languages">
-              {jsonUsers[userId].languages.map((language) => {
-                const [languageName, languageCode] = language.name.split(".");
-                return (
-                  <div className="language">
-                    <img
-                      src={`https://flagcdn.com/w40/${languageCode}.png`}
-                      width="40"
-                      alt={languageName}
-                    />
-                  </div>
-                );
-              })}
-            </div>
-          </section>
-          <section className="jobs">
-            {jsonUsers[userId].jobs.map((job) => (
-              <div className="job">{job.name}</div>
-            ))}
-          </section>
-          <section className="remunerations">
-            {jsonUsers[userId].remunerations.map((remuneration) => (
-              <div className="remuneration">{remuneration.type}</div>
-            ))}
-          </section>
-          <section className="description">
-            <p>{jsonUsers[userId].description}</p>
-          </section>
-          <section className="portfolio">
-            {jsonUsers[userId].portfolio_url ? (
-              <a
-                href={
-                  /* ajouter http si pas présent dans l'url */
-                  jsonUsers[userId].portfolio_url.startsWith("http")
-                    ? jsonUsers[userId].portfolio_url
-                    : `https://${jsonUsers[userId].portfolio_url}`
-                }
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                {jsonUsers[userId].portfolio_url}
-              </a>
-            ) : (
-              <span>No portfolio available</span>
-            )}
-            <span> &#x2197;</span>
-          </section>
-          <section className="mail">
-            <p>{jsonUsers[userId].profile_mail}</p>
-          </section>
-        </div>
+        {/* show profile info only if profiles are loaded */}
+        {loadedProfiles.length > 0 ? (
+          <div className="profileInformations">
+            <section className="basicInformations">
+              <p className={"nameAge"}>
+                {loadedProfiles[showProfileNumber].name},{" "}
+                {loadedProfiles[showProfileNumber].age}
+              </p>
+              <div className="languages">
+                {languages.map((language) => {
+                  const [languageName, languageCode] = language.split(".");
+                  return (
+                    <div className="language">
+                      <img
+                        src={`https://flagcdn.com/w40/${languageCode}.png`}
+                        width="40"
+                        alt={languageName}
+                      />
+                    </div>
+                  );
+                })}
+              </div>
+            </section>
+            <section className="jobs">
+              {jobs.map((job) => (
+                <div className="job">{job}</div>
+              ))}
+            </section>
+            <section className="remunerations">
+              {remunerations.map((remuneration) => (
+                <div className="remuneration">{remuneration}</div>
+              ))}
+            </section>
+            <section className="description">
+              <p>{loadedProfiles[showProfileNumber].description}</p>
+            </section>
+            <section className="portfolio">
+              {loadedProfiles[showProfileNumber].portfolio_url ? (
+                <a
+                  href={
+                    /* ajouter http si pas présent dans l'url */
+                    loadedProfiles[showProfileNumber].portfolio_url.startsWith(
+                      "http"
+                    )
+                      ? loadedProfiles[showProfileNumber].portfolio_url
+                      : `https://${loadedProfiles[showProfileNumber].portfolio_url}`
+                  }
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  {loadedProfiles[showProfileNumber].portfolio_url}
+                </a>
+              ) : (
+                <span>No portfolio available</span>
+              )}
+              <span> &#x2197;</span>
+            </section>
+            <section className="mail">
+              <p>{loadedProfiles[showProfileNumber].profile_mail}</p>
+            </section>
+          </div>
+        ) : (
+          <p>loading</p>
+        )}
       </div>
     );
   }
