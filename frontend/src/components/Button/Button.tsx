@@ -1,12 +1,7 @@
 import "./Button.css";
+import { IButton } from "../../@types/components";
 
-interface props {
-  text: string;
-  func?: () => void;
-  color?: string;
-}
-
-function Button({ text, func, color }: props) {
+function Button({ text, func, color }: IButton) {
   return (
     <div className={`buttonComponent ${color}`} onClick={func}>
       <p>{text}</p>

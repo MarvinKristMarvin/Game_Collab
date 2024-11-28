@@ -1,11 +1,7 @@
+import { ILabel } from "../../@types/components";
 import "./Label.css";
 
-interface props {
-  text: string;
-  htmlFor: string;
-}
-
-function Label({ text, htmlFor }: props) {
+function Label({ text, htmlFor }: ILabel) {
   return (
     <label className="labelComponent" htmlFor={htmlFor}>
       <p>{text}</p>

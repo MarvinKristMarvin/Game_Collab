@@ -1,12 +1,7 @@
 import "./CheckableItem.css";
+import { ICheckableItem } from "../../@types/components";
 
-interface props {
-  text: string;
-  inputId: string;
-  language?: string;
-}
-
-function CheckableItem({ text, inputId, language }: props) {
+function CheckableItem({ text, inputId, language }: ICheckableItem) {
   return (
     <input
       type="checkbox"

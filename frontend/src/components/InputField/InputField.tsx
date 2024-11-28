@@ -1,13 +1,12 @@
+import { IInpurField } from "../../@types/components";
 import "./InputField.css";
 
-interface props {
-  placeholder: string;
-  inputType: string;
-  inputId: string;
-  inputName: string;
-}
-
-function InputField({ placeholder, inputType, inputId, inputName }: props) {
+function InputField({
+  placeholder,
+  inputType,
+  inputId,
+  inputName,
+}: IInpurField) {
   if (inputType === "textarea") {
     return (
       <textarea

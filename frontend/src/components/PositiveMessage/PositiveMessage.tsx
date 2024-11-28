@@ -1,10 +1,7 @@
+import { IPositiveMessage } from "../../@types/components";
 import "./PositiveMessage.css";
 
-interface props {
-  text: string;
-}
-
-function PositiveMessage({ text }: props) {
+function PositiveMessage({ text }: IPositiveMessage) {
   return (
     <div className="positiveMessageComponent">
       <p>{text}</p>

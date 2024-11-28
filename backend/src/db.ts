@@ -12,7 +12,7 @@ const pool = new Pool({
   port: parseInt(process.env.DB_PORT || "5432", 10),
 });
 
-/* const data = await pool.query('SELECT * FROM users WHERE id = $1', [123]) => request with safe parameters */
+/* const data = await pool.query('SELECT * FROM users WHERE id = $1', [123]) => request with optionnal parameters */
 export const query = (
   queryString: string,
   params?: any[]

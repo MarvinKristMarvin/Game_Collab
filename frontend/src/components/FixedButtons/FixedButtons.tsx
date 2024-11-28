@@ -1,13 +1,6 @@
 import "./FixedButtons.css";
 import Button from "../Button/Button";
-
-interface props {
-  filtering: boolean;
-  updateFilteringToTrue?: () => void;
-  goToNextUser?: () => void;
-  goToPreviousUser?: () => void;
-  getFilteredProfiles?: () => void;
-}
+import { IFixedButtons } from "../../@types/components";
 
 function FixedButtons({
   filtering,
@@ -15,7 +8,7 @@ function FixedButtons({
   goToNextUser,
   goToPreviousUser,
   getFilteredProfiles,
-}: props) {
+}: IFixedButtons) {
   if (filtering === true) {
     return (
       <div className="fixedButtonsComponent">
