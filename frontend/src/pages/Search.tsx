@@ -4,6 +4,7 @@ import InputField from "../components/InputField/InputField";
 import CheckableItem from "../components/CheckableItem/CheckableItem";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import commaStringToArray from "../utils/commaStringToArray.ts";
 
 interface userInterface {
   id: number;
@@ -24,13 +25,8 @@ interface userInterface {
 }
 
 function Search() {
-  /* utils */
-  const stringToArray = (str: string): string[] => {
-    return str.split(",").map((item) => item.trim());
-  };
-
+  /* toggle "browse profiles" and "filtering" pages */
   const [filtering, setFiltering] = useState(false);
-
   const updateFilteringToTrue = () => {
     setFiltering(true);
   };
@@ -38,20 +34,20 @@ function Search() {
     setFiltering(false);
   };
 
+  /* create an id to go to next or previous loaded profile */
   const [showProfileNumber, setShowProfileNumber] = useState(0);
-
   const goToNextUser = () => {
     if (showProfileNumber < loadedProfiles.length - 1) {
       setShowProfileNumber(showProfileNumber + 1);
     }
   };
-
   const goToPreviousUser = () => {
     if (showProfileNumber > 0) {
       setShowProfileNumber(showProfileNumber - 1);
     }
   };
 
+  /* create the filter string which will get modified on "search profiles" button submit */
   const dataURL = "http://localhost:5000/";
   const filterString =
     "api/users/filtered?jobs=Artist,Dev&remunerations=Salary";
@@ -75,6 +71,7 @@ function Search() {
 
   const [loadedProfiles, setLoadedProfiles] = useState<userInterface[]>([]);
 
+  /* load profiles on first render */
   useEffect(() => {
     axios
       .get<userInterface[]>(
@@ -92,17 +89,18 @@ function Search() {
   }, []);
 
   console.log(loadedProfiles);
+  /* convert strings separated by commas from the loaded profiles into array of strings */
   const languages = loadedProfiles[showProfileNumber]?.languages
-    ? stringToArray(loadedProfiles[showProfileNumber].languages)
+    ? commaStringToArray(loadedProfiles[showProfileNumber].languages)
     : [];
   const jobs = loadedProfiles[showProfileNumber]?.jobs
-    ? stringToArray(loadedProfiles[showProfileNumber].jobs)
+    ? commaStringToArray(loadedProfiles[showProfileNumber].jobs)
     : [];
   const remunerations = loadedProfiles[showProfileNumber]?.remunerations
-    ? stringToArray(loadedProfiles[showProfileNumber].remunerations)
+    ? commaStringToArray(loadedProfiles[showProfileNumber].remunerations)
     : [];
 
-  /* if filtering show filters, else show profiles */
+  /* if filtering is true => show filters, else browse profiles */
   if (filtering === true) {
     return (
       <div className="searchPage">
@@ -184,20 +182,12 @@ function Search() {
               inputName="keywords"
             />
           </section>
-          {/*
-          <Button text="Save" func={save} />
-          <Button text="Log out" func={logOut} color="orangeButton" />
-          <Button
-            text="Delete account"
-            func={deleteAccount}
-            color="orangeButton"
-          />*/}
         </form>
       </div>
     );
   } else {
     return (
-      /* OTHER FOUND PROFILE */
+      /* BROWSE PROFILES */
       <div className="searchPage">
         <FixedButtons
           filtering={filtering}
@@ -245,7 +235,7 @@ function Search() {
               {loadedProfiles[showProfileNumber].portfolio_url ? (
                 <a
                   href={
-                    /* ajouter http si pas présent dans l'url */
+                    /* add http if not already in the url */
                     loadedProfiles[showProfileNumber].portfolio_url.startsWith(
                       "http"
                     )
@@ -267,7 +257,7 @@ function Search() {
             </section>
           </div>
         ) : (
-          <p>loading</p>
+          <p>Loading profiles</p>
         )}
       </div>
     );

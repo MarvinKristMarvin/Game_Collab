@@ -1,4 +1,3 @@
-import FixedButtons from "../components/FixedButtons/FixedButtons";
 import Label from "../components/Label/Label";
 import InputField from "../components/InputField/InputField";
 import Button from "../components/Button/Button";
@@ -26,7 +25,7 @@ function Profile() {
     console.log("delete account modal");
   };
 
-  /* if user is not authentified, show login signup page, else show profile page */
+  /* if user is not authentified, show login signup page, else show his profile page */
   if (connected === false) {
     return (
       <div className="profilePage">
@@ -163,7 +162,6 @@ function Profile() {
               inputName="mail"
             />
           </section>
-
           <Button text="Save" func={save} />
           <Button text="Log out" func={logOut} color="orangeButton" />
           <Button
