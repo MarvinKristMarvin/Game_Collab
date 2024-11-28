@@ -8,6 +8,8 @@ export interface ICheckableItem {
   text: string;
   inputId: string;
   language?: string;
+  onChange: () => void;
+  checked: boolean;
 }
 
 export interface IFixedButtons {

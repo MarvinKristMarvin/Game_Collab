@@ -49,25 +49,6 @@ function Search() {
 
   /* create the filter string which will get modified on "search profiles" button submit */
   const dataURL = "http://localhost:5000/";
-  const filterString =
-    "api/users/filtered?jobs=Artist,Dev&remunerations=Salary";
-  /* when click on search profiles button => load filtered profiles and change page to browse profiles */
-  const getFilteredProfiles = () => {
-    axios
-      .get<userInterface[]>(
-        /* http://localhost:5000/api/users/filtered?jobs=Artist,Dev&languages=English.gb,French.fr&remunerations=Freelance,Salary */
-        dataURL + filterString
-      )
-      .then((response) => {
-        if (response.data && response.data.length > 0) {
-          setLoadedProfiles(response.data);
-        }
-      })
-      .catch((error) => {
-        console.error("Error fetching data:", error);
-      });
-    updateFilteringToFalse();
-  };
 
   const [loadedProfiles, setLoadedProfiles] = useState<userInterface[]>([]);
 
@@ -99,6 +80,55 @@ function Search() {
   const remunerations = loadedProfiles[showProfileNumber]?.remunerations
     ? commaStringToArray(loadedProfiles[showProfileNumber].remunerations)
     : [];
+
+  const [selectedJobs, setSelectedJobs] = useState<string[]>([]);
+  const [selectedLanguages, setSelectedLanguages] = useState<string[]>([]);
+  const [selectedRemunerations, setSelectedRemunerations] = useState<string[]>(
+    []
+  );
+  const [filterString, setFilterString] =
+    useState<string>("api/users/filtered");
+
+  const toggleFilter = (
+    filter: string,
+    setFilter: React.Dispatch<React.SetStateAction<string[]>>,
+    filters: string[]
+  ) => {
+    if (filters.includes(filter)) {
+      setFilter(filters.filter((item) => item !== filter));
+    } else {
+      setFilter([...filters, filter]);
+    }
+  };
+
+  useEffect(() => {
+    const queryParams = new URLSearchParams();
+    if (selectedJobs.length > 0)
+      queryParams.append("jobs", selectedJobs.join(","));
+    if (selectedLanguages.length > 0)
+      queryParams.append("languages", selectedLanguages.join(","));
+    if (selectedRemunerations.length > 0)
+      queryParams.append("remunerations", selectedRemunerations.join(","));
+
+    setFilterString(`api/users/filtered?${queryParams.toString()}`);
+  }, [selectedJobs, selectedLanguages, selectedRemunerations]);
+
+  /* when click on search profiles button => load filtered profiles and change page to browse profiles */
+  /* http://localhost:5000/api/users/filtered?jobs=Artist,Dev&languages=English.gb,French.fr&remunerations=Freelance,Salary */
+  const getFilteredProfiles = () => {
+    console.log("request : " + dataURL + filterString);
+    axios
+      .get<userInterface[]>(dataURL + filterString)
+      .then((response) => {
+        if (response.data && response.data.length > 0) {
+          setLoadedProfiles(response.data);
+        }
+      })
+      .catch((error) => {
+        console.error("Error fetching data:", error);
+      });
+    updateFilteringToFalse();
+  };
 
   /* if filtering is true => show filters, else browse profiles */
   if (filtering === true) {
@@ -132,16 +162,23 @@ function Search() {
           <section className="spacingSection">
             <Label text="Search people talking" htmlFor="english" />
             <div className="flagList">
-              <CheckableItem text="" inputId="english" language="english" />
-              <CheckableItem text="" inputId="french" language="french" />
-              <CheckableItem text="" inputId="german" language="german" />
-              <CheckableItem text="" inputId="japanese" language="japanese" />
-              <CheckableItem text="" inputId="russian" language="russian" />
-              <CheckableItem text="" inputId="english" language="english" />
-              <CheckableItem text="" inputId="french" language="french" />
-              <CheckableItem text="" inputId="german" language="german" />
-              <CheckableItem text="" inputId="japanese" language="japanese" />
-              <CheckableItem text="" inputId="russian" language="russian" />
+              {["English", "French", "German", "Japanese", "Russian"].map(
+                (language) => (
+                  <CheckableItem
+                    key={language}
+                    text={language}
+                    inputId={language.toLowerCase()}
+                    onChange={() =>
+                      toggleFilter(
+                        language,
+                        setSelectedLanguages,
+                        selectedLanguages
+                      )
+                    }
+                    checked={selectedLanguages.includes(language)}
+                  />
+                )
+              )}
             </div>
           </section>
 
@@ -149,15 +186,17 @@ function Search() {
           <section className="spacingSection">
             <Label text="Search people doing" htmlFor="code" />
             <div className="jobList">
-              <CheckableItem text="Code" inputId="code" />
-              <CheckableItem text="Art" inputId="art" />
-              <CheckableItem text="Modelling" inputId="modelling" />
-              <CheckableItem text="Animation" inputId="animation" />
-              <CheckableItem text="Music" inputId="music" />
-              <CheckableItem text="Composition" inputId="composition" />
-              <CheckableItem text="Sound" inputId="sound" />
-              <CheckableItem text="Test" inputId="test" />
-              <CheckableItem text="Other" inputId="other" />
+              {["Artist", "Sounds", "Dev"].map((job) => (
+                <CheckableItem
+                  key={job}
+                  text={job}
+                  inputId={job.toLowerCase()}
+                  onChange={() =>
+                    toggleFilter(job, setSelectedJobs, selectedJobs)
+                  }
+                  checked={selectedJobs.includes(job)}
+                />
+              ))}
             </div>
           </section>
 
@@ -165,10 +204,23 @@ function Search() {
           <section className="spacingSection">
             <Label text="Search people working for" htmlFor="free" />
             <div className="remunerationList">
-              <CheckableItem text="Fun" inputId="free" />
-              <CheckableItem text="Revenue shares" inputId="shares" />
-              <CheckableItem text="Fixed amount" inputId="gratification" />
-              <CheckableItem text="Salary" inputId="salary" />
+              {["Nothing", "Shares", "Freelance", "Salary"].map(
+                (remuneration) => (
+                  <CheckableItem
+                    key={remuneration}
+                    text={remuneration}
+                    inputId={remuneration.toLowerCase()}
+                    onChange={() =>
+                      toggleFilter(
+                        remuneration,
+                        setSelectedRemunerations,
+                        selectedRemunerations
+                      )
+                    }
+                    checked={selectedRemunerations.includes(remuneration)}
+                  />
+                )
+              )}
             </div>
           </section>
 
