@@ -6,6 +6,9 @@ function InputField({
   inputType,
   inputId,
   inputName,
+  onChangeHandler,
+  isNumber = false,
+  actualValue,
 }: IInpurField) {
   if (inputType === "textarea") {
     return (
@@ -26,6 +29,16 @@ function InputField({
         name={inputName}
         placeholder={placeholder}
         className="inputFieldComponent"
+        onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+          const value = e.target.value;
+          if (isNumber && (value === "" || !isNaN(Number(value)))) {
+            // Allow empty or numeric values only
+            onChangeHandler(value);
+          } else if (!isNumber) {
+            onChangeHandler(value);
+          }
+        }}
+        value={actualValue}
       ></input>
     );
   }

@@ -5,6 +5,7 @@ import CheckableItem from "../components/CheckableItem/CheckableItem";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import commaStringToArray from "../utils/commaStringToArray.ts";
+import removeLastCharacters from "../utils/removeLastCharacters.ts";
 
 interface userInterface {
   id: number;
@@ -34,7 +35,7 @@ function Search() {
     setFiltering(false);
   };
 
-  /* create an id to go to next or previous loaded profile */
+  /* create an index to go to next or previous loaded profile */
   const [showProfileNumber, setShowProfileNumber] = useState(0);
   const goToNextUser = () => {
     if (showProfileNumber < loadedProfiles.length - 1) {
@@ -81,11 +82,14 @@ function Search() {
     ? commaStringToArray(loadedProfiles[showProfileNumber].remunerations)
     : [];
 
+  const [minimumAge, setMinimumAge] = useState<number>(0);
+  const [maximumAge, setMaximumAge] = useState<number>(99);
   const [selectedJobs, setSelectedJobs] = useState<string[]>([]);
   const [selectedLanguages, setSelectedLanguages] = useState<string[]>([]);
   const [selectedRemunerations, setSelectedRemunerations] = useState<string[]>(
     []
   );
+
   const [filterString, setFilterString] =
     useState<string>("api/users/filtered");
 
@@ -101,6 +105,14 @@ function Search() {
     }
   };
 
+  const updateMinAge = (value: string) => {
+    setMinimumAge(Number(value)); // Convert to number if valid
+  };
+
+  const updateMaxAge = (value: string) => {
+    setMaximumAge(Number(value)); // Convert to number if valid
+  };
+
   useEffect(() => {
     const queryParams = new URLSearchParams();
     if (selectedJobs.length > 0)
@@ -110,12 +122,26 @@ function Search() {
     if (selectedRemunerations.length > 0)
       queryParams.append("remunerations", selectedRemunerations.join(","));
 
+    queryParams.append("minAge", minimumAge.toString());
+    queryParams.append("maxAge", maximumAge.toString());
+    console.log("maxAge : " + maximumAge);
+    console.log("minAge : " + minimumAge);
+
     setFilterString(`api/users/filtered?${queryParams.toString()}`);
-  }, [selectedJobs, selectedLanguages, selectedRemunerations]);
+  }, [
+    selectedJobs,
+    selectedLanguages,
+    selectedRemunerations,
+    minimumAge,
+    maximumAge,
+  ]);
 
   /* when click on search profiles button => load filtered profiles and change page to browse profiles */
-  /* http://localhost:5000/api/users/filtered?jobs=Artist,Dev&languages=English.gb,French.fr&remunerations=Freelance,Salary */
+  /* http://localhost:5000/api/users/filtered?jobs=Artist,Dev&languages=English.gb,French.fr&remunerations=Freelance,Salary&minAge=25&maxAge=28 */
   const getFilteredProfiles = () => {
+    /*if (minimumAge > maximumAge) {
+      setMinimumAge(0);
+    }*/
     console.log("request : " + dataURL + filterString);
     axios
       .get<userInterface[]>(dataURL + filterString)
@@ -148,12 +174,18 @@ function Search() {
                 inputType="text"
                 inputId="minAge"
                 inputName="minAge"
+                isNumber={true}
+                onChangeHandler={updateMinAge}
+                actualValue={minimumAge.toString()}
               />
               <InputField
                 placeholder="Maximum age"
                 inputType="text"
                 inputId="maxAge"
                 inputName="maxAge"
+                isNumber={true}
+                onChangeHandler={updateMaxAge}
+                actualValue={maximumAge.toString()}
               />
             </div>
           </section>
@@ -162,23 +194,27 @@ function Search() {
           <section className="spacingSection">
             <Label text="Search people talking" htmlFor="english" />
             <div className="flagList">
-              {["English", "French", "German", "Japanese", "Russian"].map(
-                (language) => (
-                  <CheckableItem
-                    key={language}
-                    text={language}
-                    inputId={language.toLowerCase()}
-                    onChange={() =>
-                      toggleFilter(
-                        language,
-                        setSelectedLanguages,
-                        selectedLanguages
-                      )
-                    }
-                    checked={selectedLanguages.includes(language)}
-                  />
-                )
-              )}
+              {[
+                "English.gb",
+                "French.fr",
+                "German.de",
+                "Japanese.jp",
+                "Russian.ru",
+              ].map((language) => (
+                <CheckableItem
+                  key={language}
+                  text={removeLastCharacters(language, 3)}
+                  inputId={language.toLowerCase()}
+                  onChange={() =>
+                    toggleFilter(
+                      language,
+                      setSelectedLanguages,
+                      selectedLanguages
+                    )
+                  }
+                  checked={selectedLanguages.includes(language)}
+                />
+              ))}
             </div>
           </section>
 
@@ -252,11 +288,12 @@ function Search() {
           <div className="profileInformations">
             <section className="basicInformations">
               <p className={"nameAge"}>
-                {loadedProfiles[showProfileNumber].name},{" "}
-                {loadedProfiles[showProfileNumber].age}
+                {loadedProfiles[showProfileNumber].name};
+                {loadedProfiles[showProfileNumber].age};
               </p>
               <div className="languages">
                 {languages.map((language) => {
+                  console.log(languages);
                   const [languageName, languageCode] = language.split(".");
                   return (
                     <div className="language">

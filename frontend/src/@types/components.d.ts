@@ -25,6 +25,9 @@ export interface IInpurField {
   inputType: string;
   inputId: string;
   inputName: string;
+  onChangeHandler: (value: string) => void;
+  isNumber: boolean;
+  actualValue: string;
 }
 
 export interface ILabel {

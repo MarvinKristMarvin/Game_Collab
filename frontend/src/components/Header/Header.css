@@ -23,18 +23,19 @@
           flex-direction: column;
           align-items: center;
           font-weight: 600;
-          padding: 0.75rem;
+          margin-inline: 0.5rem;
           border: solid 1px #00000000;
           font-size: 0.75rem;
 
           &.active:not(.logolink) {
-            color: #ffe139;
-            border: solid 1px #ffe139;
-            box-shadow: 0 0 6px #ffe139;
-            border-radius: 0.5rem;
+            color: #fff38c;
+            /*border: solid 1px #ffe139;*/
+            /*box-shadow: 0 0 6px #ffe139;*/
+            border-bottom: solid 2px;
+            padding-bottom: 0.5rem;
             img {
-              filter: brightness(0) saturate(100%) invert(91%) sepia(71%)
-                saturate(775%) hue-rotate(330deg) brightness(101%)
+              filter: brightness(0) saturate(100%) invert(100%) sepia(22%)
+                saturate(7335%) hue-rotate(311deg) brightness(122%)
                 contrast(102%);
             }
           }

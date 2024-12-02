@@ -99,8 +99,8 @@ a {
   /* showing a profile */
   .profileInformations {
     width: 100%;
-    border: solid 1px rgb(226, 0, 132);
-    background-color: rgba(226, 0, 132, 0.05);
+    border: solid 1px rgba(255, 255, 255, 0.767);
+    background-color: rgba(5, 136, 0, 0);
     padding: 1rem;
     border-radius: 0.5rem;
     /*box-shadow: 0 0 8px rgb(226, 0, 132);*/
