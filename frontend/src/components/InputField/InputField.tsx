@@ -1,4 +1,4 @@
-import { IInpurField } from "../../@types/components";
+import { IInputField } from "../../@types/components";
 import "./InputField.css";
 
 function InputField({
@@ -9,7 +9,7 @@ function InputField({
   onChangeHandler,
   isNumber = false,
   actualValue,
-}: IInpurField) {
+}: IInputField) {
   if (inputType === "textarea") {
     return (
       <textarea

@@ -6,7 +6,7 @@ import CheckableItem from "../components/CheckableItem/CheckableItem";
 import { useState } from "react";
 
 function Profile() {
-  const [connected, setConnected] = useState(true);
+  const [connected, setConnected] = useState(false);
 
   /* functions when buttons are clicked on */
   const login = () => {

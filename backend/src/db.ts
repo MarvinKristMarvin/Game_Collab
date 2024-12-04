@@ -4,7 +4,7 @@ import dotenv from "dotenv";
 dotenv.config();
 
 /* the pool manages multiple connections to the db, it reuses connections to optimize resource usage */
-const pool = new Pool({
+export const pool = new Pool({
   user: process.env.DB_USER,
   password: process.env.DB_PASSWORD,
   database: process.env.DB_NAME,

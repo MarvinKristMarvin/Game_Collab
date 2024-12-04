@@ -20,7 +20,7 @@ export interface IFixedButtons {
   getFilteredProfiles?: () => void;
 }
 
-export interface IInpurField {
+export interface IInputField {
   placeholder: string;
   inputType: string;
   inputId: string;
