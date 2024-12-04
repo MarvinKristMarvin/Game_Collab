@@ -142,12 +142,18 @@ function Search() {
     /*if (minimumAge > maximumAge) {
       setMinimumAge(0);
     }*/
+    if (maximumAge < minimumAge) {
+      setMaximumAge(minimumAge);
+    }
+    setShowProfileNumber(0);
     console.log("request : " + dataURL + filterString);
     axios
       .get<userInterface[]>(dataURL + filterString)
       .then((response) => {
         if (response.data && response.data.length > 0) {
           setLoadedProfiles(response.data);
+        } else {
+          setLoadedProfiles([]);
         }
       })
       .catch((error) => {
@@ -288,8 +294,8 @@ function Search() {
           <div className="profileInformations">
             <section className="basicInformations">
               <p className={"nameAge"}>
-                {loadedProfiles[showProfileNumber].name};
-                {loadedProfiles[showProfileNumber].age};
+                {loadedProfiles[showProfileNumber].name + ", "}
+                {loadedProfiles[showProfileNumber].age}
               </p>
               <div className="languages">
                 {languages.map((language) => {
@@ -346,7 +352,7 @@ function Search() {
             </section>
           </div>
         ) : (
-          <p>Loading profiles</p>
+          <p>No profiles found with those filters</p>
         )}
       </div>
     );
