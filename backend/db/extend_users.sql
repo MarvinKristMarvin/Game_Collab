@@ -3,9 +3,9 @@ BEGIN;
 -- Additional users
 INSERT INTO "user" ("id", "password", "mail", "name", "age", "available", "description", "portfolio_url", "profile_mail", "created_at", "role") VALUES
 (4, 'hashed_password4', 'diana@example.com', 'Diana', 32, TRUE, 'Graphic designer and UI specialist.', 'http://diana.design', 'contact@diana.dev', CURRENT_DATE, 2), -- User
-(5, 'hashed_password5', 'edward@example.com', 'Edward', 35, FALSE, 'DevOps engineer.', NULL, 'contact@edward.dev', CURRENT_DATE, 1), -- Admin
+(5, 'hashed_password5', 'edward@example.com', 'Edward', 35, TRUE, 'DevOps engineer.', NULL, 'contact@edward.dev', CURRENT_DATE, 1), -- Admin
 (6, 'hashed_password6', 'fiona@example.com', 'Fiona', 29, TRUE, 'Mobile application developer.', 'http://fiona.apps', 'contact@fiona.dev', CURRENT_DATE, 2), -- User
-(7, 'hashed_password7', 'george@example.com', 'George', 40, FALSE, 'Cybersecurity expert.', 'http://george.security', 'contact@george.dev', CURRENT_DATE, 2); -- User
+(7, 'hashed_password7', 'george@example.com', 'George', 40, TRUE, 'Cybersecurity expert.', 'http://george.security', 'contact@george.dev', CURRENT_DATE, 2); -- User
 
 -- Update user-job relationships
 INSERT INTO "user_job" ("id", "user_id", "job_id") VALUES 
@@ -36,15 +36,15 @@ INSERT INTO "user_remuneration" ("id", "user_id", "remuneration_id") VALUES
 -- Additional users
 INSERT INTO "user" ("id", "password", "mail", "name", "age", "available", "description", "portfolio_url", "profile_mail", "created_at", "role") VALUES
 (8, 'hashed_password8', 'hannah@example.com', 'Hannah', 27, TRUE, 'UX researcher and designer.', 'http://hannah.ux', 'contact@hannah.dev', CURRENT_DATE, 2),
-(9, 'hashed_password9', 'ian@example.com', 'Ian', 45, FALSE, 'Database architect.', NULL, 'contact@ian.dev', CURRENT_DATE, 1),
+(9, 'hashed_password9', 'ian@example.com', 'Ian', 45, TRUE, 'Database architect.', NULL, 'contact@ian.dev', CURRENT_DATE, 1),
 (10, 'hashed_password10', 'julia@example.com', 'Julia', 34, TRUE, 'Machine learning engineer.', 'http://julia.ml', 'contact@julia.dev', CURRENT_DATE, 2),
 (11, 'hashed_password11', 'karen@example.com', 'Karen', 30, TRUE, 'Product manager.', NULL, 'contact@karen.dev', CURRENT_DATE, 2),
 (12, 'hashed_password12', 'liam@example.com', 'Liam', 38, TRUE, 'Cloud computing specialist.', 'http://liam.cloud', 'contact@liam.dev', CURRENT_DATE, 1),
-(13, 'hashed_password13', 'maria@example.com', 'Maria', 29, FALSE, 'Front-end developer.', 'http://maria.ui', 'contact@maria.dev', CURRENT_DATE, 2),
+(13, 'hashed_password13', 'maria@example.com', 'Maria', 29, TRUE, 'Front-end developer.', 'http://maria.ui', 'contact@maria.dev', CURRENT_DATE, 2),
 (14, 'hashed_password14', 'nathan@example.com', 'Nathan', 31, TRUE, 'Blockchain developer.', 'http://nathan.chain', 'contact@nathan.dev', CURRENT_DATE, 2),
 (15, 'hashed_password15', 'olivia@example.com', 'Olivia', 26, TRUE, 'Technical writer.', NULL, 'contact@olivia.dev', CURRENT_DATE, 2),
 (16, 'hashed_password16', 'paul@example.com', 'Paul', 42, FALSE, 'Project manager.', 'http://paul.pm', 'contact@paul.dev', CURRENT_DATE, 1),
-(17, 'hashed_password17', 'quinn@example.com', 'Quinn', 28, TRUE, 'Data analyst.', 'http://quinn.data', 'contact@quinn.dev', CURRENT_DATE, 2);
+(17, 'hashed_password17', 'quinn@example.com', 'Quinn', 28, FALSE, 'Data analyst.', 'http://quinn.data', 'contact@quinn.dev', CURRENT_DATE, 2);
 
 -- Update user-job relationships
 INSERT INTO "user_job" ("id", "user_id", "job_id") VALUES 

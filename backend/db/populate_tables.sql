@@ -7,7 +7,7 @@ INSERT INTO "role" ("id","name") VALUES
 
 INSERT INTO "user" ("id", "password", "mail", "name", "age", "available", "description", "portfolio_url", "profile_mail", "created_at", "role") VALUES
 (1, 'hashed_password1', 'alice@example.com', 'Alice', 30, TRUE, 'Skilled full-stack developer.', 'http://alice.dev', 'contact@alice.dev', CURRENT_DATE, 1), -- Admin
-(2, 'hashed_password2', 'bob@example.com', 'Bob', 25, FALSE, 'Front-end specialist.', 'http://bob.dev', 'contact@bob.dev', CURRENT_DATE, 2), -- User
+(2, 'hashed_password2', 'bob@example.com', 'Bob', 25, TRUE, 'Front-end specialist.', 'http://bob.dev', 'contact@bob.dev', CURRENT_DATE, 2), -- User
 (3, 'hashed_password3', 'charlie@example.com', 'Charlie', 28, TRUE, 'Backend and API developer.', NULL, 'contact@charlie.dev', CURRENT_DATE, 2); -- User
 
 INSERT INTO "job" ("id", "name") VALUES 
