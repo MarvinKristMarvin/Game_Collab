@@ -2,6 +2,7 @@ export interface IButton {
   text: string;
   func?: () => void;
   color?: string;
+  buttonType?: "submit" | "button" | "reset";
 }
 
 export interface ICheckableItem {

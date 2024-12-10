@@ -29,15 +29,18 @@ function InputField({
         name={inputName}
         placeholder={placeholder}
         className="inputFieldComponent"
-        onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-          const value = e.target.value;
-          if (isNumber && (value === "" || !isNaN(Number(value)))) {
-            // Allow empty or numeric values only
-            onChangeHandler(value);
-          } else if (!isNumber) {
-            onChangeHandler(value);
-          }
-        }}
+        onChange={
+          onChangeHandler
+            ? (e: React.ChangeEvent<HTMLInputElement>) => {
+                const value = e.target.value;
+                if (isNumber && (value === "" || !isNaN(Number(value)))) {
+                  onChangeHandler(value);
+                } else if (!isNumber) {
+                  onChangeHandler(value);
+                }
+              }
+            : undefined
+        }
         value={actualValue}
       ></input>
     );

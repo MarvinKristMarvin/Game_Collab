@@ -4,17 +4,81 @@ import Button from "../components/Button/Button";
 import PositiveMessage from "../components/PositiveMessage/PositiveMessage";
 import CheckableItem from "../components/CheckableItem/CheckableItem";
 import { useState } from "react";
+import axios from "axios";
 
 function Profile() {
   const [connected, setConnected] = useState(false);
 
-  /* functions when buttons are clicked on */
-  const login = () => {
-    console.log("login logic");
+  // LOGIN LOGIC
+  const [loginData, setLoginData] = useState({
+    email: "",
+    password: "",
+  });
+  const updateLoginMail = (value: string) => {
+    setLoginData((prevState) => ({
+      ...prevState, // spread operator to keep other values intact
+      email: value,
+    }));
   };
-  const signup = () => {
-    console.log("signup logic");
+  const updateLoginPassword = (value: string) => {
+    setLoginData((prevState) => ({
+      ...prevState,
+      password: value,
+    }));
   };
+  const loginUser = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    console.log("send login data");
+  };
+
+  // SIGNIN LOGIC
+  const [signupData, setSignupData] = useState({
+    mail: "",
+    password: "",
+    confirmation: "",
+  });
+  const updateSignupMail = (value: string) => {
+    setSignupData((prevState) => ({
+      ...prevState,
+      mail: value,
+    }));
+  };
+  const updateSignupPassword = (value: string) => {
+    setSignupData((prevState) => ({
+      ...prevState,
+      password: value,
+    }));
+  };
+  const updateSignupConfirmation = (value: string) => {
+    setSignupData((prevState) => ({
+      ...prevState,
+      confirmation: value,
+    }));
+  };
+  const signupUser = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const { mail, password, confirmation } = signupData;
+    try {
+      const { data } = await axios.post("http://localhost:5000/signup", {
+        // data is from axios
+        mail,
+        password,
+        confirmation,
+      });
+      // if error from controller register informations validation, popup message
+      if (data.error) {
+        //toast.error(data.error);
+        console.log("dataerror : " + data.error);
+      } else {
+        //toast.success("Login successful, welcome !");
+        console.log("sign up success !");
+        //navigate("/login");
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   const save = () => {
     console.log("save");
   };
@@ -29,23 +93,29 @@ function Profile() {
   if (connected === false) {
     return (
       <div className="profilePage">
-        <form>
+        <form onSubmit={loginUser}>
           <Label text="Log in to modify your profile" htmlFor="login-email" />
           <InputField
             placeholder="Mail"
             inputType="email"
             inputId="login-email"
             inputName="login-email"
+            isNumber={false}
+            onChangeHandler={updateLoginMail}
+            actualValue={loginData.email}
           />
           <InputField
             placeholder="Password"
             inputType="password"
             inputId="login-password"
             inputName="login-password"
+            isNumber={false}
+            onChangeHandler={updateLoginPassword}
+            actualValue={loginData.password}
           />
-          <Button text="Log in" func={login} />
+          <Button text="Log in" buttonType="submit" />
         </form>
-        <form>
+        <form onSubmit={signupUser}>
           <Label
             text="Or sign up if you don't have an account yet !"
             htmlFor="signup-email"
@@ -55,20 +125,29 @@ function Profile() {
             inputType="email"
             inputId="signup-email"
             inputName="signup-email"
+            isNumber={false}
+            onChangeHandler={updateSignupMail}
+            actualValue={signupData.mail}
           />
           <InputField
             placeholder="Password"
             inputType="password"
             inputId="signup-password"
             inputName="signup-password"
+            isNumber={false}
+            onChangeHandler={updateSignupPassword}
+            actualValue={signupData.password}
           />
           <InputField
             placeholder="Confirm password"
             inputType="password"
             inputId="confirm-password"
             inputName="confirm-password"
+            isNumber={false}
+            onChangeHandler={updateSignupConfirmation}
+            actualValue={signupData.confirmation}
           />
-          <Button text="Sign up" func={signup} />
+          <Button text="Sign up" buttonType="submit" />
         </form>
       </div>
     );
