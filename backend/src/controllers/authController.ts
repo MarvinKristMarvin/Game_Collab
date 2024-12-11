@@ -24,24 +24,34 @@ const authController = {
       });
     }
     // check if email already taken
-    const mailCheckQuery = `SELECT * FROM "user" WHERE mail = $1`;
-    // const result = await query('SELECT * FROM "user" WHERE mail = $1', [email]);
-    const mailResult = await query(mailCheckQuery, [mail]);
+    //const mailCheckQuery = `SELECT * FROM "user" WHERE mail = $1`;
+    const mailResult = await query('SELECT * FROM "user" WHERE mail = $1', [
+      mail,
+    ]);
+    //const mailResult = await query(mailCheckQuery, [mail]);
     if (mailResult.rows.length > 0) {
       return res.json({
         error: "This mail is already used",
       });
     }
-    console.log(mailResult);
+    console.log("mailresult : " + mailResult);
     // if all informations are good, hash password then create a user in db and return it
     const hashedPassword = await hashPassword(password);
     console.log(hashedPassword);
-    const insertUserQuery = `
+    const newUserResult = await query(
+      `
+        INSERT INTO "user" (mail, password) 
+        VALUES ($1, $2);
+      `,
+      [mail, hashedPassword]
+    );
+    console.log("newuserresult : " + newUserResult);
+    /*const insertUserQuery = `
         INSERT INTO "user" (mail, password) 
         VALUES ($1, $2) 
         RETURNING id, mail;
-      `;
-    const newUserResult = await query(insertUserQuery, [mail, hashedPassword]);
+      `;*/
+    //const newUserResult = await query(insertUserQuery, [mail, hashedPassword]);
 
     // Return the created user (excluding the password)
     return res.json(newUserResult.rows[0]);

@@ -7,3 +7,6 @@ psql -d postgres -U marvin; => connection postgres avec role marvin
 \dt => montrer les tables de la bdd
 \i C:/Tout/Projets_Dev/collabjv/backend/db/create_tables.sql => executer script sql
 npx ts-node paramrequest.ts => execute un fichier .ts
+SELECT last_value FROM user_id_seq; => voir la sequence id de la table "user"
+SELECT MAX(id) FROM "user";
+ALTER SEQUENCE user_id_seq RESTART WITH <valeur_maximale + 1>; => remet la sequence id à la bonne valeur
