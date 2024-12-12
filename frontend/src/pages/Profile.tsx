@@ -5,19 +5,25 @@ import PositiveMessage from "../components/PositiveMessage/PositiveMessage";
 import CheckableItem from "../components/CheckableItem/CheckableItem";
 import { useState } from "react";
 import axios from "axios";
+import { toast } from "react-hot-toast";
+import { useLoggedUser } from "../context/userContext";
 
 function Profile() {
   const [connected, setConnected] = useState(false);
+  const { loggedUser, setLoggedUser } = useLoggedUser();
+  if (loggedUser) {
+    setConnected(true);
+  }
 
   // LOGIN LOGIC
   const [loginData, setLoginData] = useState({
-    email: "",
+    mail: "",
     password: "",
   });
   const updateLoginMail = (value: string) => {
     setLoginData((prevState) => ({
       ...prevState, // spread operator to keep other values intact
-      email: value,
+      mail: value,
     }));
   };
   const updateLoginPassword = (value: string) => {
@@ -28,7 +34,30 @@ function Profile() {
   };
   const loginUser = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log("send login data");
+    const { mail, password } = loginData;
+    try {
+      const { data } = await axios.post("http://localhost:5000/login", {
+        // data is from axios
+        mail,
+        password,
+      });
+      // if error from controller register informations validation, popup message
+      if (data.error) {
+        toast.error(data.error);
+        console.log("data error : " + data.error);
+      } else {
+        toast.success("Log in successfull ! Please log in");
+        console.log("log in success !");
+        console.log(data);
+        setLoginData({ mail: "", password: "" });
+        //navigate("/login");
+        // enter logged user data in the user context
+
+        setLoggedUser(data);
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   // SIGNIN LOGIC
@@ -67,10 +96,10 @@ function Profile() {
       });
       // if error from controller register informations validation, popup message
       if (data.error) {
-        //toast.error(data.error);
+        toast.error(data.error);
         console.log("dataerror : " + data.error);
       } else {
-        //toast.success("Login successful, welcome !");
+        toast.success("Sign up successful, welcome to Game Hearts !");
         console.log("sign up success !");
         //navigate("/login");
       }
@@ -102,7 +131,7 @@ function Profile() {
             inputName="login-email"
             isNumber={false}
             onChangeHandler={updateLoginMail}
-            actualValue={loginData.email}
+            actualValue={loginData.mail}
           />
           <InputField
             placeholder="Password"
@@ -151,10 +180,12 @@ function Profile() {
         </form>
       </div>
     );
-  } else {
+  } else if (user !== null) {
+    // If user is authenticated show the profile page
     return (
       <div className="profilePage">
         <PositiveMessage text="You are successfully logged in, you can edit your profile and share it to others" />
+        <p>{user.mail}</p>
         <form action="">
           {/* NAME AND AGE */}
           <section className="spacingSection">

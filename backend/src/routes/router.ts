@@ -11,5 +11,6 @@ router.get("/api/users/filtered", wrapper(userController.getFiltered));
 
 // AUTHENTICATION
 router.post("/signup", wrapper(authController.signupUser));
+router.post("/login", wrapper(authController.loginUser));
 
 export default router;
