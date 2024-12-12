@@ -75,6 +75,53 @@ GROUP BY
     );
     res.json(result.rows);
   },
+  // updateUser
+  /* PATCH http://localhost:5000/api/users/:id */
+  updateUser: async (req: Request, res: Response) => {
+    const { id } = req.params;
+    const patchData = req.body;
+
+    if (!patchData || Object.keys(patchData).length === 0) {
+      return res.status(400).json({ error: "No changes are sent" });
+    }
+
+    try {
+      const keys = Object.keys(patchData);
+      const values = Object.values(patchData);
+      // for the SQL SET => for each key, write "keyname = $1++" then join with ", "
+      const setClause = keys
+        .map((key, index) => `"${key}" = $${index + 1}`)
+        .join(", ");
+
+      // update all chosen user keys with their associated values
+      const result = await query(
+        `
+        UPDATE "user"
+        SET ${setClause}, updated_at = NOW()
+        WHERE id = $${keys.length + 1}
+        RETURNING *;
+        `,
+        [...values, id]
+      );
+
+      if (result.rowCount === 0) {
+        return res.status(404).json({ error: "User not found for the update" });
+      }
+
+      res.json(result.rows[0]);
+    } catch (error) {
+      // error is type unknown so had to handle errors of different types
+      if (error instanceof Error) {
+        res
+          .status(500)
+          .json({ error: "An error occurred", details: error.message });
+      } else {
+        res
+          .status(500)
+          .json({ error: "An error occurred", details: "Unknown error" });
+      }
+    }
+  },
 };
 
 export default userController;

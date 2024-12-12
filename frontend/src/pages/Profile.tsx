@@ -3,7 +3,7 @@ import InputField from "../components/InputField/InputField";
 import Button from "../components/Button/Button";
 import PositiveMessage from "../components/PositiveMessage/PositiveMessage";
 import CheckableItem from "../components/CheckableItem/CheckableItem";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 import { toast } from "react-hot-toast";
 import { useLoggedUser } from "../context/userContext";
@@ -11,9 +11,12 @@ import { useLoggedUser } from "../context/userContext";
 function Profile() {
   const [connected, setConnected] = useState(false);
   const { loggedUser, setLoggedUser } = useLoggedUser();
-  if (loggedUser) {
-    setConnected(true);
-  }
+
+  useEffect(() => {
+    if (loggedUser) {
+      setConnected(true);
+    }
+  }, [loggedUser]);
 
   // LOGIN LOGIC
   const [loginData, setLoginData] = useState({
@@ -180,12 +183,12 @@ function Profile() {
         </form>
       </div>
     );
-  } else if (user !== null) {
+  } else if (loggedUser !== null) {
     // If user is authenticated show the profile page
     return (
       <div className="profilePage">
         <PositiveMessage text="You are successfully logged in, you can edit your profile and share it to others" />
-        <p>{user.mail}</p>
+        <p>{loggedUser.mail}</p>
         <form action="">
           {/* NAME AND AGE */}
           <section className="spacingSection">

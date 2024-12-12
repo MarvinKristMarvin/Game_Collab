@@ -8,6 +8,7 @@ const router = express.Router();
 // API
 router.get("/api/users", wrapper(userController.getAll));
 router.get("/api/users/filtered", wrapper(userController.getFiltered));
+router.patch("/api/user/:id", wrapper(userController.updateUser));
 
 // AUTHENTICATION
 router.post("/signup", wrapper(authController.signupUser));
