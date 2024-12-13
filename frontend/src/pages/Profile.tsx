@@ -15,6 +15,22 @@ function Profile() {
   useEffect(() => {
     if (loggedUser) {
       setConnected(true);
+      // write loggedUser data in the form at page start
+      if (loggedUser.age != null) {
+        updateAge(loggedUser.age.toString());
+      }
+      if (loggedUser.name != null) {
+        updateName(loggedUser.name);
+      }
+      if (loggedUser.description != null) {
+        updateDescription(loggedUser.description);
+      }
+      if (loggedUser.portfolio_url != null) {
+        updatePortfolio_url(loggedUser.portfolio_url);
+      }
+      if (loggedUser.profile_mail != null) {
+        updateProfile_mail(loggedUser.profile_mail);
+      }
     }
   }, [loggedUser]);
 
@@ -111,9 +127,73 @@ function Profile() {
     }
   };
 
-  const save = () => {
-    console.log("save");
+  // FORM MODIFICATION
+  const [age, setAge] = useState<number | null>(null);
+  const updateAge = (value: string) => {
+    if (value) setAge(Number(value));
+    else setAge(null);
   };
+  const [name, setName] = useState<string | null>(null);
+  const updateName = (value: string) => {
+    setName(value);
+  };
+  const [description, setDescription] = useState<string | null>(null);
+  const updateDescription = (value: string) => {
+    setDescription(value);
+  };
+  const [portfolio_url, setPortfolio_url] = useState<string | null>(null);
+  const updatePortfolio_url = (value: string) => {
+    setPortfolio_url(value);
+  };
+  const [profile_mail, setProfile_mail] = useState<string | null>(null);
+  const updateProfile_mail = (value: string) => {
+    setProfile_mail(value);
+  };
+  const [selectedJobs, setSelectedJobs] = useState<string[]>([]);
+  const [selectedLanguages, setSelectedLanguages] = useState<string[]>([]);
+  const [selectedRemunerations, setSelectedRemunerations] = useState<string[]>(
+    []
+  );
+  const addOrRemoveFromDataList = (
+    data: string,
+    setDataList: React.Dispatch<React.SetStateAction<string[]>>,
+    dataList: string[]
+  ) => {
+    if (dataList.includes(data)) {
+      setDataList(dataList.filter((item) => item !== data));
+    } else {
+      setDataList([...dataList, data]);
+    }
+  };
+  const saveUser = async () => {
+    if (loggedUser) {
+      try {
+        const { data } = await axios.patch(
+          `http://localhost:5000/api/user/27`,
+          {
+            age: age,
+            name: name,
+            description: description,
+            portfolio_url: portfolio_url,
+            profile_mail: profile_mail,
+            jobs: selectedJobs,
+          }
+        );
+        // if error from controller register informations validation, popup message
+        if (data.error) {
+          toast.error(data.error);
+          console.log("Profile update failed : " + data.error);
+        } else {
+          toast.success("Your changes have been saved !");
+          console.log("Save profile succeed");
+          //navigate("/login");
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    }
+  };
+
   const logOut = () => {
     console.log("log out");
   };
@@ -199,12 +279,18 @@ function Profile() {
                 inputType="text"
                 inputId="name"
                 inputName="name"
+                isNumber={false}
+                onChangeHandler={updateName}
+                actualValue={name != undefined ? name : ""}
               />
               <InputField
                 placeholder="Age"
                 inputType="text"
                 inputId="age"
                 inputName="age"
+                isNumber={true}
+                onChangeHandler={updateAge}
+                actualValue={age != undefined ? age.toString() : ""}
               />
             </div>
           </section>
@@ -228,17 +314,20 @@ function Profile() {
 
           {/* JOBS */}
           <section className="spacingSection">
-            <Label text="What jobs can you do" htmlFor="code" />
+            <p>{selectedJobs}</p>
+            <Label text="Search people doing" htmlFor="code" />
             <div className="jobList">
-              <CheckableItem text="Code" inputId="code" />
-              <CheckableItem text="Art" inputId="art" />
-              <CheckableItem text="Modelling" inputId="modelling" />
-              <CheckableItem text="Animation" inputId="animation" />
-              <CheckableItem text="Music" inputId="music" />
-              <CheckableItem text="Composition" inputId="composition" />
-              <CheckableItem text="Sound" inputId="sound" />
-              <CheckableItem text="Test" inputId="test" />
-              <CheckableItem text="Other" inputId="other" />
+              {["Artist", "Sounds", "Dev"].map((job) => (
+                <CheckableItem
+                  key={job}
+                  text={job}
+                  inputId={job.toLowerCase()}
+                  onChange={() =>
+                    addOrRemoveFromDataList(job, setSelectedJobs, selectedJobs)
+                  }
+                  checked={selectedJobs.includes(job)}
+                />
+              ))}
             </div>
           </section>
 
@@ -261,21 +350,30 @@ function Profile() {
               inputType="textarea"
               inputId="description"
               inputName="description"
+              isNumber={false}
+              onChangeHandler={updateDescription}
+              actualValue={description != undefined ? description : ""}
             />
             <InputField
               placeholder="Portfolio Link"
               inputType="text"
               inputId="portfolio"
               inputName="portfolio"
+              isNumber={false}
+              onChangeHandler={updatePortfolio_url}
+              actualValue={portfolio_url != undefined ? portfolio_url : ""}
             />
             <InputField
               placeholder="Contact mail"
               inputType="text"
               inputId="mail"
               inputName="mail"
+              isNumber={false}
+              onChangeHandler={updateProfile_mail}
+              actualValue={profile_mail != undefined ? profile_mail : ""}
             />
           </section>
-          <Button text="Save" func={save} />
+          <Button text="Save" func={saveUser} />
           <Button text="Log out" func={logOut} color="orangeButton" />
           <Button
             text="Delete account"

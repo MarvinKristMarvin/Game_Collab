@@ -86,31 +86,82 @@ GROUP BY
     }
 
     try {
-      const keys = Object.keys(patchData);
-      const values = Object.values(patchData);
-      // for the SQL SET => for each key, write "keyname = $1++" then join with ", "
-      const setClause = keys
-        .map((key, index) => `"${key}" = $${index + 1}`)
-        .join(", ");
+      const { jobs, ...userFields } = patchData;
 
-      // update all chosen user keys with their associated values
-      const result = await query(
-        `
-        UPDATE "user"
-        SET ${setClause}, updated_at = NOW()
-        WHERE id = $${keys.length + 1}
-        RETURNING *;
-        `,
-        [...values, id]
-      );
+      // Update user fields if there are any
+      if (Object.keys(userFields).length > 0) {
+        const keys = Object.keys(userFields);
+        const values = Object.values(userFields);
+        const setClause = keys
+          .map((key, index) => `"${key}" = $${index + 1}`)
+          .join(", ");
 
-      if (result.rowCount === 0) {
-        return res.status(404).json({ error: "User not found for the update" });
+        // Update the user fields in the database
+        const result = await query(
+          `
+          UPDATE "user"
+          SET ${setClause}, updated_at = NOW()
+          WHERE id = $${keys.length + 1}
+          RETURNING *;
+          `,
+          [...values, id]
+        );
+
+        if (result.rowCount === 0) {
+          return res
+            .status(404)
+            .json({ error: "User not found for the update" });
+        }
       }
 
-      res.json(result.rows[0]);
+      // Handle the jobs field
+      if (Array.isArray(jobs) && jobs.length > 0) {
+        // Remove duplicate job names from the jobs array
+        const uniqueJobs = [...new Set(jobs)];
+
+        // Retrieve job IDs for the provided job names
+        const jobIdsResult = await query(
+          `
+          SELECT id, name FROM "job"
+          WHERE name = ANY ($1)
+          `,
+          [uniqueJobs]
+        );
+
+        const jobIds = jobIdsResult.rows.map((row) => row.id);
+
+        if (jobIds.length !== uniqueJobs.length) {
+          return res.status(400).json({
+            error: "Some job names are invalid",
+            details: uniqueJobs.filter(
+              (job) => !jobIdsResult.rows.some((row) => row.name === job)
+            ),
+          });
+        }
+
+        // Use INSERT ... ON CONFLICT DO NOTHING to avoid duplicates
+        const insertValues = jobIds
+          .map((jobId) => `(${id}, ${jobId})`)
+          .join(", ");
+        await query(
+          `
+          INSERT INTO "user_job" (user_id, job_id)
+          VALUES ${insertValues}
+          ON CONFLICT DO NOTHING
+          `
+        );
+
+        // Debugging: Log uniqueJobs and retrieved job IDs
+        console.log("Jobs array:", jobs);
+        console.log("Unique jobs:", uniqueJobs);
+        console.log("Retrieved job IDs:", jobIds);
+
+        // Debugging: Log the constructed INSERT statement
+        console.log("Constructed INSERT statement values:", insertValues);
+      }
+
+      res.json({ message: "User updated successfully." });
     } catch (error) {
-      // error is type unknown so had to handle errors of different types
       if (error instanceof Error) {
         res
           .status(500)

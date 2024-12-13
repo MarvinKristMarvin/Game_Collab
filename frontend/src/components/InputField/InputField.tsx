@@ -19,6 +19,15 @@ function InputField({
         className="inputFieldComponent textarea"
         rows={8}
         maxLength={800}
+        onChange={
+          onChangeHandler
+            ? (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+                const value = e.target.value;
+                onChangeHandler(value);
+              }
+            : undefined
+        }
+        value={actualValue}
       />
     );
   } else {

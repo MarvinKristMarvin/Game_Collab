@@ -2,6 +2,7 @@ import React, { createContext, useState, useContext, ReactNode } from "react";
 
 // Define a User type (customize as needed)
 export interface LoggedUserInterface {
+  id: number;
   mail: string;
   name: string | null;
   age: number | null;
@@ -9,6 +10,7 @@ export interface LoggedUserInterface {
   description: string | null;
   portfolio_url: string | null;
   profile_mail: string | null;
+  jobs: string[] | null;
 }
 
 // Define context types
