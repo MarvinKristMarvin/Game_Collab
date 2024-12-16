@@ -123,7 +123,7 @@ GROUP BY
         const jobIdsResult = await query(
           `
           SELECT id, name FROM "job"
-          WHERE name = ANY ($1)
+          WHERE name = ANY ($1);
           `,
           [uniqueJobs]
         );
@@ -138,6 +138,14 @@ GROUP BY
             ),
           });
         }
+        // Remove the existing jobs for the user
+        await query(
+          `
+        DELETE FROM "user_job"
+        WHERE user_id = $1;
+        `,
+          [id]
+        );
 
         // Use INSERT ... ON CONFLICT DO NOTHING to avoid duplicates
         const insertValues = jobIds
@@ -147,9 +155,9 @@ GROUP BY
           `
           INSERT INTO "user_job" (user_id, job_id)
           VALUES ${insertValues}
-          ON CONFLICT DO NOTHING
+          ON CONFLICT (user_id, job_id) DO NOTHING;
           `
-        );
+        ); // ON CONFLICT DO NOTHING
 
         // Debugging: Log uniqueJobs and retrieved job IDs
         console.log("Jobs array:", jobs);

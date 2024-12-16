@@ -42,7 +42,8 @@ CREATE TABLE "user_job" (
     "user_id" INT NOT NULL,
     "job_id" INT NOT NULL,
     CONSTRAINT fk_user FOREIGN KEY ("user_id") REFERENCES "user"("id") ON DELETE CASCADE,
-    CONSTRAINT fk_job FOREIGN KEY ("job_id") REFERENCES "job"("id") ON DELETE CASCADE
+    CONSTRAINT fk_job FOREIGN KEY ("job_id") REFERENCES "job"("id") ON DELETE CASCADE,
+    CONSTRAINT user_job_unique UNIQUE (user_id, job_id) -- prevent duplicate entries
 );
 
 CREATE TABLE "user_language" (
@@ -60,5 +61,16 @@ CREATE TABLE "user_remuneration" (
     CONSTRAINT fk_user FOREIGN KEY ("user_id") REFERENCES "user"("id") ON DELETE CASCADE,
     CONSTRAINT fk_remuneration FOREIGN KEY ("remuneration_id") REFERENCES "remuneration"("id") ON DELETE CASCADE
 );
+
+-- reset id sequences
+SELECT setval(pg_get_serial_sequence('"role"', 'id'), COALESCE((SELECT MAX(id) FROM "role"), 0) + 1, false);
+SELECT setval(pg_get_serial_sequence('"user"', 'id'), COALESCE((SELECT MAX(id) FROM "user"), 0) + 1, false);
+SELECT setval(pg_get_serial_sequence('"job"', 'id'), COALESCE((SELECT MAX(id) FROM "job"), 0) + 1, false);
+SELECT setval(pg_get_serial_sequence('"language"', 'id'), COALESCE((SELECT MAX(id) FROM "language"), 0) + 1, false);
+SELECT setval(pg_get_serial_sequence('"remuneration"', 'id'), COALESCE((SELECT MAX(id) FROM "remuneration"), 0) + 1, false);
+SELECT setval(pg_get_serial_sequence('"user_job"', 'id'), COALESCE((SELECT MAX(id) FROM "user_job"), 0) + 1, false);
+SELECT setval(pg_get_serial_sequence('"user_language"', 'id'), COALESCE((SELECT MAX(id) FROM "user_language"), 0) + 1, false);
+SELECT setval(pg_get_serial_sequence('"user_remuneration"', 'id'), COALESCE((SELECT MAX(id) FROM "user_remuneration"), 0) + 1, false);
+
 
 COMMIT;
