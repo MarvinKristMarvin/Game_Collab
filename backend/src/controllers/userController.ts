@@ -114,6 +114,15 @@ GROUP BY
         }
       }
 
+      // Remove the existing jobs for the user before inserting the new ones
+      await query(
+        `
+      DELETE FROM "user_job"
+      WHERE user_id = $1;
+      `,
+        [id]
+      );
+
       // Handle the jobs field
       if (Array.isArray(jobs) && jobs.length > 0) {
         // Remove duplicate job names from the jobs array
@@ -138,14 +147,6 @@ GROUP BY
             ),
           });
         }
-        // Remove the existing jobs for the user
-        await query(
-          `
-        DELETE FROM "user_job"
-        WHERE user_id = $1;
-        `,
-          [id]
-        );
 
         // Use INSERT ... ON CONFLICT DO NOTHING to avoid duplicates
         const insertValues = jobIds

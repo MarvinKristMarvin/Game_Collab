@@ -47,12 +47,30 @@ const authController = {
     return res.json(newUserResult.rows[0]);
   },
   loginUser: async (req: Request, res: Response) => {
-    console.log("JWT_SECRET:", process.env.JWT_SECRET);
     console.log("login controller");
     const { mail, password } = req.body;
     console.log("login please");
     // find the user by mail
-    const data = await query('SELECT * FROM "user" WHERE mail = $1', [mail]);
+    const data = await query(
+      `SELECT 
+  u.*,
+  ARRAY_AGG(DISTINCT j.name) AS jobs,
+    ARRAY_AGG(DISTINCT r.type) AS remunerations,
+    ARRAY_AGG(DISTINCT l.name) AS languages
+FROM 
+  "user" u
+  LEFT JOIN "user_job" uj ON u.id = uj.user_id
+  LEFT JOIN "job" j ON uj.job_id = j.id
+  LEFT JOIN "user_remuneration" ur ON u.id = ur.user_id
+  LEFT JOIN "remuneration" r ON ur.remuneration_id = r.id
+  LEFT JOIN "user_language" ul ON u.id = ul.user_id
+  LEFT JOIN "language" l ON ul.language_id = l.id
+WHERE 
+  u.mail = $1
+GROUP BY 
+  u.id;`,
+      [mail]
+    );
     const user = data.rows[0];
     // if no user found tell the front
     if (!user) {

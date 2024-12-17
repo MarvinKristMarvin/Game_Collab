@@ -8,7 +8,7 @@ export interface IButton {
 export interface ICheckableItem {
   text: string;
   inputId: string;
-  language?: string;
+  language?: string; // use this to change the css style and have the flag
   onChange: () => void;
   checked: boolean;
 }

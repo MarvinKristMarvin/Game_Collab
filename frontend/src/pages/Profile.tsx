@@ -31,6 +31,9 @@ function Profile() {
       if (loggedUser.profile_mail != null) {
         updateProfile_mail(loggedUser.profile_mail);
       }
+      if (loggedUser.jobs != null) {
+        setSelectedJobs(loggedUser.jobs);
+      }
     }
   }, [loggedUser]);
 
@@ -65,10 +68,11 @@ function Profile() {
         toast.error(data.error);
         console.log("data error : " + data.error);
       } else {
-        toast.success("Log in successfull ! Please log in");
+        toast.success("Log in successfull ! You can now modify your profile.");
         console.log("log in success !");
-        console.log(data);
+        console.log("login data : ", data);
         setLoginData({ mail: "", password: "" });
+        // I should also join jobs, languages and remunerations there to preselect front choices
         //navigate("/login");
         // enter logged user data in the user context
 
@@ -149,6 +153,12 @@ function Profile() {
   const updateProfile_mail = (value: string) => {
     setProfile_mail(value);
   };
+
+  const [jobs, setJobs] = useState<string[]>([]);
+  const updateJobs = (value: string[]) => {
+    setJobs(value);
+  };
+
   const [selectedJobs, setSelectedJobs] = useState<string[]>([]);
   const [selectedLanguages, setSelectedLanguages] = useState<string[]>([]);
   const [selectedRemunerations, setSelectedRemunerations] = useState<string[]>(
@@ -169,7 +179,7 @@ function Profile() {
     if (loggedUser) {
       try {
         const { data } = await axios.patch(
-          `http://localhost:5000/api/user/27`,
+          `http://localhost:5000/api/user/${loggedUser.id}`,
           {
             age: age,
             name: name,
@@ -186,6 +196,8 @@ function Profile() {
         } else {
           toast.success("Your changes have been saved !");
           console.log("Save profile succeed");
+          // update the loggedUser context with the saved data
+          setLoggedUser({ ...loggedUser, jobs: selectedJobs });
           //navigate("/login");
         }
       } catch (error) {
@@ -299,16 +311,11 @@ function Profile() {
           <section className="spacingSection">
             <Label text="Select your working languages" htmlFor="english" />
             <div className="flagList">
-              <CheckableItem text="" inputId="english" language="english" />
-              <CheckableItem text="" inputId="french" language="french" />
-              <CheckableItem text="" inputId="german" language="german" />
-              <CheckableItem text="" inputId="japanese" language="japanese" />
-              <CheckableItem text="" inputId="russian" language="russian" />
-              <CheckableItem text="" inputId="english" language="english" />
-              <CheckableItem text="" inputId="french" language="french" />
-              <CheckableItem text="" inputId="german" language="german" />
-              <CheckableItem text="" inputId="japanese" language="japanese" />
-              <CheckableItem text="" inputId="russian" language="russian" />
+              <CheckableItem text="english" inputId="english" />
+              <CheckableItem text="french" inputId="french" />
+              <CheckableItem text="german" inputId="german" />
+              <CheckableItem text="japanese" inputId="japanese" />
+              <CheckableItem text="russian" inputId="russian" />
             </div>
           </section>
 

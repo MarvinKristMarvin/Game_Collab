@@ -11,6 +11,8 @@ export interface LoggedUserInterface {
   portfolio_url: string | null;
   profile_mail: string | null;
   jobs: string[] | null;
+  languages: string[] | null;
+  remunerations: string[] | null;
 }
 
 // Define context types
