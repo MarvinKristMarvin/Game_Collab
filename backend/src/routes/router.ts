@@ -13,5 +13,6 @@ router.patch("/api/user/:id", wrapper(userController.updateUser));
 // AUTHENTICATION
 router.post("/signup", wrapper(authController.signupUser));
 router.post("/login", wrapper(authController.loginUser));
+router.post("/logout", wrapper(authController.logoutUser));
 
 export default router;

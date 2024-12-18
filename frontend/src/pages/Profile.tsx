@@ -7,10 +7,14 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { toast } from "react-hot-toast";
 import { useLoggedUser } from "../context/userContext";
+import removeLastCharacters from "../utils/removeLastCharacters";
+import { useNavigate } from "react-router-dom";
 
 function Profile() {
   const [connected, setConnected] = useState(false);
   const { loggedUser, setLoggedUser } = useLoggedUser();
+  const navigate = useNavigate();
+  axios.defaults.withCredentials = true;
 
   // LOGIN LOGIC
   const [loginData, setLoginData] = useState({
@@ -147,57 +151,46 @@ function Profile() {
   useEffect(() => {
     if (loggedUser) {
       setConnected(true);
-      // write loggedUser data in the form at page start
-      if (loggedUser.age != null) {
-        updateAge(loggedUser.age.toString());
-      }
-      if (loggedUser.name != null) {
-        updateName(loggedUser.name);
-      }
-      if (loggedUser.description != null) {
-        updateDescription(loggedUser.description);
-      }
-      if (loggedUser.portfolio_url != null) {
-        updatePortfolio_url(loggedUser.portfolio_url);
-      }
-      if (loggedUser.profile_mail != null) {
-        updateProfile_mail(loggedUser.profile_mail);
-      }
-      if (loggedUser.jobs != null) {
-        setSelectedJobs(loggedUser.jobs);
-      }
-      if (loggedUser.languages != null) {
-        setSelectedLanguages(loggedUser.languages);
-      }
-      if (loggedUser.remunerations != null) {
-        setSelectedRemunerations(loggedUser.remunerations);
-      }
+      setAge(loggedUser.age || null);
+      setName(loggedUser.name || null);
+      setDescription(loggedUser.description || null);
+      setPortfolio_url(loggedUser.portfolio_url || null);
+      setProfile_mail(loggedUser.profile_mail || null);
+      setSelectedJobs(loggedUser.jobs || []);
+      setSelectedLanguages(loggedUser.languages || []);
+      setSelectedRemunerations(loggedUser.remunerations || []);
     }
-  }, [
-    loggedUser,
-    updateAge,
-    updateName,
-    updateDescription,
-    updatePortfolio_url,
-    updateProfile_mail,
-  ]); // infinite loop here, change something with useEffect, setStates etc
+  }, [loggedUser]);
 
   const [selectedJobs, setSelectedJobs] = useState<string[]>([]);
   const [selectedLanguages, setSelectedLanguages] = useState<string[]>([]);
   const [selectedRemunerations, setSelectedRemunerations] = useState<string[]>(
     []
   );
+
+  // Add or remove a job, language or remuneration in the logged user context
   const addOrRemoveFromDataList = (
     data: string,
+    dataFamily: string,
     setDataList: React.Dispatch<React.SetStateAction<string[]>>,
     dataList: string[]
   ) => {
-    if (dataList.includes(data)) {
-      setDataList(dataList.filter((item) => item !== data));
-    } else {
-      setDataList([...dataList, data]);
+    // Check if the data is already in the list
+    const dataIsPresent = dataList.includes(data);
+    const updatedList = dataIsPresent
+      ? dataList.filter((item) => item !== data) // Remove data
+      : [...dataList, data]; // Add data
+
+    // Update the loggedUser context
+    if (loggedUser) {
+      setLoggedUser({
+        ...loggedUser,
+        [dataFamily]: updatedList,
+      });
     }
+    console.log(dataIsPresent ? `Removed ${data}` : `Added ${data}`);
   };
+
   const saveUser = async () => {
     // Clean up the first null value of each array (couldn't find another way)
     const cleanSelectedJobs = selectedJobs.filter((job) => job != null);
@@ -244,8 +237,25 @@ function Profile() {
     }
   };
 
-  const logOut = () => {
+  const logOut = async () => {
     console.log("log out");
+    setLoggedUser(null);
+    setConnected(false);
+    navigate("/profile");
+    toast.success("You have been logged out successfully.");
+    try {
+      const response = await axios.post(
+        "http://localhost:5000/logout",
+        {} // Ensures cookies are sent with the request
+      );
+      if (response.status === 200) {
+        console.log("Logged out successfully.");
+      } else {
+        console.error("Failed to log out.");
+      }
+    } catch (error) {
+      console.error("Error during logout:", error);
+    }
   };
   const deleteAccount = () => {
     console.log("delete account modal");
@@ -318,7 +328,6 @@ function Profile() {
     return (
       <div className="profilePage">
         <PositiveMessage text="You are successfully logged in, you can edit your profile and share it to others" />
-        <p>{loggedUser.mail}</p>
         <form action="">
           {/* NAME AND AGE */}
           <section className="spacingSection">
@@ -349,17 +358,33 @@ function Profile() {
           <section className="spacingSection">
             <Label text="Select your working languages" htmlFor="english" />
             <div className="flagList">
-              <CheckableItem text="english" inputId="english" />
-              <CheckableItem text="french" inputId="french" />
-              <CheckableItem text="german" inputId="german" />
-              <CheckableItem text="japanese" inputId="japanese" />
-              <CheckableItem text="russian" inputId="russian" />
+              {[
+                "English.gb",
+                "French.fr",
+                "German.de",
+                "Japanese.jp",
+                "Russian.ru",
+              ].map((language) => (
+                <CheckableItem
+                  key={language}
+                  text={removeLastCharacters(language, 3)}
+                  inputId={language.toLowerCase()}
+                  onChange={() =>
+                    addOrRemoveFromDataList(
+                      language,
+                      "languages",
+                      setSelectedLanguages,
+                      selectedLanguages
+                    )
+                  }
+                  checked={selectedLanguages.includes(language)}
+                />
+              ))}
             </div>
           </section>
 
           {/* JOBS */}
           <section className="spacingSection">
-            <p>{selectedJobs}</p>
             <Label text="What are your working jobs" htmlFor="code" />
             <div className="jobList">
               {["Artist", "Sounds", "Dev"].map((job) => (
@@ -368,7 +393,12 @@ function Profile() {
                   text={job}
                   inputId={job.toLowerCase()}
                   onChange={() =>
-                    addOrRemoveFromDataList(job, setSelectedJobs, selectedJobs)
+                    addOrRemoveFromDataList(
+                      job,
+                      "jobs",
+                      setSelectedJobs,
+                      selectedJobs
+                    )
                   }
                   checked={selectedJobs.includes(job)}
                 />
@@ -378,7 +408,6 @@ function Profile() {
 
           {/* REMUNERATION */}
           <section className="spacingSection">
-            <p>{selectedRemunerations}</p>
             <Label text="What are you working for" htmlFor="free" />
             <div className="remunerationList">
               {["Nothing", "Shares", "Freelance", "Salary"].map(
@@ -390,6 +419,7 @@ function Profile() {
                     onChange={() =>
                       addOrRemoveFromDataList(
                         remuneration,
+                        "remunerations",
                         setSelectedRemunerations,
                         selectedRemunerations
                       )
@@ -444,5 +474,4 @@ function Profile() {
     );
   }
 }
-
 export default Profile;

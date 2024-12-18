@@ -5,7 +5,6 @@ import jwt from "jsonwebtoken";
 
 const authController = {
   signupUser: async (req: Request, res: Response) => {
-    console.log("authcontroller");
     const { mail, password, confirmation } = req.body;
     // check if informations are correct or return errors
     if (!mail) {
@@ -34,7 +33,6 @@ const authController = {
     }
     // if all informations are good, hash password then create a user in db and return it
     const hashedPassword = await hashPassword(password);
-    console.log(hashedPassword);
     const newUserResult = await query(
       `
         INSERT INTO "user" (mail, password) 
@@ -47,9 +45,12 @@ const authController = {
     return res.json(newUserResult.rows[0]);
   },
   loginUser: async (req: Request, res: Response) => {
-    console.log("login controller");
+    const cookies = req.headers.cookie;
+    if (cookies) {
+      console.log("cookies on loggin");
+      console.log(cookies);
+    }
     const { mail, password } = req.body;
-    console.log("login please");
     // find the user by mail
     const data = await query(
       `SELECT 
@@ -90,15 +91,36 @@ GROUP BY
           if (err) throw err;
           // if successfull, send token to client in a cookie named token and send user data back as a response without the password
           const { password, ...userWithoutPassword } = user;
-          return res
-            .cookie("token", token, { httpOnly: true })
-            .json(userWithoutPassword);
+          return (
+            res
+              .cookie("token", token, {
+                httpOnly: true,
+                sameSite: "lax",
+                secure: false,
+              })
+              /* res.cookie("token", token, {
+                    httpOnly: true,
+                    sameSite: "None", // Allows cross-origin cookies
+                    secure: true,    // Cookies are only sent over HTTPS
+                  }); FOR PRODUCTION*/
+              .json(userWithoutPassword)
+          );
         }
       );
     }
     if (!match) {
       return res.json({ error: "Passwords do not match" });
     }
+  },
+
+  logoutUser: async (req: Request, res: Response) => {
+    res.cookie("token", "", {
+      httpOnly: true, // Ensure the cookie remains HttpOnly
+      /*secure: true, // Use this in production for HTTPS*/
+      sameSite: "strict", // Prevent CSRF
+      expires: new Date(0), // Set the cookie to expire in the past
+    });
+    return res.status(200).send("Logged out and cookie cleared.");
   },
 };
 

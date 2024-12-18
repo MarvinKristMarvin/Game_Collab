@@ -50,6 +50,7 @@ function Search() {
 
   /* create the filter string which will get modified on "search profiles" button submit */
   const dataURL = "http://localhost:5000/";
+  axios.defaults.withCredentials = true;
 
   const [loadedProfiles, setLoadedProfiles] = useState<userInterface[]>([]);
 

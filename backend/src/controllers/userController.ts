@@ -10,6 +10,11 @@ const userController = {
   },
   /* GET http://localhost:5000/api/users/filtered?languages=English,French&jobs=Dev&remunerations=Nothing&minAge=25&maxAge=40 */
   getFiltered: async (req: Request, res: Response) => {
+    const cookies = req.headers.cookie;
+    if (cookies) {
+      console.log("cookies on filtered");
+      console.log(cookies);
+    }
     const languages = req.query.languages
       ? (req.query.languages as string).split(",")
       : null;
@@ -80,6 +85,11 @@ GROUP BY
   updateUser: async (req: Request, res: Response) => {
     const { id } = req.params;
     const patchData = req.body;
+    const cookies = req.headers.cookie;
+    if (cookies) {
+      console.log("cookies on save user");
+      console.log(cookies);
+    }
 
     if (!patchData || Object.keys(patchData).length === 0) {
       return res.status(400).json({ error: "No changes are sent" });
