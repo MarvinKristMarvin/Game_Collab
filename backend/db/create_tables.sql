@@ -51,7 +51,8 @@ CREATE TABLE "user_language" (
     "user_id" INT NOT NULL,
     "language_id" INT NOT NULL,
     CONSTRAINT fk_user FOREIGN KEY ("user_id") REFERENCES "user"("id") ON DELETE CASCADE,
-    CONSTRAINT fk_language FOREIGN KEY ("language_id") REFERENCES "language"("id") ON DELETE CASCADE
+    CONSTRAINT fk_language FOREIGN KEY ("language_id") REFERENCES "language"("id") ON DELETE CASCADE,
+    CONSTRAINT user_language_unique UNIQUE (user_id, language_id)
 );
 
 CREATE TABLE "user_remuneration" (
@@ -59,7 +60,8 @@ CREATE TABLE "user_remuneration" (
     "user_id" INT NOT NULL,
     "remuneration_id" INT NOT NULL,
     CONSTRAINT fk_user FOREIGN KEY ("user_id") REFERENCES "user"("id") ON DELETE CASCADE,
-    CONSTRAINT fk_remuneration FOREIGN KEY ("remuneration_id") REFERENCES "remuneration"("id") ON DELETE CASCADE
+    CONSTRAINT fk_remuneration FOREIGN KEY ("remuneration_id") REFERENCES "remuneration"("id") ON DELETE CASCADE,
+    CONSTRAINT user_remuneration_unique UNIQUE (user_id, remuneration_id)
 );
 
 -- reset id sequences

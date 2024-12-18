@@ -12,31 +12,6 @@ function Profile() {
   const [connected, setConnected] = useState(false);
   const { loggedUser, setLoggedUser } = useLoggedUser();
 
-  useEffect(() => {
-    if (loggedUser) {
-      setConnected(true);
-      // write loggedUser data in the form at page start
-      if (loggedUser.age != null) {
-        updateAge(loggedUser.age.toString());
-      }
-      if (loggedUser.name != null) {
-        updateName(loggedUser.name);
-      }
-      if (loggedUser.description != null) {
-        updateDescription(loggedUser.description);
-      }
-      if (loggedUser.portfolio_url != null) {
-        updatePortfolio_url(loggedUser.portfolio_url);
-      }
-      if (loggedUser.profile_mail != null) {
-        updateProfile_mail(loggedUser.profile_mail);
-      }
-      if (loggedUser.jobs != null) {
-        setSelectedJobs(loggedUser.jobs);
-      }
-    }
-  }, [loggedUser]);
-
   // LOGIN LOGIC
   const [loginData, setLoginData] = useState({
     mail: "",
@@ -136,28 +111,76 @@ function Profile() {
   const updateAge = (value: string) => {
     if (value) setAge(Number(value));
     else setAge(null);
+    if (loggedUser) {
+      setLoggedUser({ ...loggedUser, age: Number(value) });
+    }
   };
   const [name, setName] = useState<string | null>(null);
   const updateName = (value: string) => {
     setName(value);
+    if (loggedUser) {
+      setLoggedUser({ ...loggedUser, name: value });
+    }
   };
   const [description, setDescription] = useState<string | null>(null);
   const updateDescription = (value: string) => {
     setDescription(value);
+    if (loggedUser) {
+      setLoggedUser({ ...loggedUser, description: value });
+    }
   };
   const [portfolio_url, setPortfolio_url] = useState<string | null>(null);
   const updatePortfolio_url = (value: string) => {
     setPortfolio_url(value);
+    if (loggedUser) {
+      setLoggedUser({ ...loggedUser, portfolio_url: value });
+    }
   };
   const [profile_mail, setProfile_mail] = useState<string | null>(null);
   const updateProfile_mail = (value: string) => {
     setProfile_mail(value);
+    if (loggedUser) {
+      setLoggedUser({ ...loggedUser, profile_mail: value });
+    }
   };
 
-  const [jobs, setJobs] = useState<string[]>([]);
-  const updateJobs = (value: string[]) => {
-    setJobs(value);
-  };
+  useEffect(() => {
+    if (loggedUser) {
+      setConnected(true);
+      // write loggedUser data in the form at page start
+      if (loggedUser.age != null) {
+        updateAge(loggedUser.age.toString());
+      }
+      if (loggedUser.name != null) {
+        updateName(loggedUser.name);
+      }
+      if (loggedUser.description != null) {
+        updateDescription(loggedUser.description);
+      }
+      if (loggedUser.portfolio_url != null) {
+        updatePortfolio_url(loggedUser.portfolio_url);
+      }
+      if (loggedUser.profile_mail != null) {
+        updateProfile_mail(loggedUser.profile_mail);
+      }
+      if (loggedUser.jobs != null) {
+        setSelectedJobs(loggedUser.jobs);
+      }
+      if (loggedUser.languages != null) {
+        setSelectedLanguages(loggedUser.languages);
+      }
+      if (loggedUser.remunerations != null) {
+        setSelectedRemunerations(loggedUser.remunerations);
+      }
+    }
+  }, [
+    loggedUser,
+    updateAge,
+    updateName,
+    updateDescription,
+    updatePortfolio_url,
+    updateProfile_mail,
+  ]); // infinite loop here, change something with useEffect, setStates etc
 
   const [selectedJobs, setSelectedJobs] = useState<string[]>([]);
   const [selectedLanguages, setSelectedLanguages] = useState<string[]>([]);
@@ -176,6 +199,14 @@ function Profile() {
     }
   };
   const saveUser = async () => {
+    // Clean up the first null value of each array (couldn't find another way)
+    const cleanSelectedJobs = selectedJobs.filter((job) => job != null);
+    const cleanSelectedLanguages = selectedLanguages.filter(
+      (language) => language != null
+    );
+    const cleanSelectedRemunerations = selectedRemunerations.filter(
+      (remuneration) => remuneration != null
+    );
     if (loggedUser) {
       try {
         const { data } = await axios.patch(
@@ -186,7 +217,9 @@ function Profile() {
             description: description,
             portfolio_url: portfolio_url,
             profile_mail: profile_mail,
-            jobs: selectedJobs,
+            jobs: cleanSelectedJobs,
+            languages: cleanSelectedLanguages,
+            remunerations: cleanSelectedRemunerations,
           }
         );
         // if error from controller register informations validation, popup message
@@ -197,7 +230,12 @@ function Profile() {
           toast.success("Your changes have been saved !");
           console.log("Save profile succeed");
           // update the loggedUser context with the saved data
-          setLoggedUser({ ...loggedUser, jobs: selectedJobs });
+          setLoggedUser({
+            ...loggedUser,
+            jobs: selectedJobs,
+            languages: selectedLanguages,
+            remunerations: selectedRemunerations,
+          });
           //navigate("/login");
         }
       } catch (error) {
@@ -322,7 +360,7 @@ function Profile() {
           {/* JOBS */}
           <section className="spacingSection">
             <p>{selectedJobs}</p>
-            <Label text="Search people doing" htmlFor="code" />
+            <Label text="What are your working jobs" htmlFor="code" />
             <div className="jobList">
               {["Artist", "Sounds", "Dev"].map((job) => (
                 <CheckableItem
@@ -340,12 +378,26 @@ function Profile() {
 
           {/* REMUNERATION */}
           <section className="spacingSection">
+            <p>{selectedRemunerations}</p>
             <Label text="What are you working for" htmlFor="free" />
             <div className="remunerationList">
-              <CheckableItem text="Fun" inputId="free" />
-              <CheckableItem text="Revenue shares" inputId="shares" />
-              <CheckableItem text="Fixed amount" inputId="gratification" />
-              <CheckableItem text="Salary" inputId="salary" />
+              {["Nothing", "Shares", "Freelance", "Salary"].map(
+                (remuneration) => (
+                  <CheckableItem
+                    key={remuneration}
+                    text={remuneration}
+                    inputId={remuneration.toLowerCase()}
+                    onChange={() =>
+                      addOrRemoveFromDataList(
+                        remuneration,
+                        setSelectedRemunerations,
+                        selectedRemunerations
+                      )
+                    }
+                    checked={selectedRemunerations.includes(remuneration)}
+                  />
+                )
+              )}
             </div>
           </section>
 

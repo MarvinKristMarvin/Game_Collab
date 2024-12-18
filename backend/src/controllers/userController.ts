@@ -5,7 +5,7 @@ const userController = {
   /* GET http://localhost:5000/api/users */
   getAll: async (req: Request, res: Response) => {
     const result = await query('SELECT * FROM "user"', []);
-    res.json(result.rows);
+    return res.json(result.rows);
     //console.log(result.rows);
   },
   /* GET http://localhost:5000/api/users/filtered?languages=English,French&jobs=Dev&remunerations=Nothing&minAge=25&maxAge=40 */
@@ -73,7 +73,7 @@ GROUP BY
   `,
       [languages, jobs, remunerations, minAge, maxAge]
     );
-    res.json(result.rows);
+    return res.json(result.rows);
   },
   // updateUser
   /* PATCH http://localhost:5000/api/users/:id */
@@ -86,7 +86,7 @@ GROUP BY
     }
 
     try {
-      const { jobs, ...userFields } = patchData;
+      const { jobs, remunerations, languages, ...userFields } = patchData;
 
       // Update user fields if there are any
       if (Object.keys(userFields).length > 0) {
@@ -114,69 +114,87 @@ GROUP BY
         }
       }
 
-      // Remove the existing jobs for the user before inserting the new ones
-      await query(
-        `
-      DELETE FROM "user_job"
-      WHERE user_id = $1;
-      `,
-        [id]
-      );
+      // Helper function to update relational data
+      const updateRelationalData = async (
+        table: string,
+        column: string,
+        valuesArray: string[]
+      ) => {
+        if (Array.isArray(valuesArray) && valuesArray.length > 0) {
+          // Remove duplicate values
+          const uniqueValues = [...new Set(valuesArray)];
 
-      // Handle the jobs field
-      if (Array.isArray(jobs) && jobs.length > 0) {
-        // Remove duplicate job names from the jobs array
-        const uniqueJobs = [...new Set(jobs)];
+          // Change the name field for the remuneration table
+          let nameField = "name";
+          if (table === "remuneration") {
+            nameField = "type";
+          }
 
-        // Retrieve job IDs for the provided job names
-        const jobIdsResult = await query(
-          `
-          SELECT id, name FROM "job"
-          WHERE name = ANY ($1);
-          `,
-          [uniqueJobs]
-        );
+          // Retrieve IDs for the provided names
+          const idsResult = await query(
+            `
+            SELECT id, ${nameField} FROM "${table}"
+            WHERE ${nameField} = ANY ($1);
+            `,
+            [uniqueValues]
+          );
 
-        const jobIds = jobIdsResult.rows.map((row) => row.id);
+          const ids = idsResult.rows.map((row) => row.id);
 
-        if (jobIds.length !== uniqueJobs.length) {
-          return res.status(400).json({
-            error: "Some job names are invalid",
-            details: uniqueJobs.filter(
-              (job) => !jobIdsResult.rows.some((row) => row.name === job)
-            ),
-          });
+          if (ids.length !== uniqueValues.length) {
+            throw new Error(
+              `Some ${column} names are invalid: ${uniqueValues.filter(
+                (value) =>
+                  !idsResult.rows.some((row) => row[nameField] === value)
+              )}`
+            );
+          }
+
+          // Delete existing relationships
+          await query(
+            `
+            DELETE FROM "user_${column}"
+            WHERE user_id = $1;
+            `,
+            [id]
+          );
+
+          // Insert new relationships
+          const insertValues = ids
+            .map((itemId) => `(${id}, ${itemId})`)
+            .join(", ");
+          await query(
+            `
+            INSERT INTO "user_${column}" (user_id, ${column}_id)
+            VALUES ${insertValues}
+            ON CONFLICT (user_id, ${column}_id) DO NOTHING;
+            `
+          );
+        } else {
+          // If no values are provided, delete all relationships
+          await query(
+            `
+            DELETE FROM "user_${column}"
+            WHERE user_id = $1;
+            `,
+            [id]
+          );
         }
+      };
 
-        // Use INSERT ... ON CONFLICT DO NOTHING to avoid duplicates
-        const insertValues = jobIds
-          .map((jobId) => `(${id}, ${jobId})`)
-          .join(", ");
-        await query(
-          `
-          INSERT INTO "user_job" (user_id, job_id)
-          VALUES ${insertValues}
-          ON CONFLICT (user_id, job_id) DO NOTHING;
-          `
-        ); // ON CONFLICT DO NOTHING
+      // Handle jobs, remunerations, and languages
+      await updateRelationalData("job", "job", jobs);
+      await updateRelationalData("remuneration", "remuneration", remunerations);
+      await updateRelationalData("language", "language", languages);
 
-        // Debugging: Log uniqueJobs and retrieved job IDs
-        console.log("Jobs array:", jobs);
-        console.log("Unique jobs:", uniqueJobs);
-        console.log("Retrieved job IDs:", jobIds);
-
-        // Debugging: Log the constructed INSERT statement
-        console.log("Constructed INSERT statement values:", insertValues);
-      }
-
-      res.json({ message: "User updated successfully." });
+      return res.json({ message: "User updated successfully." });
     } catch (error) {
       if (error instanceof Error) {
-        res
+        return res
           .status(500)
           .json({ error: "An error occurred", details: error.message });
       } else {
-        res
+        return res
           .status(500)
           .json({ error: "An error occurred", details: "Unknown error" });
       }
