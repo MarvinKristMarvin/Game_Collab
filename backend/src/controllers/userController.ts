@@ -1,4 +1,4 @@
-import { query } from "../db";
+import { query, pool } from "../db";
 import { Request, Response } from "express";
 
 const userController = {
@@ -11,10 +11,7 @@ const userController = {
   /* GET http://localhost:5000/api/users/filtered?languages=English,French&jobs=Dev&remunerations=Nothing&minAge=25&maxAge=40 */
   getFiltered: async (req: Request, res: Response) => {
     const cookies = req.headers.cookie;
-    if (cookies) {
-      console.log("cookies on filtered");
-      console.log(cookies);
-    }
+
     const languages = req.query.languages
       ? (req.query.languages as string).split(",")
       : null;
@@ -208,6 +205,51 @@ GROUP BY
           .status(500)
           .json({ error: "An error occurred", details: "Unknown error" });
       }
+    }
+  },
+  deleteUser: async (req: Request, res: Response) => {
+    console.log("delete user controller");
+    const { id } = req.params;
+    console.log(Number(id));
+    const authenticatedUserId = res.locals.user.id; // Extracted from the token by the middleware
+    console.log(authenticatedUserId);
+
+    if (authenticatedUserId !== Number(id)) {
+      return res
+        .status(403)
+        .json({ error: "You are not authorized to delete this account." });
+    }
+
+    // need to separate the queries for a transaction in psql
+    const client = await pool.connect(); // Get a client from the pool
+    try {
+      await client.query("BEGIN"); // Start transaction
+
+      // Perform all deletions in the correct order
+      await client.query(`DELETE FROM user_job WHERE user_id = $1`, [id]);
+      await client.query(`DELETE FROM user_language WHERE user_id = $1`, [id]);
+      await client.query(`DELETE FROM user_remuneration WHERE user_id = $1`, [
+        id,
+      ]);
+      const userDeleteResult = await client.query(
+        `DELETE FROM "user" WHERE id = $1`,
+        [id]
+      );
+
+      if (userDeleteResult.rowCount === 0) {
+        // If no user was deleted, rollback the transaction
+        await client.query("ROLLBACK");
+        return res.status(404).json({ error: "User not found" });
+      }
+
+      await client.query("COMMIT"); // Commit transaction
+      return res.json({ message: "User deleted successfully" });
+    } catch (error) {
+      await client.query("ROLLBACK"); // Rollback transaction on error
+      console.error(error);
+      return res.status(500).json({ error: "Failed to delete user." });
+    } finally {
+      client.release(); // Release the client back to the pool
     }
   },
 };

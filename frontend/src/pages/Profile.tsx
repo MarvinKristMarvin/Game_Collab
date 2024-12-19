@@ -257,8 +257,26 @@ function Profile() {
       console.error("Error during logout:", error);
     }
   };
-  const deleteAccount = () => {
-    console.log("delete account modal");
+  const deleteAccount = async () => {
+    console.log("delete account function");
+    try {
+      console.log("try");
+      if (loggedUser) {
+        console.log("try if");
+        const response = await axios.delete(
+          `http://localhost:5000/api/user/${loggedUser.id}`,
+          { withCredentials: true }
+        );
+        console.log("response ", response);
+        if (response.status === 204 || response.status === 200) {
+          console.log("Deleted account successfully.");
+        } else {
+          console.error("Failed to delete account.");
+        }
+      }
+    } catch (error) {
+      console.error("Error during account deletion:", error);
+    }
   };
 
   /* if user is not authentified, show login signup page, else show his profile page */

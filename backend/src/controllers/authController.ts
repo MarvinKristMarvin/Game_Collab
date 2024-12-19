@@ -46,10 +46,6 @@ const authController = {
   },
   loginUser: async (req: Request, res: Response) => {
     const cookies = req.headers.cookie;
-    if (cookies) {
-      console.log("cookies on loggin");
-      console.log(cookies);
-    }
     const { mail, password } = req.body;
     // find the user by mail
     const data = await query(
