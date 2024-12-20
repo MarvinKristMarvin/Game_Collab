@@ -1,3 +1,4 @@
+import { warn } from "console";
 import { query, pool } from "../db";
 import { Request, Response } from "express";
 
@@ -81,12 +82,66 @@ GROUP BY
   /* PATCH http://localhost:5000/api/users/:id */
   updateUser: async (req: Request, res: Response) => {
     const { id } = req.params;
-    const patchData = req.body;
-    const cookies = req.headers.cookie;
-    if (cookies) {
-      console.log("cookies on save user");
-      console.log(cookies);
+
+    const warnings = [];
+
+    // Data verification, for warning purposes, still update the user, but don't make him available if warnings
+    if (!req.body.name || req.body.name.length < 2) {
+      warnings.push("Enter a proper name");
     }
+    if (!req.body.age || req.body.age < 15 || req.body.age > 80) {
+      warnings.push("Age must be between 15 and 80");
+    }
+    if (
+      !req.body.languages ||
+      req.body.languages.length < 1 ||
+      req.body.languages.length > 4
+    ) {
+      warnings.push("Choose 1 to 4 languages");
+    }
+    if (
+      !req.body.jobs ||
+      req.body.jobs.length < 1 ||
+      req.body.jobs.length > 8
+    ) {
+      warnings.push("Choose 1 to 8 jobs");
+    }
+    if (!req.body.remunerations || req.body.remunerations.length < 1) {
+      warnings.push("Choose 1 to 4 remunerations");
+    }
+    if (!req.body.description) {
+      warnings.push("Enter a description");
+    } else {
+      if (req.body.description.length < 10) {
+        warnings.push("Enter a real description");
+      }
+      if (req.body.description.length > 2000) {
+        warnings.push(
+          "Your description has to be less than 2000 characters, it currently has " +
+            req.body.description.length +
+            " characters"
+        );
+      }
+    }
+    if (
+      !req.body.profile_mail ||
+      !/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/i.test(
+        req.body.profile_mail
+      )
+    ) {
+      warnings.push("Enter a valid mail");
+    }
+
+    const authenticatedUserId = res.locals.user.id; // Extracted from the token by the middleware
+    console.log(authenticatedUserId);
+
+    if (authenticatedUserId !== Number(id)) {
+      return res.status(403).json({
+        error:
+          "You are not authorized to update this account. param ID is not matching with jwt ID",
+      });
+    }
+    const patchData = req.body;
 
     if (!patchData || Object.keys(patchData).length === 0) {
       return res.status(400).json({ error: "No changes are sent" });
@@ -94,6 +149,12 @@ GROUP BY
 
     try {
       const { jobs, remunerations, languages, ...userFields } = patchData;
+
+      if (warnings.length === 0) {
+        userFields.available = true;
+      } else {
+        userFields.available = false;
+      }
 
       // Update user fields if there are any
       if (Object.keys(userFields).length > 0) {
@@ -194,7 +255,10 @@ GROUP BY
       await updateRelationalData("remuneration", "remuneration", remunerations);
       await updateRelationalData("language", "language", languages);
 
-      return res.json({ message: "User updated successfully." });
+      return res.json({
+        warnings,
+        message: "User updated successfully.",
+      });
     } catch (error) {
       if (error instanceof Error) {
         return res

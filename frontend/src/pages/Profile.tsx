@@ -101,7 +101,7 @@ function Profile() {
         toast.error(data.error);
         console.log("dataerror : " + data.error);
       } else {
-        toast.success("Sign up successful, welcome to Game Hearts !");
+        toast.success("Sign up successful, you can now log in !");
         console.log("sign up success !");
         //navigate("/login");
       }
@@ -220,7 +220,16 @@ function Profile() {
           toast.error(data.error);
           console.log("Profile update failed : " + data.error);
         } else {
-          toast.success("Your changes have been saved !");
+          // warns for
+          if (data.warnings.length > 0) {
+            data.warnings.forEach((warning: string) => {
+              toast.error(warning); // Example toast function
+            });
+          } else {
+            toast.success(
+              "Your profile is complete and will be shown on our platform !"
+            );
+          }
           console.log("Save profile succeed");
           // update the loggedUser context with the saved data
           setLoggedUser({
@@ -258,11 +267,8 @@ function Profile() {
     }
   };
   const deleteAccount = async () => {
-    console.log("delete account function");
     try {
-      console.log("try");
       if (loggedUser) {
-        console.log("try if");
         const response = await axios.delete(
           `http://localhost:5000/api/user/${loggedUser.id}`,
           { withCredentials: true }
@@ -270,6 +276,10 @@ function Profile() {
         console.log("response ", response);
         if (response.status === 204 || response.status === 200) {
           console.log("Deleted account successfully.");
+          setLoggedUser(null);
+          setConnected(false);
+          navigate("/profile");
+          toast.success("Your account has been deleted successfully.");
         } else {
           console.error("Failed to delete account.");
         }
@@ -320,7 +330,7 @@ function Profile() {
             actualValue={signupData.mail}
           />
           <InputField
-            placeholder="Password"
+            placeholder="Password  (Minimum 8 characters)"
             inputType="password"
             inputId="signup-password"
             inputName="signup-password"
@@ -345,7 +355,7 @@ function Profile() {
     // If user is authenticated show the profile page
     return (
       <div className="profilePage">
-        <PositiveMessage text="You are successfully logged in, you can edit your profile and share it to others" />
+        <PositiveMessage text="Hello, edit your profile then save, an incomplete profile will not be shown on our platform" />
         <form action="">
           {/* NAME AND AGE */}
           <section className="spacingSection">
@@ -374,7 +384,7 @@ function Profile() {
 
           {/* LANGUAGES */}
           <section className="spacingSection">
-            <Label text="Select your working languages" htmlFor="english" />
+            <Label text="Select your languages" htmlFor="english.gb" />
             <div className="flagList">
               {[
                 "English.gb",
@@ -403,7 +413,7 @@ function Profile() {
 
           {/* JOBS */}
           <section className="spacingSection">
-            <Label text="What are your working jobs" htmlFor="code" />
+            <Label text="What jobs can you do" htmlFor="artist" />
             <div className="jobList">
               {["Artist", "Sounds", "Dev"].map((job) => (
                 <CheckableItem
@@ -426,7 +436,7 @@ function Profile() {
 
           {/* REMUNERATION */}
           <section className="spacingSection">
-            <Label text="What are you working for" htmlFor="free" />
+            <Label text="What are you working for" htmlFor="nothing" />
             <div className="remunerationList">
               {["Nothing", "Shares", "Freelance", "Salary"].map(
                 (remuneration) => (
@@ -453,7 +463,7 @@ function Profile() {
           <section className="spacingSection">
             <Label text="Other informations" htmlFor="description" />
             <InputField
-              placeholder="Describe yourself"
+              placeholder="Describe yourself, your skills, experience etc..."
               inputType="textarea"
               inputId="description"
               inputName="description"
@@ -462,7 +472,7 @@ function Profile() {
               actualValue={description != undefined ? description : ""}
             />
             <InputField
-              placeholder="Portfolio Link"
+              placeholder="Portfolio Link  (Not required)"
               inputType="text"
               inputId="portfolio"
               inputName="portfolio"

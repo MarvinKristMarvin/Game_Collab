@@ -9,7 +9,11 @@ const router = express.Router();
 // API
 router.get("/api/users", wrapper(userController.getAll));
 router.get("/api/users/filtered", wrapper(userController.getFiltered));
-router.patch("/api/user/:id", wrapper(userController.updateUser));
+router.patch(
+  "/api/user/:id",
+  authorization,
+  wrapper(userController.updateUser)
+);
 router.delete(
   "/api/user/:id",
   authorization,

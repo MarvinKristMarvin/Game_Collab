@@ -8,11 +8,18 @@ const authController = {
     const { mail, password, confirmation } = req.body;
     // check if informations are correct or return errors
     if (!mail) {
+      // send error to the front toast
       return res.json({
-        error: "The mail is required",
+        error: "Your mail is required",
       });
     }
-    if (!password || password.length < 3) {
+    // if not a mail string return error
+    if (!/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/i.test(mail)) {
+      return res.json({
+        error: "Your mail is not valid",
+      });
+    }
+    if (!password || password.length < 8) {
       return res.json({
         error: "Your password should have at least 8 characters",
       });
@@ -105,7 +112,7 @@ GROUP BY
       );
     }
     if (!match) {
-      return res.json({ error: "Passwords do not match" });
+      return res.json({ error: "Wrong password" });
     }
   },
 

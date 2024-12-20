@@ -10,7 +10,7 @@ function App() {
   return (
     <div>
       <Header />
-      <Toaster position="bottom-right" toastOptions={{ duration: 4000 }} />
+      <Toaster position="bottom-center" toastOptions={{ duration: 4000 }} />
       <Routes>
         <Route path="/" element={<Home />}></Route>
         <Route path="/profile" element={<Profile />}></Route>

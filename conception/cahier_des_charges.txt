@@ -16,7 +16,7 @@ Améliorations futures possibles :
 - Acces à un profil détaillé
 - Possibilité de créer des présentations de projets, sur lesquels les utilisateurs peuvent swiper et demander de participer
 (Au lieu de contacter par mail, cela pourrait devenir une invitation à participer au projet, si le profil accepte, alors les participants au projet peuvent chatter ensemble)
-- Ajout d'un systeme d'abonnement premium (pour poster + de projets ou avoir plus de visibilité par exemple)
+- Ajout d'un systeme d'abonnement premium (pour avoir plus de visibilité par exemple)
 
 Technologies :
 - React : simplifie la création et la gestion des composants, favorise leur réutilisabilité et garantit la scalabilité si l'application se développe.
@@ -31,21 +31,20 @@ fonctionnalités avancées tout en restant adapté aux petits projets.
 
 Routes :
 homepage/ -> accueil et explications de l'app
-search/ -> page de filtrage de la recherche de profil
-search/users?name=xxx&age=xxx,xxx&language=xxx,xxx&jobs=xxx,xxx&keywords=xxx,xxx&remuneration=xxx,xxx -> Recherche des profils en utilisant des filtres
-profile/ -> connexion et inscription, si connecté montre son propre profil
+search/ -> page de présentations des profils trouvés selon des critères de recherche
+profile/ -> connexion et inscription, si connecté montre sa page de modification de profil
 
 Routes API :
-GET /users?name=xxx&age=xxx,xxx&language=xxx,xxx&jobs=xxx,xxx&keywords=xxx,xxx&remuneration=xxx,xxx -> Recherche des profils en utilisant des filtres
-GET /users/userId -> Récupérer son propre profil
-POST /users -> Créer son profil
-PATCH /users/userId -> Modifier son profil
-DELETE /users/userId -> Supprimer son profil
+GET /api/users/filtered?name=xxx&age=xxx,xxx&language=xxx,xxx&jobs=xxx,xxx&keywords=xxx,xxx&remuneration=xxx,xxx -> Recherche des profils en utilisant des filtres
+GET /api/users/ -> Récupérer tous les profils
+PATCH /api/user/:id -> Modifier son profil
+DELETE /api/user/:id -> Supprimer son profil
+POST /signup -> Créer son profil
+POST /login -> Se connecter
+POST /logout -> Se déconnecter
 
 Charte graphique :
-- description : l'application doit rappeler le secteur du jeu vidéo -> couleurs contrastées, thème principal sombre. Interface très épurée et rapide à comprendre, la version 
-desktop sera visuellement similaire à la version mobile (respecter le ratio longueur largeur d'un smartphone, simuler les bordures du smartphone par une bordure de couleur),
-cela changera probalement dans le futur.
+- description : l'application doit rappeler le secteur du jeu vidéo -> couleurs contrastées, thème principal sombre. Interface très épurée et rapide à comprendre.
 - couleurs : rouge #F1005C, violet #BB0072, jaune #FFD840, orange #FF9900, noir rougeâtre #0A0808
 - fonts : Noto Sans
 - drapeaux : https://flagpedia.net/download/icons
