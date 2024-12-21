@@ -14,7 +14,7 @@ const authorization = async (
   }
   if (!token) {
     console.log("not token");
-    return next({ status: 401, message: "Unauthorized" });
+    return next({ status: 401, message: "Unauthorized or expired ?" });
   }
 
   try {
@@ -36,7 +36,7 @@ const authorization = async (
     next(); // Proceed to the next middleware or route handler
   } catch (error) {
     console.log("error 2");
-    return next({ status: 401, message: "Invalid token" });
+    return next({ status: 401, message: "Invalid or expired token" });
   }
 };
 

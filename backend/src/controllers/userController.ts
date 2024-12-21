@@ -44,7 +44,7 @@ const userController = {
       AND (j.name = ANY ($2) OR $2 IS NULL)
       AND (rem.type = ANY ($3) OR $3 IS NULL)
       AND (u.age BETWEEN $4 AND $5 OR ($4 IS NULL AND $5 IS NULL))
-      AND u.available = TRUE -- Filter only available users
+      AND u.available = TRUE
 )
 SELECT 
     u.id,
@@ -75,7 +75,7 @@ WHERE
 GROUP BY 
     u.id, r.name
 ORDER BY 
-    u.updated_at DESC; -- Order by the most recently updated first
+    u.updated_at DESC;
   `,
       [languages, jobs, remunerations, minAge, maxAge]
     );

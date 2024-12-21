@@ -2,10 +2,14 @@ import FixedButtons from "../components/FixedButtons/FixedButtons";
 import Label from "../components/Label/Label";
 import InputField from "../components/InputField/InputField";
 import CheckableItem from "../components/CheckableItem/CheckableItem";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import axios from "axios";
 import commaStringToArray from "../utils/commaStringToArray.ts";
 import removeLastCharacters from "../utils/removeLastCharacters.ts";
+import { useLoggedUser } from "../context/userContext.tsx";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-hot-toast";
+import { useInactivityTimer } from "../hooks/useInactivityTimer.ts";
 
 interface userInterface {
   id: number;
@@ -26,6 +30,38 @@ interface userInterface {
 }
 
 function Search() {
+  const { loggedUser, setLoggedUser } = useLoggedUser();
+  axios.defaults.withCredentials = true;
+
+  // Inactivity handler
+  const handleTimeOut = useCallback(() => {
+    // The back already knows that the user is inactive after 10 minutes,
+    // Need to remove all user informations from the front and toast the user
+    if (loggedUser) {
+      toast.error("You will be logged out due to inactivity");
+      logOut();
+    }
+  }, [loggedUser]);
+
+  // Start the inactivity timer
+  useInactivityTimer(30 * 60 * 1000, handleTimeOut); // 30 minutes timeout
+
+  const logOut = async () => {
+    console.log("log out");
+    setLoggedUser(null);
+    toast.success("You have been logged out successfully.");
+    try {
+      const response = await axios.post("http://localhost:5000/logout", {});
+      if (response.status === 200) {
+        console.log("Logged out successfully.");
+      } else {
+        console.error("Failed to log out.");
+      }
+    } catch (error) {
+      console.error("Error during logout:", error);
+    }
+  };
+
   /* toggle "browse profiles" and "filtering" pages */
   const [filtering, setFiltering] = useState(false);
   const updateFilteringToTrue = () => {
@@ -50,7 +86,6 @@ function Search() {
 
   /* create the filter string which will get modified on "search profiles" button submit */
   const dataURL = "http://localhost:5000/";
-  axios.defaults.withCredentials = true;
 
   const [loadedProfiles, setLoadedProfiles] = useState<userInterface[]>([]);
 
@@ -59,7 +94,7 @@ function Search() {
     axios
       .get<userInterface[]>(
         /* http://localhost:5000/api/users/filtered?jobs=Artist,Dev&languages=English.gb,French.fr&remunerations=Freelance,Salary */
-        "http://localhost:5000/api/users/filtered?jobs=Artist,Dev&remunerations=Salary,Freelance"
+        "http://localhost:5000/api/users/filtered"
       )
       .then((response) => {
         if (response.data && response.data.length > 0) {

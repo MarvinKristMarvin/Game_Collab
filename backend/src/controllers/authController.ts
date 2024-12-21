@@ -102,7 +102,7 @@ GROUP BY
       jwt.sign(
         { mail: user.mail, id: user.id, role: user.role },
         process.env.JWT_SECRET as string,
-        { expiresIn: "1h" },
+        { expiresIn: Number(process.env.JWT_EXPIRATION) },
         (err, token) => {
           if (err) throw err;
           // if successfull, send token to client in a cookie named token and send user data back as a response without the password

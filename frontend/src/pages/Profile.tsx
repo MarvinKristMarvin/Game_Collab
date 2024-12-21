@@ -3,18 +3,32 @@ import InputField from "../components/InputField/InputField";
 import Button from "../components/Button/Button";
 import PositiveMessage from "../components/PositiveMessage/PositiveMessage";
 import CheckableItem from "../components/CheckableItem/CheckableItem";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import axios from "axios";
 import { toast } from "react-hot-toast";
 import { useLoggedUser } from "../context/userContext";
 import removeLastCharacters from "../utils/removeLastCharacters";
 import { useNavigate } from "react-router-dom";
+import { useInactivityTimer } from "../hooks/useInactivityTimer";
 
 function Profile() {
   const [connected, setConnected] = useState(false);
   const { loggedUser, setLoggedUser } = useLoggedUser();
   const navigate = useNavigate();
   axios.defaults.withCredentials = true;
+
+  // Inactivity handler
+  const handleTimeOut = useCallback(() => {
+    // The back already knows that the user is inactive after 10 minutes,
+    // Need to remove all user informations from the front and toast the user
+    if (connected) {
+      toast.error("You will be logged out due to inactivity");
+      logOut();
+    }
+  }, [setLoggedUser, connected]);
+
+  // Start the inactivity timer
+  useInactivityTimer(30 * 60 * 1000, handleTimeOut); // 30 minutes timeout
 
   // LOGIN LOGIC
   const [loginData, setLoginData] = useState({
@@ -250,7 +264,6 @@ function Profile() {
     console.log("log out");
     setLoggedUser(null);
     setConnected(false);
-    navigate("/profile");
     toast.success("You have been logged out successfully.");
     try {
       const response = await axios.post(
