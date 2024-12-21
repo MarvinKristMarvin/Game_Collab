@@ -40,6 +40,7 @@ const authController = {
     }
     // if all informations are good, hash password then create a user in db and return it
     const hashedPassword = await hashPassword(password);
+
     const newUserResult = await query(
       `
         INSERT INTO "user" (mail, password) 
@@ -48,6 +49,7 @@ const authController = {
       `,
       [mail, hashedPassword]
     );
+
     // Return the created user (excluding the password)
     return res.json(newUserResult.rows[0]);
   },
@@ -85,6 +87,17 @@ GROUP BY
     // check if the given password matches the hashed password
     const match = await comparePassword(password, user.password);
     if (match) {
+      try {
+        await query(
+          `UPDATE "user" 
+         SET updated_at = CURRENT_TIMESTAMP 
+         WHERE mail = $1;`,
+          [mail]
+        );
+      } catch (error) {
+        console.log(error + " unable to update user's updated_at");
+      }
+
       // creates a jwt by giving user data to encode
       jwt.sign(
         { mail: user.mail, id: user.id, role: user.role },
