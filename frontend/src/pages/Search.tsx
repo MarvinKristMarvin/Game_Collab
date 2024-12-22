@@ -7,7 +7,6 @@ import axios from "axios";
 import commaStringToArray from "../utils/commaStringToArray.ts";
 import removeLastCharacters from "../utils/removeLastCharacters.ts";
 import { useLoggedUser } from "../context/userContext.tsx";
-import { useNavigate } from "react-router-dom";
 import { toast } from "react-hot-toast";
 import { useInactivityTimer } from "../hooks/useInactivityTimer.ts";
 
@@ -188,8 +187,12 @@ function Search() {
       .then((response) => {
         if (response.data && response.data.length > 0) {
           setLoadedProfiles(response.data);
+          toast.success(
+            response.data.length + " profiles matches your filters"
+          );
         } else {
           setLoadedProfiles([]);
+          toast.error("No profiles have been found with your filters");
         }
       })
       .catch((error) => {
@@ -379,9 +382,8 @@ function Search() {
                   {loadedProfiles[showProfileNumber].portfolio_url}
                 </a>
               ) : (
-                <span>No portfolio available</span>
+                ""
               )}
-              <span> &#x2197;</span>
             </section>
             <section className="mail">
               <p>{loadedProfiles[showProfileNumber].profile_mail}</p>

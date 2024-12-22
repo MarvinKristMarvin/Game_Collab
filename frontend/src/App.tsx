@@ -27,7 +27,13 @@ function App() {
   return (
     <div>
       <Header />
-      <Toaster position="bottom-center" toastOptions={{ duration: 4000 }} />
+      <Toaster
+        position="bottom-center"
+        toastOptions={{
+          duration: 6000,
+          style: { fontSize: "1.25rem", paddingLeft: "1rem" },
+        }}
+      />
       <Routes>
         <Route path="/" element={<Home />}></Route>
         <Route path="/profile" element={<Profile />}></Route>

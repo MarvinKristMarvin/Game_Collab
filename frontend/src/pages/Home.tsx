@@ -5,6 +5,7 @@ import { useLoggedUser } from "../context/userContext";
 import { useCallback } from "react";
 import { toast } from "react-hot-toast";
 import { useInactivityTimer } from "../hooks/useInactivityTimer";
+import { Link } from "react-router-dom";
 
 function Home() {
   const { loggedUser, setLoggedUser } = useLoggedUser();
@@ -40,7 +41,22 @@ function Home() {
   };
   return (
     <div className="homePage">
-      <p className="homeMessage">Welcome message</p>
+      <p className="homeMessage">
+        Welcome to Gamehearts, the perfect app to find partners for indie game
+        projects
+        <br />
+        <br />
+        Wanna be contacted by project owners?{" "}
+        <Link to="/profile">log in to create your profile</Link>, it is super
+        fast
+        <br />
+        <br />
+        You can also <Link to="/search">browse profiles</Link> to find partners
+        for your project, we make it easy with our search filters
+        <br />
+        <br />
+        Good luck on your indie game journey!
+      </p>
       <Footer />
     </div>
   );

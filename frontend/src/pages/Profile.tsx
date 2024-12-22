@@ -117,7 +117,10 @@ function Profile() {
       } else {
         toast.success("Sign up successful, you can now log in !");
         console.log("sign up success !");
-        //navigate("/login");
+        // Clear signup input fields
+        updateSignupMail("");
+        updateSignupPassword("");
+        updateSignupConfirmation("");
       }
     } catch (error) {
       console.log(error);

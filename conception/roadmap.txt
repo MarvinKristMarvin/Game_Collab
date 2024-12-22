@@ -2,10 +2,10 @@
 [-] commencé
 [x] fini
 
-Kanban : https://github.com/orgs/O-clock-Mimir/projects/32/views/1
 
-[x] creer repo github
-[x] lier repo
+- Roadmap ------------------------
+
+[x] creer repo et lier repo github
 [x] faire le dossier de conception 
    [x] roadmap
    [x] user stories
@@ -31,10 +31,45 @@ Kanban : https://github.com/orgs/O-clock-Mimir/projects/32/views/1
       [x] dictionnaire de données
       [x] autres spécifications
 [x] préparer l'environnement de travail
-[x] creer l'integration de base
-[x] creer la bdd
-[x] hydrater la bdd
-[-] développer
-[ ] sécuriser (failles courantes)
+[x] creer l'html et css de base
+[x] creer la bdd et les scripts de test (create, insert, drop)
+[-] développer le MVP responsive (1)
+[ ] sécuriser l'authentification et failles courantes
+[ ] réduction des coûts : optimisation des images, minification des fichiers, optimisation des requetes
+[ ] tests pour les fonctionnalités principales du projet
+[ ] accessibiliser aux normes WCAG
+[ ] SEO : maximiser le référencement du projet
+[ ] RGPD et mentions légales
 [ ] dockeriser
 [ ] déployer
+[ ] rédiger la procédure de déploiement (CICD bonus)
+[ ] ajout de nouvelles features
+[ ] améliorer le design du site
+
+
+- Daily tasks -------------------
+
+20/12/2024
+[x] securise auth routes with jwt
+[x] field validation with regex and conditions in server, tell user if problems
+[x] if all fields are ok when saving : user available = true, else false
+[x] in both cases tell the user if his profile will be shown or not
+
+21/12/2024
+[x] load only available users on search, send them sorted by update date
+[x] remove page reload disconnection problem
+[x] automatic logout when jwt is too old, and toast "expired session..."
+[x] refresh the token in wrapper, remove token if front is inactive for too long
+
+22/12/2024
+[x] clean sign up input fields when signed in
+[x] add size to toasts
+[x] better home page with gamehearts presentation, and invitation to login or signup to create a profile, or search profiles
+[ ] remove arrow buttons for browse page, show all filtered profiles directly and scroll vertically, change css
+[ ] tell the user how many profiles have been found with the filters, else toast no profiles matches filters 
+
+
+TODO NEXT
+[ ] clean up code, refactor
+[ ] comment all code for maintenance and comprehension
+[ ] add accessibility and modify 
