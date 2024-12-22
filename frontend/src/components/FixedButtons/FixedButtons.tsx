@@ -5,8 +5,6 @@ import { IFixedButtons } from "../../@types/components";
 function FixedButtons({
   filtering,
   updateFilteringToTrue,
-  goToNextUser,
-  goToPreviousUser,
   getFilteredProfiles,
 }: IFixedButtons) {
   if (filtering === true) {
@@ -19,10 +17,10 @@ function FixedButtons({
     );
   } else {
     return (
-      <div className="fixedButtonsComponent grid">
-        <Button text="&#9664;" func={goToPreviousUser} />
-        <Button text="Filters" func={updateFilteringToTrue} />
-        <Button text="&#9654;" func={goToNextUser} />
+      <div className="fixedButtonsComponent">
+        <div className="buttonsContainer">
+          <Button text="Filters" func={updateFilteringToTrue} />
+        </div>
       </div>
     );
   }

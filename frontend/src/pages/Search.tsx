@@ -70,19 +70,6 @@ function Search() {
     setFiltering(false);
   };
 
-  /* create an index to go to next or previous loaded profile */
-  const [showProfileNumber, setShowProfileNumber] = useState(0);
-  const goToNextUser = () => {
-    if (showProfileNumber < loadedProfiles.length - 1) {
-      setShowProfileNumber(showProfileNumber + 1);
-    }
-  };
-  const goToPreviousUser = () => {
-    if (showProfileNumber > 0) {
-      setShowProfileNumber(showProfileNumber - 1);
-    }
-  };
-
   /* create the filter string which will get modified on "search profiles" button submit */
   const dataURL = "http://localhost:5000/";
 
@@ -107,15 +94,6 @@ function Search() {
 
   console.log(loadedProfiles);
   /* convert strings separated by commas from the loaded profiles into array of strings */
-  const languages = loadedProfiles[showProfileNumber]?.languages
-    ? commaStringToArray(loadedProfiles[showProfileNumber].languages)
-    : [];
-  const jobs = loadedProfiles[showProfileNumber]?.jobs
-    ? commaStringToArray(loadedProfiles[showProfileNumber].jobs)
-    : [];
-  const remunerations = loadedProfiles[showProfileNumber]?.remunerations
-    ? commaStringToArray(loadedProfiles[showProfileNumber].remunerations)
-    : [];
 
   const [minimumAge, setMinimumAge] = useState<number>(0);
   const [maximumAge, setMaximumAge] = useState<number>(99);
@@ -124,6 +102,10 @@ function Search() {
   const [selectedRemunerations, setSelectedRemunerations] = useState<string[]>(
     []
   );
+  const [keywords, setKeywords] = useState<string | null>(null);
+  const updateKeywords = (value: string) => {
+    setKeywords(value);
+  };
 
   const [filterString, setFilterString] =
     useState<string>("api/users/filtered");
@@ -180,7 +162,6 @@ function Search() {
     if (maximumAge < minimumAge) {
       setMaximumAge(minimumAge);
     }
-    setShowProfileNumber(0);
     console.log("request : " + dataURL + filterString);
     axios
       .get<userInterface[]>(dataURL + filterString)
@@ -313,6 +294,9 @@ function Search() {
               inputType="textarea"
               inputId="keywords"
               inputName="keywords"
+              isNumber={false}
+              actualValue={keywords != undefined ? keywords : ""}
+              onChangeHandler={updateKeywords}
             />
           </section>
         </form>
@@ -325,69 +309,81 @@ function Search() {
         <FixedButtons
           filtering={filtering}
           updateFilteringToTrue={updateFilteringToTrue}
-          goToNextUser={goToNextUser}
-          goToPreviousUser={goToPreviousUser}
         />
-        {/* show profile info only if profiles are loaded */}
+        {/* Show profile info only if profiles are loaded */}
         {loadedProfiles.length > 0 ? (
           <div className="profileInformations">
-            <section className="basicInformations">
-              <p className={"nameAge"}>
-                {loadedProfiles[showProfileNumber].name + ", "}
-                {loadedProfiles[showProfileNumber].age}
-              </p>
-              <div className="languages">
-                {languages.map((language) => {
-                  console.log(languages);
-                  const [languageName, languageCode] = language.split(".");
-                  return (
-                    <div className="language">
-                      <img
-                        src={`https://flagcdn.com/w40/${languageCode}.png`}
-                        width="40"
-                        alt={languageName}
-                      />
+            {loadedProfiles.map((profile, index) => {
+              // Parse languages for the current profile
+              const languages = profile.languages
+                ? commaStringToArray(profile.languages)
+                : [];
+              const jobs = profile.jobs ? commaStringToArray(profile.jobs) : [];
+              const remunerations = profile.remunerations
+                ? commaStringToArray(profile.remunerations)
+                : [];
+
+              return (
+                <div className="profile" key={index}>
+                  <section className="basicInformations">
+                    <p className={"nameAge"}>
+                      {profile.name + ", "}
+                      {profile.age}
+                    </p>
+                    <div className="languages">
+                      {languages.map((language) => {
+                        const [languageName, languageCode] =
+                          language.split(".");
+                        return (
+                          <div className="language" key={languageCode}>
+                            <img
+                              src={`https://flagcdn.com/w40/${languageCode}.png`}
+                              width="40"
+                              alt={languageName}
+                            />
+                          </div>
+                        );
+                      })}
                     </div>
-                  );
-                })}
-              </div>
-            </section>
-            <section className="jobs">
-              {jobs.map((job) => (
-                <div className="job">{job}</div>
-              ))}
-            </section>
-            <section className="remunerations">
-              {remunerations.map((remuneration) => (
-                <div className="remuneration">{remuneration}</div>
-              ))}
-            </section>
-            <section className="description">
-              <p>{loadedProfiles[showProfileNumber].description}</p>
-            </section>
-            <section className="portfolio">
-              {loadedProfiles[showProfileNumber].portfolio_url ? (
-                <a
-                  href={
-                    /* add http if not already in the url */
-                    loadedProfiles[showProfileNumber].portfolio_url.startsWith(
-                      "http"
-                    )
-                      ? loadedProfiles[showProfileNumber].portfolio_url
-                      : `https://${loadedProfiles[showProfileNumber].portfolio_url}`
-                  }
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  {loadedProfiles[showProfileNumber].portfolio_url}
-                </a>
-              ) : (
-                ""
-              )}
-            </section>
-            <section className="mail">
-              <p>{loadedProfiles[showProfileNumber].profile_mail}</p>
-            </section>
+                  </section>
+                  <section className="jobs">
+                    {jobs.map((job, i) => (
+                      <div className="job" key={i}>
+                        {job}
+                      </div>
+                    ))}
+                  </section>
+                  <section className="remunerations">
+                    {remunerations.map((remuneration, i) => (
+                      <div className="remuneration" key={i}>
+                        {remuneration}
+                      </div>
+                    ))}
+                  </section>
+                  <section className="description">
+                    <p>{profile.description}</p>
+                  </section>
+                  <section className="portfolio">
+                    {profile.portfolio_url ? (
+                      <a
+                        href={
+                          profile.portfolio_url.startsWith("http")
+                            ? profile.portfolio_url
+                            : `https://${profile.portfolio_url}`
+                        }
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        {profile.portfolio_url}
+                      </a>
+                    ) : null}
+                  </section>
+                  <section className="mail">
+                    <p>{profile.profile_mail}</p>
+                  </section>
+                </div>
+              );
+            })}
           </div>
         ) : (
           <p>No profiles found with those filters</p>

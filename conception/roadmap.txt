@@ -65,8 +65,9 @@
 [x] clean sign up input fields when signed in
 [x] add size to toasts
 [x] better home page with gamehearts presentation, and invitation to login or signup to create a profile, or search profiles
-[ ] remove arrow buttons for browse page, show all filtered profiles directly and scroll vertically, change css
-[ ] tell the user how many profiles have been found with the filters, else toast no profiles matches filters 
+[x] remove arrow buttons for browse page, show all filtered profiles directly and scroll vertically
+[x] tell the user how many profiles have been found with the filters, else toast no profiles matches filters
+[x] change css global css for a more modern website, it is really ugly now
 
 
 TODO NEXT

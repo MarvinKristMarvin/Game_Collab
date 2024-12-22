@@ -244,7 +244,7 @@ function Profile() {
             });
           } else {
             toast.success(
-              "Your profile is complete and will be shown on our platform !"
+              "Your profile is complete and will be shown to others"
             );
           }
           console.log("Save profile succeed");

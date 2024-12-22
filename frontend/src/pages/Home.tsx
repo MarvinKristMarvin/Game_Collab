@@ -42,20 +42,17 @@ function Home() {
   return (
     <div className="homePage">
       <p className="homeMessage">
-        Welcome to Gamehearts, the perfect app to find partners for indie game
-        projects
+        Welcome to Gamehearts, the ultimate platform for connecting with
+        potential partners for your indie game projects!
         <br />
         <br />
-        Wanna be contacted by project owners?{" "}
-        <Link to="/profile">log in to create your profile</Link>, it is super
-        fast
+        <Link to="/profile">Creating your profile</Link> is quick and easy,
+        allowing project owners to reach out to you directly. You can also{" "}
+        <Link to="/search">explore other profiles</Link> using our advanced
+        search filters to find the perfect match for your project.
         <br />
         <br />
-        You can also <Link to="/search">browse profiles</Link> to find partners
-        for your project, we make it easy with our search filters
-        <br />
-        <br />
-        Good luck on your indie game journey!
+        Wishing you the best of luck on your indie game journey!
       </p>
       <Footer />
     </div>

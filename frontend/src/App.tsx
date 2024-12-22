@@ -31,7 +31,7 @@ function App() {
         position="bottom-center"
         toastOptions={{
           duration: 6000,
-          style: { fontSize: "1.25rem", paddingLeft: "1rem" },
+          style: { fontSize: "1rem", paddingLeft: "1rem" },
         }}
       />
       <Routes>

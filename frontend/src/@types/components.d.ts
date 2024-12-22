@@ -16,8 +16,6 @@ export interface ICheckableItem {
 export interface IFixedButtons {
   filtering: boolean;
   updateFilteringToTrue?: () => void;
-  goToNextUser?: () => void;
-  goToPreviousUser?: () => void;
   getFilteredProfiles?: () => void;
 }
 

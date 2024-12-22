@@ -1,6 +1,6 @@
 .fixedButtonsComponent {
   width: 100%;
-  background-color: black;
+  background-color: rgb(15, 15, 22);
   position: sticky;
   top: 7.125rem;
   z-index: 2;
