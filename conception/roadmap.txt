@@ -68,7 +68,10 @@
 [x] remove arrow buttons for browse page, show all filtered profiles directly and scroll vertically
 [x] tell the user how many profiles have been found with the filters, else toast no profiles matches filters
 [x] change css global css for a more modern website, it is really ugly now
+[ ] on google, show scrollbar on hover for more beautiful website
 
+31/12/2024
+[x] refactor inactivity logic because it appears on all pages, created a custom hook for that
 
 TODO NEXT
 [ ] clean up code, refactor

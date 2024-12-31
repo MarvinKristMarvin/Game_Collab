@@ -2,13 +2,13 @@ import FixedButtons from "../components/FixedButtons/FixedButtons";
 import Label from "../components/Label/Label";
 import InputField from "../components/InputField/InputField";
 import CheckableItem from "../components/CheckableItem/CheckableItem";
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 import commaStringToArray from "../utils/commaStringToArray.ts";
 import removeLastCharacters from "../utils/removeLastCharacters.ts";
-import { useLoggedUser } from "../context/userContext.tsx";
+
 import { toast } from "react-hot-toast";
-import { useInactivityTimer } from "../hooks/useInactivityTimer.ts";
+import useInactivityHandler from "../hooks/useInactivityHandler.ts";
 
 interface userInterface {
   id: number;
@@ -29,37 +29,9 @@ interface userInterface {
 }
 
 function Search() {
-  const { loggedUser, setLoggedUser } = useLoggedUser();
   axios.defaults.withCredentials = true;
 
-  // Inactivity handler
-  const handleTimeOut = useCallback(() => {
-    // The back already knows that the user is inactive after 10 minutes,
-    // Need to remove all user informations from the front and toast the user
-    if (loggedUser) {
-      toast.error("You will be logged out due to inactivity");
-      logOut();
-    }
-  }, [loggedUser]);
-
-  // Start the inactivity timer
-  useInactivityTimer(30 * 60 * 1000, handleTimeOut); // 30 minutes timeout
-
-  const logOut = async () => {
-    console.log("log out");
-    setLoggedUser(null);
-    toast.success("You have been logged out successfully.");
-    try {
-      const response = await axios.post("http://localhost:5000/logout", {});
-      if (response.status === 200) {
-        console.log("Logged out successfully.");
-      } else {
-        console.error("Failed to log out.");
-      }
-    } catch (error) {
-      console.error("Error during logout:", error);
-    }
-  };
+  useInactivityHandler();
 
   /* toggle "browse profiles" and "filtering" pages */
   const [filtering, setFiltering] = useState(false);

@@ -13,10 +13,12 @@ function App() {
   // Persists logged user in local storage to avoid disconnections on page refresh
   useEffect(() => {
     const storedLoggedUser = localStorage.getItem("loggedUser");
+    // If there is a stored logged user, update the loggedUser context
     if (storedLoggedUser) {
       setLoggedUser(JSON.parse(storedLoggedUser));
     }
   }, [setLoggedUser]);
+
   useEffect(() => {
     if (loggedUser) {
       localStorage.setItem("loggedUser", JSON.stringify(loggedUser));
@@ -24,13 +26,14 @@ function App() {
       localStorage.removeItem("loggedUser");
     }
   }, [loggedUser]);
+
   return (
     <div>
       <Header />
       <Toaster
         position="bottom-center"
         toastOptions={{
-          duration: 6000,
+          duration: 5000,
           style: { fontSize: "1rem", paddingLeft: "1rem" },
         }}
       />

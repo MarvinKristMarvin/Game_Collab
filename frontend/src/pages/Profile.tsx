@@ -3,32 +3,22 @@ import InputField from "../components/InputField/InputField";
 import Button from "../components/Button/Button";
 import PositiveMessage from "../components/PositiveMessage/PositiveMessage";
 import CheckableItem from "../components/CheckableItem/CheckableItem";
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 import { toast } from "react-hot-toast";
 import { useLoggedUser } from "../context/userContext";
 import removeLastCharacters from "../utils/removeLastCharacters";
 import { useNavigate } from "react-router-dom";
-import { useInactivityTimer } from "../hooks/useInactivityTimer";
+import useInactivityHandler from "../hooks/useInactivityHandler";
 
 function Profile() {
-  const [connected, setConnected] = useState(false);
-  const { loggedUser, setLoggedUser } = useLoggedUser();
   const navigate = useNavigate();
+  const { loggedUser, setLoggedUser } = useLoggedUser();
   axios.defaults.withCredentials = true;
 
-  // Inactivity handler
-  const handleTimeOut = useCallback(() => {
-    // The back already knows that the user is inactive after 10 minutes,
-    // Need to remove all user informations from the front and toast the user
-    if (connected) {
-      toast.error("You will be logged out due to inactivity");
-      logOut();
-    }
-  }, [setLoggedUser, connected]);
-
-  // Start the inactivity timer
-  useInactivityTimer(30 * 60 * 1000, handleTimeOut); // 30 minutes timeout
+  // Get logOut function from the inactivity handler hook to be able to use logOut in the logout button
+  console.log("logged user before truc" + loggedUser);
+  const { logOut } = useInactivityHandler();
 
   // LOGIN LOGIC
   const [loginData, setLoginData] = useState({
@@ -65,10 +55,6 @@ function Profile() {
         console.log("log in success !");
         console.log("login data : ", data);
         setLoginData({ mail: "", password: "" });
-        // I should also join jobs, languages and remunerations there to preselect front choices
-        //navigate("/login");
-        // enter logged user data in the user context
-
         setLoggedUser(data);
       }
     } catch (error) {
@@ -167,7 +153,6 @@ function Profile() {
 
   useEffect(() => {
     if (loggedUser) {
-      setConnected(true);
       setAge(loggedUser.age || null);
       setName(loggedUser.name || null);
       setDescription(loggedUser.description || null);
@@ -263,25 +248,6 @@ function Profile() {
     }
   };
 
-  const logOut = async () => {
-    console.log("log out");
-    setLoggedUser(null);
-    setConnected(false);
-    toast.success("You have been logged out successfully.");
-    try {
-      const response = await axios.post(
-        "http://localhost:5000/logout",
-        {} // Ensures cookies are sent with the request
-      );
-      if (response.status === 200) {
-        console.log("Logged out successfully.");
-      } else {
-        console.error("Failed to log out.");
-      }
-    } catch (error) {
-      console.error("Error during logout:", error);
-    }
-  };
   const deleteAccount = async () => {
     try {
       if (loggedUser) {
@@ -293,7 +259,6 @@ function Profile() {
         if (response.status === 204 || response.status === 200) {
           console.log("Deleted account successfully.");
           setLoggedUser(null);
-          setConnected(false);
           navigate("/profile");
           toast.success("Your account has been deleted successfully.");
         } else {
@@ -306,7 +271,7 @@ function Profile() {
   };
 
   /* if user is not authentified, show login signup page, else show his profile page */
-  if (connected === false) {
+  if (loggedUser === null) {
     return (
       <div className="profilePage">
         <form onSubmit={loginUser}>
