@@ -1,6 +1,7 @@
 import { IInputField } from "../../@types/components";
 import "./InputField.css";
 
+// Displays an input field, which can be a text input or a textarea
 function InputField({
   placeholder,
   inputType,
@@ -42,6 +43,7 @@ function InputField({
           onChangeHandler
             ? (e: React.ChangeEvent<HTMLInputElement>) => {
                 const value = e.target.value;
+                // For a isNumber field, only allow numbers or empty string
                 if (isNumber && (value === "" || !isNaN(Number(value)))) {
                   onChangeHandler(value);
                 } else if (!isNumber) {

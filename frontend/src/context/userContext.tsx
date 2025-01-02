@@ -1,4 +1,4 @@
-import React, { createContext, useState, useContext, ReactNode } from "react";
+import { createContext, useState, useContext, ReactNode } from "react";
 
 // Define a User type (customize as needed)
 export interface LoggedUserInterface {
@@ -15,7 +15,7 @@ export interface LoggedUserInterface {
   remunerations: string[] | null;
 }
 
-// Define context types
+// Define context types ()
 interface LoggedUserContextInterface {
   loggedUser: LoggedUserInterface | null;
   setLoggedUser: (user: LoggedUserInterface | null) => void;
@@ -26,12 +26,11 @@ const LoggedUserContext = createContext<LoggedUserContextInterface | undefined>(
   undefined
 );
 
-// Provider component
+// Provider component (shares the context in main.tsx)
 export const LoggedUserProvider = ({ children }: { children: ReactNode }) => {
   const [loggedUser, setLoggedUser] = useState<LoggedUserInterface | null>(
     null
   );
-
   return (
     <LoggedUserContext.Provider value={{ loggedUser, setLoggedUser }}>
       {children}

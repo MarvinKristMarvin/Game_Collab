@@ -32,7 +32,7 @@ const useInactivityHandler = () => {
     // Start a new timer with the specified timeout duration
     timeoutRef.current = setTimeout(() => {
       handleTimeOut();
-    }, 0.1 * 60 * 1000);
+    }, 30 * 60 * 1000);
   }, []);
 
   // Handle inactivity timeout
@@ -48,12 +48,8 @@ const useInactivityHandler = () => {
   useEffect(() => {
     // If there is no loggedUser, don't start the inactivity handling
     if (!loggedUser) {
-      console.log("no logged user");
-
       return;
     }
-
-    console.log("logged user");
 
     // List of user interaction events to monitor for activity
     const events = ["mousemove", "keydown", "click"];
@@ -78,7 +74,7 @@ const useInactivityHandler = () => {
         clearTimeout(timeoutRef.current);
       }
     };
-  }, [loggedUser, resetTimer]); // Only run when `loggedUser` changes
+  }, [loggedUser, resetTimer]);
 
   return { logOut };
 };

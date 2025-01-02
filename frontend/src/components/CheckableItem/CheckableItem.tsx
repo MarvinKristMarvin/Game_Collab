@@ -1,6 +1,7 @@
 import "./CheckableItem.css";
 import { ICheckableItem } from "../../@types/components";
 
+// An item of a list of checkable items
 function CheckableItem({
   text,
   inputId,

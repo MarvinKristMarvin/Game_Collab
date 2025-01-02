@@ -1,3 +1,4 @@
+/* PROPS INTERFACES */
 export interface IButton {
   text: string;
   func?: () => void;
@@ -8,7 +9,7 @@ export interface IButton {
 export interface ICheckableItem {
   text: string;
   inputId: string;
-  language?: string; // use this to change the css style and have the flag
+  language?: string;
   onChange: () => void;
   checked: boolean;
 }
@@ -36,4 +37,23 @@ export interface ILabel {
 
 export interface IPositiveMessage {
   text: string;
+}
+
+/* COMPONENTS INTERFACES */
+export interface userInterface {
+  id: number;
+  password: string;
+  mail: string;
+  name: string;
+  age: number;
+  available: boolean;
+  description: string;
+  portfolio_url?: string;
+  profile_mail: string;
+  created_at: string;
+  updated_at?: string;
+  role: number;
+  jobs: string;
+  languages: string;
+  remunerations: string;
 }

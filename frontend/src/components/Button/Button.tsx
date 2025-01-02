@@ -1,6 +1,7 @@
 import "./Button.css";
 import { IButton } from "../../@types/components";
 
+// A button which execute a function
 function Button({ text, func, color, buttonType = "button" }: IButton) {
   return (
     <button

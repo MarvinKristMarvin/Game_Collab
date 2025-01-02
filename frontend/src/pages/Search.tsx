@@ -6,34 +6,15 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import commaStringToArray from "../utils/commaStringToArray.ts";
 import removeLastCharacters from "../utils/removeLastCharacters.ts";
-
 import { toast } from "react-hot-toast";
 import useInactivityHandler from "../hooks/useInactivityHandler.ts";
-
-interface userInterface {
-  id: number;
-  password: string;
-  mail: string;
-  name: string;
-  age: number;
-  available: boolean;
-  description: string;
-  portfolio_url?: string;
-  profile_mail: string;
-  created_at: string;
-  updated_at?: string;
-  role: number;
-  jobs: string;
-  languages: string;
-  remunerations: string;
-}
+import { userInterface } from "../@types/components";
 
 function Search() {
   axios.defaults.withCredentials = true;
-
   useInactivityHandler();
 
-  /* toggle "browse profiles" and "filtering" pages */
+  // Toggle pages "browse profiles" and "filtering"
   const [filtering, setFiltering] = useState(false);
   const updateFilteringToTrue = () => {
     setFiltering(true);
@@ -42,31 +23,10 @@ function Search() {
     setFiltering(false);
   };
 
-  /* create the filter string which will get modified on "search profiles" button submit */
-  const dataURL = "http://localhost:5000/";
-
+  // Loaded profiles of type userInterface
   const [loadedProfiles, setLoadedProfiles] = useState<userInterface[]>([]);
 
-  /* load profiles on first render */
-  useEffect(() => {
-    axios
-      .get<userInterface[]>(
-        /* http://localhost:5000/api/users/filtered?jobs=Artist,Dev&languages=English.gb,French.fr&remunerations=Freelance,Salary */
-        "http://localhost:5000/api/users/filtered"
-      )
-      .then((response) => {
-        if (response.data && response.data.length > 0) {
-          setLoadedProfiles(response.data);
-        }
-      })
-      .catch((error) => {
-        console.error("Error fetching data:", error);
-      });
-  }, []);
-
-  console.log(loadedProfiles);
-  /* convert strings separated by commas from the loaded profiles into array of strings */
-
+  // Filter parameters
   const [minimumAge, setMinimumAge] = useState<number>(0);
   const [maximumAge, setMaximumAge] = useState<number>(99);
   const [selectedJobs, setSelectedJobs] = useState<string[]>([]);
@@ -74,14 +34,33 @@ function Search() {
   const [selectedRemunerations, setSelectedRemunerations] = useState<string[]>(
     []
   );
+
+  // Filtering keywords not working yet
   const [keywords, setKeywords] = useState<string | null>(null);
   const updateKeywords = (value: string) => {
     setKeywords(value);
   };
 
+  // Create the filter string which will get modified on "search profiles" submit button
+  const dataURL = "http://localhost:5000/";
   const [filterString, setFilterString] =
     useState<string>("api/users/filtered");
 
+  // Load non filtered profiles on first render and setLoadedProfiles (filtered without parameters gets all profiles)
+  useEffect(() => {
+    axios
+      .get<userInterface[]>("http://localhost:5000/api/users/filtered")
+      .then((response) => {
+        if (response.data && response.data.length > 0) {
+          setLoadedProfiles(response.data);
+        }
+      })
+      .catch((error) => {
+        console.error("Error getting non filtered profiles:", error);
+      });
+  }, []);
+
+  //! Check if useless code
   const toggleFilter = (
     filter: string,
     setFilter: React.Dispatch<React.SetStateAction<string[]>>,
@@ -94,14 +73,15 @@ function Search() {
     }
   };
 
+  // Functions to update filter age parameters
   const updateMinAge = (value: string) => {
-    setMinimumAge(Number(value)); // Convert to number if valid
+    setMinimumAge(Number(value));
   };
-
   const updateMaxAge = (value: string) => {
-    setMaximumAge(Number(value)); // Convert to number if valid
+    setMaximumAge(Number(value));
   };
 
+  // Write the filtering string then setFilterString
   useEffect(() => {
     const queryParams = new URLSearchParams();
     if (selectedJobs.length > 0)
@@ -110,11 +90,8 @@ function Search() {
       queryParams.append("languages", selectedLanguages.join(","));
     if (selectedRemunerations.length > 0)
       queryParams.append("remunerations", selectedRemunerations.join(","));
-
     queryParams.append("minAge", minimumAge.toString());
     queryParams.append("maxAge", maximumAge.toString());
-    console.log("maxAge : " + maximumAge);
-    console.log("minAge : " + minimumAge);
 
     setFilterString(`api/users/filtered?${queryParams.toString()}`);
   }, [
@@ -125,16 +102,12 @@ function Search() {
     maximumAge,
   ]);
 
-  /* when click on search profiles button => load filtered profiles and change page to browse profiles */
-  /* http://localhost:5000/api/users/filtered?jobs=Artist,Dev&languages=English.gb,French.fr&remunerations=Freelance,Salary&minAge=25&maxAge=28 */
+  // When click on search profiles button => load filtered profiles and update page to browse profiles
   const getFilteredProfiles = () => {
-    /*if (minimumAge > maximumAge) {
-      setMinimumAge(0);
-    }*/
+    // Maximum age can't be less than minimum age
     if (maximumAge < minimumAge) {
       setMaximumAge(minimumAge);
     }
-    console.log("request : " + dataURL + filterString);
     axios
       .get<userInterface[]>(dataURL + filterString)
       .then((response) => {
@@ -149,12 +122,14 @@ function Search() {
         }
       })
       .catch((error) => {
-        console.error("Error fetching data:", error);
+        console.error("Error getting filtered profiles:", error);
       });
+
+    // Updates the page to browse profiles (filtering = false)
     updateFilteringToFalse();
   };
 
-  /* if filtering is true => show filters, else browse profiles */
+  // If filtering is true => show filters page, else, browse profiles */
   if (filtering === true) {
     return (
       <div className="searchPage">
@@ -163,7 +138,7 @@ function Search() {
           getFilteredProfiles={getFilteredProfiles}
         />
         <form action="">
-          {/* NAME AND AGE */}
+          {/* Choose an age limit for the search string*/}
           <section className="spacingSection">
             <Label text="Search for minimum and maximum age" htmlFor="minAge" />
             <div className="nameAndAgeList">
@@ -188,7 +163,7 @@ function Search() {
             </div>
           </section>
 
-          {/* LANGUAGES */}
+          {/* Add languages to the search string */}
           <section className="spacingSection">
             <Label text="Search people talking" htmlFor="english" />
             <div className="flagList">
@@ -216,7 +191,7 @@ function Search() {
             </div>
           </section>
 
-          {/* JOBS */}
+          {/* Add jobs to the search string */}
           <section className="spacingSection">
             <Label text="Search people doing" htmlFor="code" />
             <div className="jobList">
@@ -234,7 +209,7 @@ function Search() {
             </div>
           </section>
 
-          {/* REMUNERATION */}
+          {/* Add remunerations to the search string */}
           <section className="spacingSection">
             <Label text="Search people working for" htmlFor="free" />
             <div className="remunerationList">
@@ -258,7 +233,7 @@ function Search() {
             </div>
           </section>
 
-          {/* KEYWORDS */}
+          {/* Add keywords to the search string (not implemented yet) */}
           <section className="spacingSection ">
             <Label text="Search for description keywords" htmlFor="keywords" />
             <InputField
@@ -276,7 +251,7 @@ function Search() {
     );
   } else {
     return (
-      /* BROWSE PROFILES */
+      // If filtering is false, show the "browse profiles" page
       <div className="searchPage">
         <FixedButtons
           filtering={filtering}
@@ -286,7 +261,7 @@ function Search() {
         {loadedProfiles.length > 0 ? (
           <div className="profileInformations">
             {loadedProfiles.map((profile, index) => {
-              // Parse languages for the current profile
+              // Create arrays from strings for languages, jobs and remunerations for the current profile
               const languages = profile.languages
                 ? commaStringToArray(profile.languages)
                 : [];
@@ -295,6 +270,7 @@ function Search() {
                 ? commaStringToArray(profile.remunerations)
                 : [];
 
+              // Create a card for each profile
               return (
                 <div className="profile" key={index}>
                   <section className="basicInformations">
@@ -358,7 +334,9 @@ function Search() {
             })}
           </div>
         ) : (
-          <p>No profiles found with those filters</p>
+          <p>
+            No profiles found with those filters, please try with other ones
+          </p>
         )}
       </div>
     );

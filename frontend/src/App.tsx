@@ -10,6 +10,7 @@ import { useLoggedUser } from "./context/userContext";
 
 function App() {
   const { loggedUser, setLoggedUser } = useLoggedUser();
+
   // Persists logged user in local storage to avoid disconnections on page refresh
   useEffect(() => {
     const storedLoggedUser = localStorage.getItem("loggedUser");
@@ -19,6 +20,7 @@ function App() {
     }
   }, [setLoggedUser]);
 
+  // Update local storage when loggedUser changes
   useEffect(() => {
     if (loggedUser) {
       localStorage.setItem("loggedUser", JSON.stringify(loggedUser));
@@ -34,7 +36,7 @@ function App() {
         position="bottom-center"
         toastOptions={{
           duration: 5000,
-          style: { fontSize: "1rem", paddingLeft: "1rem" },
+          style: { fontSize: "1.125rem", paddingLeft: "1rem" },
         }}
       />
       <Routes>

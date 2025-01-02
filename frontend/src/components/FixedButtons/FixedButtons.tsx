@@ -2,6 +2,7 @@ import "./FixedButtons.css";
 import Button from "../Button/Button";
 import { IFixedButtons } from "../../@types/components";
 
+// A button which is fixed at the top of the page, below the header (for filtering and searching profiles)
 function FixedButtons({
   filtering,
   updateFilteringToTrue,

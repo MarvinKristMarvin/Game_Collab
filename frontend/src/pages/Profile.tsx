@@ -17,7 +17,6 @@ function Profile() {
   axios.defaults.withCredentials = true;
 
   // Get logOut function from the inactivity handler hook to be able to use logOut in the logout button
-  console.log("logged user before truc" + loggedUser);
   const { logOut } = useInactivityHandler();
 
   // LOGIN LOGIC
@@ -270,7 +269,7 @@ function Profile() {
     }
   };
 
-  /* if user is not authentified, show login signup page, else show his profile page */
+  // If user is not authentified, show login signup page, else show his profile page
   if (loggedUser === null) {
     return (
       <div className="profilePage">

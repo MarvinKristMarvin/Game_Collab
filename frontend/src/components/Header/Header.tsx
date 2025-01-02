@@ -4,6 +4,7 @@ import searchIcon from "../../assets/images/searchIcon.png";
 import profileIcon from "../../assets/images/profileIcon.png";
 import "./Header.css";
 
+// Header with navlinks
 function Header() {
   return (
     <div className="headerComponent">
