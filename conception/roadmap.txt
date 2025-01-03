@@ -74,14 +74,19 @@
 [x] refactor inactivity logic because it appears on all pages, created a custom hook for that
 
 03/01/2025
-
 [x] remove logOut on inactivity bug
+[x] refactor and comment properly search page
+[x] refactor and comment properly components, hooks and contexts in the front
+
 [ ] refactor and comment properly profile page
-[ ] refactor and comment properly search page
-[ ] refactor and comment properly components, hooks and contexts in the front
+
 
 
 
 TODO NEXT
 [ ] refactor and comment properly the backend
 [ ] add accessibility
+[ ] opti api : reduce nmber of api requests to strict minimum
+[ ] opti api : load only 20 profiles by 20 profiles
+[ ] opti api : don't load new profiles if the query string is the same as before
+[ ] ux : put a loader when waiting for profiles

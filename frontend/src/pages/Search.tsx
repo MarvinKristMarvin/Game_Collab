@@ -23,7 +23,7 @@ function Search() {
     setFiltering(false);
   };
 
-  // Loaded profiles of type userInterface
+  // Loaded profiles to display of type userInterface
   const [loadedProfiles, setLoadedProfiles] = useState<userInterface[]>([]);
 
   // Filter parameters
@@ -34,12 +34,6 @@ function Search() {
   const [selectedRemunerations, setSelectedRemunerations] = useState<string[]>(
     []
   );
-
-  // Filtering keywords not working yet
-  const [keywords, setKeywords] = useState<string | null>(null);
-  const updateKeywords = (value: string) => {
-    setKeywords(value);
-  };
 
   // Create the filter string which will get modified on "search profiles" submit button
   const dataURL = "http://localhost:5000/";
@@ -60,16 +54,16 @@ function Search() {
       });
   }, []);
 
-  //! Check if useless code
+  // On input check, toggle the value (like a job name with setSelectedJobs for example) in the selectedJobs array
   const toggleFilter = (
-    filter: string,
-    setFilter: React.Dispatch<React.SetStateAction<string[]>>,
-    filters: string[]
+    value: string, // Artist
+    setFilter: React.Dispatch<React.SetStateAction<string[]>>, // setSelectedJobs
+    filters: string[] // selectedJobs
   ) => {
-    if (filters.includes(filter)) {
-      setFilter(filters.filter((item) => item !== filter));
+    if (filters.includes(value)) {
+      setFilter(filters.filter((item) => item !== value));
     } else {
-      setFilter([...filters, filter]);
+      setFilter([...filters, value]);
     }
   };
 
@@ -79,6 +73,12 @@ function Search() {
   };
   const updateMaxAge = (value: string) => {
     setMaximumAge(Number(value));
+  };
+
+  // Filtering keywords not working yet
+  const [keywords, setKeywords] = useState<string | null>(null);
+  const updateKeywords = (value: string) => {
+    setKeywords(value);
   };
 
   // Write the filtering string then setFilterString

@@ -30,10 +30,10 @@ const useInactivityHandler = () => {
       // Js function to clear the existing timer to prevent multiple overlapping timeouts
       clearTimeout(timeoutRef.current);
     }
-    // Start a new timer with the specified timeout duration
+    // Start a new timer with the specified timeout duration, here 30 minutes, corresponding to backend inactivity timeout
     timeoutRef.current = setTimeout(() => {
       handleTimeOut();
-    }, 0.1 * 60 * 1000);
+    }, 30 * 60 * 1000);
   }, []);
 
   // Handle inactivity timeout
