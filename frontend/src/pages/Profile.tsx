@@ -19,11 +19,13 @@ function Profile() {
   // Get logOut function from the inactivity handler hook to be able to use logOut in the logout button
   const { logOut } = useInactivityHandler();
 
-  // LOGIN LOGIC
+  // Login state
   const [loginData, setLoginData] = useState({
     mail: "",
     password: "",
   });
+
+  // Login state update functions
   const updateLoginMail = (value: string) => {
     setLoginData((prevState) => ({
       ...prevState, // spread operator to keep other values intact
@@ -36,23 +38,21 @@ function Profile() {
       password: value,
     }));
   };
+
+  // Login function on button "Log in", post login data, if success setLoggedUser
   const loginUser = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const { mail, password } = loginData;
     try {
       const { data } = await axios.post("http://localhost:5000/login", {
-        // data is from axios
         mail,
         password,
       });
-      // if error from controller register informations validation, popup message
+      // Destructured "data" comes from axios
       if (data.error) {
         toast.error(data.error);
-        console.log("data error : " + data.error);
       } else {
         toast.success("Log in successfull ! You can now modify your profile.");
-        console.log("log in success !");
-        console.log("login data : ", data);
         setLoginData({ mail: "", password: "" });
         setLoggedUser(data);
       }
@@ -61,12 +61,14 @@ function Profile() {
     }
   };
 
-  // SIGNIN LOGIC
+  // Signup state
   const [signupData, setSignupData] = useState({
     mail: "",
     password: "",
     confirmation: "",
   });
+
+  // Signup state update functions
   const updateSignupMail = (value: string) => {
     setSignupData((prevState) => ({
       ...prevState,
@@ -85,23 +87,21 @@ function Profile() {
       confirmation: value,
     }));
   };
+
+  // Signup function on button "Sign up", post signup data then clears signup states
   const signupUser = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const { mail, password, confirmation } = signupData;
     try {
       const { data } = await axios.post("http://localhost:5000/signup", {
-        // data is from axios
         mail,
         password,
         confirmation,
       });
-      // if error from controller register informations validation, popup message
       if (data.error) {
         toast.error(data.error);
-        console.log("dataerror : " + data.error);
       } else {
         toast.success("Sign up successful, you can now log in !");
-        console.log("sign up success !");
         // Clear signup input fields
         updateSignupMail("");
         updateSignupPassword("");
@@ -112,8 +112,43 @@ function Profile() {
     }
   };
 
-  // FORM MODIFICATION
+  // Profile states
   const [age, setAge] = useState<number | null>(null);
+  const [name, setName] = useState<string | null>(null);
+  const [description, setDescription] = useState<string | null>(null);
+  const [portfolio_url, setPortfolio_url] = useState<string | null>(null);
+  const [profile_mail, setProfile_mail] = useState<string | null>(null);
+  const [selectedJobs, setSelectedJobs] = useState<string[]>([]);
+  const [selectedLanguages, setSelectedLanguages] = useState<string[]>([]);
+  const [selectedRemunerations, setSelectedRemunerations] = useState<string[]>(
+    []
+  );
+
+  // Profile state update functions
+  const updateName = (value: string) => {
+    setName(value);
+    if (loggedUser) {
+      setLoggedUser({ ...loggedUser, name: value });
+    }
+  };
+  const updateDescription = (value: string) => {
+    setDescription(value);
+    if (loggedUser) {
+      setLoggedUser({ ...loggedUser, description: value });
+    }
+  };
+  const updatePortfolio_url = (value: string) => {
+    setPortfolio_url(value);
+    if (loggedUser) {
+      setLoggedUser({ ...loggedUser, portfolio_url: value });
+    }
+  };
+  const updateProfile_mail = (value: string) => {
+    setProfile_mail(value);
+    if (loggedUser) {
+      setLoggedUser({ ...loggedUser, profile_mail: value });
+    }
+  };
   const updateAge = (value: string) => {
     if (value) setAge(Number(value));
     else setAge(null);
@@ -121,35 +156,8 @@ function Profile() {
       setLoggedUser({ ...loggedUser, age: Number(value) });
     }
   };
-  const [name, setName] = useState<string | null>(null);
-  const updateName = (value: string) => {
-    setName(value);
-    if (loggedUser) {
-      setLoggedUser({ ...loggedUser, name: value });
-    }
-  };
-  const [description, setDescription] = useState<string | null>(null);
-  const updateDescription = (value: string) => {
-    setDescription(value);
-    if (loggedUser) {
-      setLoggedUser({ ...loggedUser, description: value });
-    }
-  };
-  const [portfolio_url, setPortfolio_url] = useState<string | null>(null);
-  const updatePortfolio_url = (value: string) => {
-    setPortfolio_url(value);
-    if (loggedUser) {
-      setLoggedUser({ ...loggedUser, portfolio_url: value });
-    }
-  };
-  const [profile_mail, setProfile_mail] = useState<string | null>(null);
-  const updateProfile_mail = (value: string) => {
-    setProfile_mail(value);
-    if (loggedUser) {
-      setLoggedUser({ ...loggedUser, profile_mail: value });
-    }
-  };
 
+  // Update profile states with loggedUser context data when loggedUser changes
   useEffect(() => {
     if (loggedUser) {
       setAge(loggedUser.age || null);
@@ -163,37 +171,32 @@ function Profile() {
     }
   }, [loggedUser]);
 
-  const [selectedJobs, setSelectedJobs] = useState<string[]>([]);
-  const [selectedLanguages, setSelectedLanguages] = useState<string[]>([]);
-  const [selectedRemunerations, setSelectedRemunerations] = useState<string[]>(
-    []
-  );
-
-  // Add or remove a job, language or remuneration in the logged user context
+  // Add or remove a job, language or remuneration from the loggedUser context, using the selectedJobs, selectedLanguages and selectedRemunerations states
   const addOrRemoveFromDataList = (
-    data: string,
-    dataFamily: string,
-    setDataList: React.Dispatch<React.SetStateAction<string[]>>,
-    dataList: string[]
+    data: string, // Artist
+    loggedUserFieldName: string, // "jobs"
+    dataList: string[] // selectedJobs
   ) => {
-    // Check if the data is already in the list
-    const dataIsPresent = dataList.includes(data);
-    const updatedList = dataIsPresent
-      ? dataList.filter((item) => item !== data) // Remove data
-      : [...dataList, data]; // Add data
-
-    // Update the loggedUser context
+    let updatedList;
+    if (dataList.includes(data)) {
+      // Data is already in the list, remove it
+      updatedList = dataList.filter((item) => item !== data);
+    } else {
+      // Data is not in the list, add it
+      updatedList = [...dataList, data];
+    }
+    // Update the loggedUser context with the updatedList
     if (loggedUser) {
       setLoggedUser({
         ...loggedUser,
-        [dataFamily]: updatedList,
+        [loggedUserFieldName]: updatedList,
       });
     }
-    console.log(dataIsPresent ? `Removed ${data}` : `Added ${data}`);
   };
 
+  // On "Save" button, patch the userwith the loggedUser context data
   const saveUser = async () => {
-    // Clean up the first null value of each array (couldn't find another way)
+    // Clean up the first null value of each array (because there is always one and I don't know why)
     const cleanSelectedJobs = selectedJobs.filter((job) => job != null);
     const cleanSelectedLanguages = selectedLanguages.filter(
       (language) => language != null
@@ -216,30 +219,20 @@ function Profile() {
             remunerations: cleanSelectedRemunerations,
           }
         );
-        // if error from controller register informations validation, popup message
         if (data.error) {
           toast.error(data.error);
-          console.log("Profile update failed : " + data.error);
         } else {
-          // warns for
+          // If no error
+          // The backend gives a different warning message for each problematic field, then send a toast for each
           if (data.warnings.length > 0) {
             data.warnings.forEach((warning: string) => {
-              toast.error(warning); // Example toast function
+              toast.error(warning);
             });
           } else {
             toast.success(
               "Your profile is complete and will be shown to others"
             );
           }
-          console.log("Save profile succeed");
-          // update the loggedUser context with the saved data
-          setLoggedUser({
-            ...loggedUser,
-            jobs: selectedJobs,
-            languages: selectedLanguages,
-            remunerations: selectedRemunerations,
-          });
-          //navigate("/login");
         }
       } catch (error) {
         console.log(error);
@@ -247,6 +240,7 @@ function Profile() {
     }
   };
 
+  // On "Delete my account" button, delete the user's account
   const deleteAccount = async () => {
     try {
       if (loggedUser) {
@@ -254,14 +248,14 @@ function Profile() {
           `http://localhost:5000/api/user/${loggedUser.id}`,
           { withCredentials: true }
         );
-        console.log("response ", response);
         if (response.status === 204 || response.status === 200) {
-          console.log("Deleted account successfully.");
           setLoggedUser(null);
-          navigate("/profile");
           toast.success("Your account has been deleted successfully.");
+          navigate("/profile");
         } else {
-          console.error("Failed to delete account.");
+          toast.success(
+            "We are unable to delete your account at the moment, please log out and try again."
+          );
         }
       }
     } catch (error) {
@@ -269,10 +263,11 @@ function Profile() {
     }
   };
 
-  // If user is not authentified, show login signup page, else show his profile page
+  // If the user is not authentified, show the login and signup page, else show his profile page
   if (loggedUser === null) {
     return (
       <div className="profilePage">
+        {/* Login and signup forms */}
         <form onSubmit={loginUser}>
           <Label text="Log in to modify your profile" htmlFor="login-email" />
           <InputField
@@ -332,12 +327,12 @@ function Profile() {
       </div>
     );
   } else if (loggedUser !== null) {
-    // If user is authenticated show the profile page
+    // If user is authenticated show his profile page
     return (
       <div className="profilePage">
-        <PositiveMessage text="Hello, edit your profile then save, an incomplete profile will not be shown on our platform" />
+        <PositiveMessage text='Hello, edit your profile then click on "save", an incomplete profile will not be shown on our platform' />
         <form action="">
-          {/* NAME AND AGE */}
+          {/* Name and age fields */}
           <section className="spacingSection">
             <Label text="Enter your name and age" htmlFor="name" />
             <div className="nameAndAgeList">
@@ -362,7 +357,7 @@ function Profile() {
             </div>
           </section>
 
-          {/* LANGUAGES */}
+          {/* Languages checkboxes */}
           <section className="spacingSection">
             <Label text="Select your languages" htmlFor="english.gb" />
             <div className="flagList">
@@ -381,7 +376,6 @@ function Profile() {
                     addOrRemoveFromDataList(
                       language,
                       "languages",
-                      setSelectedLanguages,
                       selectedLanguages
                     )
                   }
@@ -391,7 +385,7 @@ function Profile() {
             </div>
           </section>
 
-          {/* JOBS */}
+          {/* Jobs checkboxes */}
           <section className="spacingSection">
             <Label text="What jobs can you do" htmlFor="artist" />
             <div className="jobList">
@@ -401,12 +395,7 @@ function Profile() {
                   text={job}
                   inputId={job.toLowerCase()}
                   onChange={() =>
-                    addOrRemoveFromDataList(
-                      job,
-                      "jobs",
-                      setSelectedJobs,
-                      selectedJobs
-                    )
+                    addOrRemoveFromDataList(job, "jobs", selectedJobs)
                   }
                   checked={selectedJobs.includes(job)}
                 />
@@ -414,7 +403,7 @@ function Profile() {
             </div>
           </section>
 
-          {/* REMUNERATION */}
+          {/* Remunerations checkboxes */}
           <section className="spacingSection">
             <Label text="What are you working for" htmlFor="nothing" />
             <div className="remunerationList">
@@ -428,7 +417,6 @@ function Profile() {
                       addOrRemoveFromDataList(
                         remuneration,
                         "remunerations",
-                        setSelectedRemunerations,
                         selectedRemunerations
                       )
                     }
@@ -439,7 +427,7 @@ function Profile() {
             </div>
           </section>
 
-          {/* OTHER INFORMATIONS */}
+          {/* Description, portfolio and contact mail fields */}
           <section className="spacingSection">
             <Label text="Other informations" htmlFor="description" />
             <InputField
@@ -470,10 +458,11 @@ function Profile() {
               actualValue={profile_mail != undefined ? profile_mail : ""}
             />
           </section>
+          {/* Save, log out and delete my account buttons */}
           <Button text="Save" func={saveUser} />
           <Button text="Log out" func={logOut} color="orangeButton" />
           <Button
-            text="Delete account"
+            text="Delete my account"
             func={deleteAccount}
             color="orangeButton"
           />

@@ -80,12 +80,11 @@
 
 [ ] refactor and comment properly profile page
 
-
-
-
 TODO NEXT
+[ ] create real database (all jobs, languages, remus, better names and descriptions and mails, update the front to add checkinputs)
 [ ] refactor and comment properly the backend
 [ ] add accessibility
+[ ] opti : image minification
 [ ] opti api : reduce nmber of api requests to strict minimum
 [ ] opti api : load only 20 profiles by 20 profiles
 [ ] opti api : don't load new profiles if the query string is the same as before
