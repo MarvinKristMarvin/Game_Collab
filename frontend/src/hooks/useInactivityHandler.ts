@@ -5,6 +5,7 @@ import { useLoggedUser } from "../context/userContext";
 
 // Handle inactivity
 const useInactivityHandler = () => {
+  console.log("called useInactivityHandler");
   const { loggedUser, setLoggedUser } = useLoggedUser();
 
   // A ref to store the timeout ID for the inactivity timer
@@ -32,18 +33,16 @@ const useInactivityHandler = () => {
     // Start a new timer with the specified timeout duration
     timeoutRef.current = setTimeout(() => {
       handleTimeOut();
-    }, 30 * 60 * 1000);
+    }, 0.1 * 60 * 1000);
   }, []);
 
   // Handle inactivity timeout
   const handleTimeOut = useCallback(() => {
     // The back already knows that the user is inactive after 30 minutes
     // Need to remove all user informations from the front and tell the user
-    if (loggedUser) {
-      toast.error("You will be logged out due to inactivity");
-      logOut();
-    }
-  }, [loggedUser, logOut]);
+    toast.error("You will be logged out due to inactivity");
+    logOut();
+  }, [logOut]);
 
   useEffect(() => {
     // If there is no loggedUser, don't start the inactivity handling

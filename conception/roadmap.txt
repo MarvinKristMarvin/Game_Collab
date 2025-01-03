@@ -73,7 +73,15 @@
 31/12/2024
 [x] refactor inactivity logic because it appears on all pages, created a custom hook for that
 
+03/01/2025
+
+[x] remove logOut on inactivity bug
+[ ] refactor and comment properly profile page
+[ ] refactor and comment properly search page
+[ ] refactor and comment properly components, hooks and contexts in the front
+
+
+
 TODO NEXT
-[ ] clean up code, refactor
-[ ] comment all code for maintenance and comprehension
-[ ] add accessibility and modify 
+[ ] refactor and comment properly the backend
+[ ] add accessibility
