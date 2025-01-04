@@ -6,8 +6,6 @@ import authorization from "../middlewares/authorization";
 
 const router = express.Router();
 
-// Get all users
-router.get("/api/users", wrapper(userController.getAll));
 // Get filtered users
 router.get("/api/users/filtered", wrapper(userController.getFiltered));
 // Patch authenticated user

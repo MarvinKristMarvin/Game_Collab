@@ -36,7 +36,6 @@ profile/ -> connexion et inscription, si connecté montre sa page de modificatio
 
 Routes API :
 GET /api/users/filtered?name=xxx&age=xxx,xxx&language=xxx,xxx&jobs=xxx,xxx&keywords=xxx,xxx&remuneration=xxx,xxx -> Recherche des profils en utilisant des filtres
-GET /api/users/ -> Récupérer tous les profils
 PATCH /api/user/:id -> Modifier son profil
 DELETE /api/user/:id -> Supprimer son profil
 POST /signup -> Créer son profil

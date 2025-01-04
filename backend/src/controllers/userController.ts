@@ -2,12 +2,6 @@ import { query, pool } from "../db";
 import { Request, Response } from "express";
 
 const userController = {
-  // Get all users
-  getAll: async (req: Request, res: Response) => {
-    const result = await query('SELECT * FROM "user"', []);
-    return res.json(result.rows);
-  },
-
   // Get filtered users, all users by default (DOMAIN/api/users/filtered?languages=English,French&jobs=Dev&remunerations=Nothing&minAge=25&maxAge=40)
   getFiltered: async (req: Request, res: Response) => {
     // If the language parameter exists in the query string, split it into an array, else it is null
@@ -47,7 +41,6 @@ const userController = {
       SELECT 
       "user".id,
       "user".name,
-      "user".mail,
       "user".age,
       "user".available,
       "user".description,
@@ -55,13 +48,11 @@ const userController = {
       "user".profile_mail,
       "user".created_at,
       "user".updated_at,
-      "role".name AS role,
       STRING_AGG(DISTINCT "job".name, ', ') AS jobs,
       STRING_AGG(DISTINCT "language".name, ', ') AS languages,
       STRING_AGG(DISTINCT "remuneration".type, ', ') AS remunerations
       FROM 
       "user"
-      LEFT JOIN "role" ON "user".role = "role".id
       LEFT JOIN "user_job" ON "user".id = "user_job".user_id
       LEFT JOIN "job" ON "user_job".job_id = "job".id
       LEFT JOIN "user_language" ON "user".id = "user_language".user_id
@@ -71,7 +62,7 @@ const userController = {
       WHERE 
       "user".id IN (SELECT id FROM filtered_users)
       GROUP BY 
-      "user".id, "role".name
+      "user".id
       ORDER BY 
       "user".updated_at DESC;
       `,

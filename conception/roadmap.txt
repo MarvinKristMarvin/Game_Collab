@@ -33,7 +33,7 @@
 [x] préparer l'environnement de travail
 [x] creer l'html et css de base
 [x] creer la bdd et les scripts de test (create, insert, drop)
-[-] développer le MVP responsive (1)
+[x] développer le MVP responsive (1)
 [ ] sécuriser l'authentification et failles courantes
 [ ] réduction des coûts : optimisation des images, minification des fichiers, optimisation des requetes
 [ ] tests pour les fonctionnalités principales du projet
@@ -84,10 +84,11 @@
 [x] comment and refactor the remaining back code
 [x] removed env backup values for safety
 
+[x] delete getAll users route and controller function, it was unused
+[x] dont return filtered users connexion mail and role, it's useless for the front
+
 TODO NEXT
-[ ] check if keeping default values for environment variables is necessary
 [ ] create real database (all jobs, languages, remus, better names and descriptions and mails, update the front to add checkinputs)
-[ ] refactor and comment properly the backend
 [ ] add accessibility
 [ ] opti : image minification
 [ ] opti api : reduce nmber of api requests to strict minimum
