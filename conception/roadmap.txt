@@ -78,10 +78,13 @@
 [x] refactor and comment properly search page
 [x] refactor and comment properly components, hooks and contexts in the front
 [x] refactor and comment properly profile page
+[x] commented some back code
 
-[ ] refactor and comment back code
+04/01/2025
+[ ] comment and refactor the remaining back code
 
 TODO NEXT
+[ ] check if keeping default values for environment variables is necessary
 [ ] create real database (all jobs, languages, remus, better names and descriptions and mails, update the front to add checkinputs)
 [ ] refactor and comment properly the backend
 [ ] add accessibility
@@ -90,3 +93,5 @@ TODO NEXT
 [ ] opti api : load only 20 profiles by 20 profiles
 [ ] opti api : don't load new profiles if the query string is the same as before
 [ ] ux : put a loader when waiting for profiles
+[ ] SEO and website configuration
+[ ] deployment

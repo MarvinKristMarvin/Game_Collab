@@ -1,41 +1,33 @@
 import { Request, Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
 
+// Authorization middleware, checks if the user has a valid token, if so pass it to the next middleware or route handler, else log "invalid or expired token"
 const authorization = async (
   req: Request,
   res: Response,
   next: NextFunction
 ) => {
-  console.log("in authorization middleware");
   const token = req.cookies.token;
-
-  if (token) {
-    console.log("token in authorization middleware");
-  }
   if (!token) {
-    console.log("not token");
     return next({ status: 401, message: "Unauthorized or expired ?" });
   }
-
   try {
-    console.log("try in authorization middleware");
-    const decoded = jwt.verify(token, process.env.JWT_SECRET!); // Verify the token
-
+    // Decode the token, and store it in res.locals.user, making it accessible in all middlewares and route handlers throughout the lifecycle of the request
+    const decoded = jwt.verify(token, process.env.JWT_SECRET!);
     res.locals.user = decoded;
-    console.log(
-      "User info in res.locals:",
-      JSON.stringify(res.locals.user, null, 2)
-    );
-    /* res.locals.user: {
-  "mail": "a@a",
-  "id": 25,
-  "role": 2,
-  "iat": 1734644948,
-  "exp": 1734648548
-} */
-    next(); // Proceed to the next middleware or route handler
+    /* 
+    It will have this structure =>
+    res.locals.user: {
+      "mail": "mymail@gmail.com",
+      "id": 523,
+      "role": 2,
+      "iat": 1734644948, (Issued At Timestamp)
+      "exp": 1734648548  (Expiration Timestamp)
+    } 
+    */
+    // Go to the next middleware or route handler
+    next();
   } catch (error) {
-    console.log("error 2");
     return next({ status: 401, message: "Invalid or expired token" });
   }
 };

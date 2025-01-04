@@ -4,16 +4,17 @@ import { hashPassword, comparePassword } from "../helpers/auth";
 import jwt from "jsonwebtoken";
 
 const authController = {
+  // Signup
   signupUser: async (req: Request, res: Response) => {
+    // Get these fields from the request body
     const { mail, password, confirmation } = req.body;
-    // check if informations are correct or return errors
+    // Check if fields are correct or return toast errors
     if (!mail) {
-      // send error to the front toast
       return res.json({
         error: "Your mail is required",
       });
     }
-    // if not a mail string return error
+    // Test the mail regex
     if (!/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/i.test(mail)) {
       return res.json({
         error: "Your mail is not valid",
@@ -29,7 +30,7 @@ const authController = {
         error: "Your password confirmation does not match your password.",
       });
     }
-    // check if email already taken
+    // Check if the email is already used
     const mailResult = await query('SELECT * FROM "user" WHERE mail = $1', [
       mail,
     ]);
@@ -38,89 +39,85 @@ const authController = {
         error: "This mail is already used",
       });
     }
-    // if all informations are good, hash password then create a user in db and return it
+    // If all informations are good, hash the password
     const hashedPassword = await hashPassword(password);
-
+    // Then create a user in the db
     const newUserResult = await query(
       `
-        INSERT INTO "user" (mail, password) 
-        VALUES ($1, $2)
-        RETURNING id, mail;
+      INSERT INTO "user" (mail, password) 
+      VALUES ($1, $2)
+      RETURNING id, mail;
       `,
       [mail, hashedPassword]
     );
-
     // Return the created user (excluding the password)
     return res.json(newUserResult.rows[0]);
   },
+
+  // Login
   loginUser: async (req: Request, res: Response) => {
-    const cookies = req.headers.cookie;
     const { mail, password } = req.body;
-    // find the user by mail
+    // Find the user using his mail
     const data = await query(
-      `SELECT 
-  u.*,
-  ARRAY_AGG(DISTINCT j.name) AS jobs,
-    ARRAY_AGG(DISTINCT r.type) AS remunerations,
-    ARRAY_AGG(DISTINCT l.name) AS languages
-FROM 
-  "user" u
-  LEFT JOIN "user_job" uj ON u.id = uj.user_id
-  LEFT JOIN "job" j ON uj.job_id = j.id
-  LEFT JOIN "user_remuneration" ur ON u.id = ur.user_id
-  LEFT JOIN "remuneration" r ON ur.remuneration_id = r.id
-  LEFT JOIN "user_language" ul ON u.id = ul.user_id
-  LEFT JOIN "language" l ON ul.language_id = l.id
-WHERE 
-  u.mail = $1
-GROUP BY 
-  u.id;`,
+      `
+      SELECT 
+      u.*,
+      ARRAY_AGG(DISTINCT j.name) AS jobs,
+      ARRAY_AGG(DISTINCT r.type) AS remunerations,
+      ARRAY_AGG(DISTINCT l.name) AS languages
+      FROM 
+      "user" u
+      LEFT JOIN "user_job" uj ON u.id = uj.user_id
+      LEFT JOIN "job" j ON uj.job_id = j.id
+      LEFT JOIN "user_remuneration" ur ON u.id = ur.user_id
+      LEFT JOIN "remuneration" r ON ur.remuneration_id = r.id
+      LEFT JOIN "user_language" ul ON u.id = ul.user_id
+      LEFT JOIN "language" l ON ul.language_id = l.id
+      WHERE 
+      u.mail = $1
+      GROUP BY 
+      u.id;
+      `,
       [mail]
     );
     const user = data.rows[0];
-    // if no user found tell the front
     if (!user) {
       return res.json({
         error: "No account found with this mail",
       });
     }
-    // check if the given password matches the hashed password
+    // Check if the sent password matches the database hashed password
     const match = await comparePassword(password, user.password);
     if (match) {
+      // Update the updated_at field, serves to show active users first in the browsing profiles page
       try {
         await query(
-          `UPDATE "user" 
-         SET updated_at = CURRENT_TIMESTAMP 
-         WHERE mail = $1;`,
+          `
+          UPDATE "user" 
+          SET updated_at = CURRENT_TIMESTAMP 
+          WHERE mail = $1;
+          `,
           [mail]
         );
       } catch (error) {
-        console.log(error + " unable to update user's updated_at");
+        console.log(error + "Unable to update user's updated_at");
       }
-
-      // creates a jwt by giving user data to encode
+      // Create a jwt by encoding the user id, mail and role + the jwt secret, set an expiration time
       jwt.sign(
         { mail: user.mail, id: user.id, role: user.role },
         process.env.JWT_SECRET as string,
         { expiresIn: Number(process.env.JWT_EXPIRATION) },
         (err, token) => {
           if (err) throw err;
-          // if successfull, send token to client in a cookie named token and send user data back as a response without the password
+          // If successfull, send the token to the client in a cookie named "token" and send user data back as a response without the password
           const { password, ...userWithoutPassword } = user;
-          return (
-            res
-              .cookie("token", token, {
-                httpOnly: true,
-                sameSite: "lax",
-                secure: false,
-              })
-              /* res.cookie("token", token, {
-                    httpOnly: true,
-                    sameSite: "None", // Allows cross-origin cookies
-                    secure: true,    // Cookies are only sent over HTTPS
-                  }); FOR PRODUCTION*/
-              .json(userWithoutPassword)
-          );
+          return res
+            .cookie("token", token, {
+              httpOnly: true,
+              sameSite: "lax",
+              secure: false, // true in production
+            })
+            .json(userWithoutPassword);
         }
       );
     }
@@ -129,12 +126,14 @@ GROUP BY
     }
   },
 
+  // Logout
   logoutUser: async (req: Request, res: Response) => {
+    // Give the "token" an empty value
     res.cookie("token", "", {
-      httpOnly: true, // Ensure the cookie remains HttpOnly
-      /*secure: true, // Use this in production for HTTPS*/
+      httpOnly: true,
+      // secure: true, (in production)
       sameSite: "strict", // Prevent CSRF
-      expires: new Date(0), // Set the cookie to expire in the past
+      expires: new Date(0), // Tells the browser to remove the cookie
     });
     return res.status(200).send("Logged out and cookie cleared.");
   },

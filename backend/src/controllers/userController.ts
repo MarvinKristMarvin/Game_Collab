@@ -1,18 +1,16 @@
-import { warn } from "console";
 import { query, pool } from "../db";
 import { Request, Response } from "express";
 
 const userController = {
-  /* GET http://localhost:5000/api/users */
+  // Get all users
   getAll: async (req: Request, res: Response) => {
     const result = await query('SELECT * FROM "user"', []);
     return res.json(result.rows);
-    //console.log(result.rows);
   },
-  /* GET http://localhost:5000/api/users/filtered?languages=English,French&jobs=Dev&remunerations=Nothing&minAge=25&maxAge=40 */
-  getFiltered: async (req: Request, res: Response) => {
-    const cookies = req.headers.cookie;
 
+  // Get filtered users, all users by default (DOMAIN/api/users/filtered?languages=English,French&jobs=Dev&remunerations=Nothing&minAge=25&maxAge=40)
+  getFiltered: async (req: Request, res: Response) => {
+    // If the language parameter exists in the query string, split it into an array, else it is null
     const languages = req.query.languages
       ? (req.query.languages as string).split(",")
       : null;
@@ -26,69 +24,67 @@ const userController = {
     const maxAge = req.query.maxAge
       ? parseInt(req.query.maxAge as string, 10)
       : null;
+    // Get all users with the selected filters
     const result = await query(
       `
-  WITH filtered_users AS (
-  SELECT 
-      u.id
-  FROM 
-      "user" u
-  LEFT JOIN "user_language" ul ON u.id = ul.user_id
-  LEFT JOIN "language" l ON ul.language_id = l.id
-  LEFT JOIN "user_job" uj ON u.id = uj.user_id
-  LEFT JOIN "job" j ON uj.job_id = j.id
-  LEFT JOIN "user_remuneration" ur ON u.id = ur.user_id
-  LEFT JOIN "remuneration" rem ON ur.remuneration_id = rem.id
-  WHERE 
-      (l.name = ANY ($1) OR $1 IS NULL)
-      AND (j.name = ANY ($2) OR $2 IS NULL)
-      AND (rem.type = ANY ($3) OR $3 IS NULL)
-      AND (u.age BETWEEN $4 AND $5 OR ($4 IS NULL AND $5 IS NULL))
-      AND u.available = TRUE
-)
-SELECT 
-    u.id,
-    u.name,
-    u.mail,
-    u.age,
-    u.available,
-    u.description,
-    u.portfolio_url,
-    u.profile_mail,
-    u.created_at,
-    u.updated_at,
-    r.name AS role,
-    STRING_AGG(DISTINCT j.name, ', ') AS jobs,
-    STRING_AGG(DISTINCT l.name, ', ') AS languages,
-    STRING_AGG(DISTINCT rem.type, ', ') AS remunerations
-FROM 
-    "user" u
-LEFT JOIN "role" r ON u.role = r.id
-LEFT JOIN "user_job" uj ON u.id = uj.user_id
-LEFT JOIN "job" j ON uj.job_id = j.id
-LEFT JOIN "user_language" ul ON u.id = ul.user_id
-LEFT JOIN "language" l ON ul.language_id = l.id
-LEFT JOIN "user_remuneration" ur ON u.id = ur.user_id
-LEFT JOIN "remuneration" rem ON ur.remuneration_id = rem.id
-WHERE 
-    u.id IN (SELECT id FROM filtered_users)
-GROUP BY 
-    u.id, r.name
-ORDER BY 
-    u.updated_at DESC;
-  `,
+      WITH filtered_users AS (
+      SELECT 
+      "user".id
+      FROM 
+      "user"
+      LEFT JOIN "user_language" ON "user".id = "user_language".user_id
+      LEFT JOIN "language" ON "user_language".language_id = "language".id
+      LEFT JOIN "user_job" ON "user".id = "user_job".user_id
+      LEFT JOIN "job" ON "user_job".job_id = "job".id
+      LEFT JOIN "user_remuneration" ON "user".id = "user_remuneration".user_id
+      LEFT JOIN "remuneration" ON "user_remuneration".remuneration_id = "remuneration".id
+      WHERE 
+      ("language".name = ANY ($1) OR $1 IS NULL)
+      AND ("job".name = ANY ($2) OR $2 IS NULL)
+      AND ("remuneration".type = ANY ($3) OR $3 IS NULL)
+      AND ("user".age BETWEEN $4 AND $5 OR ($4 IS NULL AND $5 IS NULL))
+      AND "user".available = TRUE)
+      SELECT 
+      "user".id,
+      "user".name,
+      "user".mail,
+      "user".age,
+      "user".available,
+      "user".description,
+      "user".portfolio_url,
+      "user".profile_mail,
+      "user".created_at,
+      "user".updated_at,
+      "role".name AS role,
+      STRING_AGG(DISTINCT "job".name, ', ') AS jobs,
+      STRING_AGG(DISTINCT "language".name, ', ') AS languages,
+      STRING_AGG(DISTINCT "remuneration".type, ', ') AS remunerations
+      FROM 
+      "user"
+      LEFT JOIN "role" ON "user".role = "role".id
+      LEFT JOIN "user_job" ON "user".id = "user_job".user_id
+      LEFT JOIN "job" ON "user_job".job_id = "job".id
+      LEFT JOIN "user_language" ON "user".id = "user_language".user_id
+      LEFT JOIN "language" ON "user_language".language_id = "language".id
+      LEFT JOIN "user_remuneration" ON "user".id = "user_remuneration".user_id
+      LEFT JOIN "remuneration" ON "user_remuneration".remuneration_id = "remuneration".id
+      WHERE 
+      "user".id IN (SELECT id FROM filtered_users)
+      GROUP BY 
+      "user".id, "role".name
+      ORDER BY 
+      "user".updated_at DESC;
+      `,
       [languages, jobs, remunerations, minAge, maxAge]
     );
     return res.json(result.rows);
   },
-  // updateUser
-  /* PATCH http://localhost:5000/api/users/:id */
+
+  // Update a user
   updateUser: async (req: Request, res: Response) => {
     const { id } = req.params;
-
     const warnings = [];
-
-    // Data verification, for warning purposes, still update the user, but don't make him available if warnings
+    // Data verification for warning purposes, still update the user, but make him available only if no warnings
     if (!req.body.name || req.body.name.length < 2) {
       warnings.push("Enter a proper name");
     }
@@ -134,40 +130,37 @@ ORDER BY
     ) {
       warnings.push("Enter a valid mail");
     }
-
-    const authenticatedUserId = res.locals.user.id; // Extracted from the token by the middleware
-    console.log(authenticatedUserId);
-
+    // Get the user id from his jwt token (stored in res.locals.user in authorization middleware)
+    const authenticatedUserId = res.locals.user.id;
+    // Return an error if the jwt id doesn't match the param id
     if (authenticatedUserId !== Number(id)) {
       return res.status(403).json({
         error:
           "You are not authorized to update this account. param ID is not matching with jwt ID",
       });
     }
+    // If req.body is empty, return an error
     const patchData = req.body;
-
     if (!patchData || Object.keys(patchData).length === 0) {
       return res.status(400).json({ error: "No changes are sent" });
     }
-
     try {
       const { jobs, remunerations, languages, ...userFields } = patchData;
-
       if (warnings.length === 0) {
         userFields.available = true;
       } else {
         userFields.available = false;
       }
-
-      // Update user fields if there are any
+      // Update db user fields if there are any in the patchData
       if (Object.keys(userFields).length > 0) {
-        const keys = Object.keys(userFields);
-        const values = Object.values(userFields);
+        // Keys = keys of the userFields object
+        const keys = Object.keys(userFields); // ["name", "age"]
+        const values = Object.values(userFields); // ["John", 25]
+        // SetClause = "name" = $1, "age" = $2...
         const setClause = keys
           .map((key, index) => `"${key}" = $${index + 1}`)
           .join(", ");
-
-        // Update the user fields in the database
+        // Update the user fields in the database, WHERE id = req.params.id
         const result = await query(
           `
           UPDATE "user"
@@ -177,14 +170,12 @@ ORDER BY
           `,
           [...values, id]
         );
-
         if (result.rowCount === 0) {
           return res
             .status(404)
             .json({ error: "User not found for the update" });
         }
       }
-
       // Helper function to update relational data
       const updateRelationalData = async (
         table: string,
@@ -194,14 +185,12 @@ ORDER BY
         if (Array.isArray(valuesArray) && valuesArray.length > 0) {
           // Remove duplicate values
           const uniqueValues = [...new Set(valuesArray)];
-
           // Change the name field for the remuneration table
           let nameField = "name";
           if (table === "remuneration") {
             nameField = "type";
           }
-
-          // Retrieve IDs for the provided names
+          // Retrieve ids for the provided names and table (id of "Artist" and "Dev" in job table)
           const idsResult = await query(
             `
             SELECT id, ${nameField} FROM "${table}"
@@ -209,9 +198,9 @@ ORDER BY
             `,
             [uniqueValues]
           );
-
+          // Put those ids in an array
           const ids = idsResult.rows.map((row) => row.id);
-
+          // If the number of ids doesn't match the number of unique values, throw an error => exemple Error: Some jobs names are invalid: ["InvalidJob"]
           if (ids.length !== uniqueValues.length) {
             throw new Error(
               `Some ${column} names are invalid: ${uniqueValues.filter(
@@ -220,8 +209,7 @@ ORDER BY
               )}`
             );
           }
-
-          // Delete existing relationships
+          // Delete existing relationships before inserting the updated ones
           await query(
             `
             DELETE FROM "user_${column}"
@@ -229,7 +217,6 @@ ORDER BY
             `,
             [id]
           );
-
           // Insert new relationships
           const insertValues = ids
             .map((itemId) => `(${id}, ${itemId})`)
@@ -252,12 +239,10 @@ ORDER BY
           );
         }
       };
-
-      // Handle jobs, remunerations, and languages
+      // Run the helper function for each association table: jobs, remunerations, and languages to update the relational data
       await updateRelationalData("job", "job", jobs);
       await updateRelationalData("remuneration", "remuneration", remunerations);
       await updateRelationalData("language", "language", languages);
-
       return res.json({
         warnings,
         message: "User updated successfully.",
@@ -274,25 +259,21 @@ ORDER BY
       }
     }
   },
-  deleteUser: async (req: Request, res: Response) => {
-    console.log("delete user controller");
-    const { id } = req.params;
-    console.log(Number(id));
-    const authenticatedUserId = res.locals.user.id; // Extracted from the token by the middleware
-    console.log(authenticatedUserId);
 
+  // Delete user
+  deleteUser: async (req: Request, res: Response) => {
+    const { id } = req.params;
+    const authenticatedUserId = res.locals.user.id;
     if (authenticatedUserId !== Number(id)) {
       return res
         .status(403)
         .json({ error: "You are not authorized to delete this account." });
     }
-
-    // need to separate the queries for a transaction in psql
+    // Need to separate the queries for a transaction in PSQL
     const client = await pool.connect(); // Get a client from the pool
     try {
       await client.query("BEGIN"); // Start transaction
-
-      // Perform all deletions in the correct order
+      // Perform all deletions in the correct order (association deletions first, then user deletion)
       await client.query(`DELETE FROM user_job WHERE user_id = $1`, [id]);
       await client.query(`DELETE FROM user_language WHERE user_id = $1`, [id]);
       await client.query(`DELETE FROM user_remuneration WHERE user_id = $1`, [
@@ -302,21 +283,22 @@ ORDER BY
         `DELETE FROM "user" WHERE id = $1`,
         [id]
       );
-
+      // If no user was deleted, rollback the transaction
       if (userDeleteResult.rowCount === 0) {
-        // If no user was deleted, rollback the transaction
         await client.query("ROLLBACK");
         return res.status(404).json({ error: "User not found" });
       }
-
-      await client.query("COMMIT"); // Commit transaction
+      // Commit transaction if all deletions were successful
+      await client.query("COMMIT");
       return res.json({ message: "User deleted successfully" });
     } catch (error) {
-      await client.query("ROLLBACK"); // Rollback transaction on error
+      // Rollback transaction on error
+      await client.query("ROLLBACK");
       console.error(error);
       return res.status(500).json({ error: "Failed to delete user." });
     } finally {
-      client.release(); // Release the client back to the pool
+      // Release the client back to the pool
+      client.release();
     }
   },
 };
