@@ -9,7 +9,7 @@ export const pool = new Pool({
   password: process.env.DB_PASSWORD,
   database: process.env.DB_NAME,
   host: process.env.DB_HOST,
-  port: parseInt(process.env.DB_PORT || "5432", 10),
+  port: parseInt(process.env.DB_PORT as string, 10),
 });
 
 // Export a function to query the db with optionnal parameters

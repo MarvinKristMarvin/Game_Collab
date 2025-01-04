@@ -1,6 +1,6 @@
 import { createContext, useState, useContext, ReactNode } from "react";
 
-// Define a User type (customize as needed)
+// Define a User type
 export interface LoggedUserInterface {
   id: number;
   mail: string;
@@ -15,7 +15,7 @@ export interface LoggedUserInterface {
   remunerations: string[] | null;
 }
 
-// Define context types ()
+// Define context types
 interface LoggedUserContextInterface {
   loggedUser: LoggedUserInterface | null;
   setLoggedUser: (user: LoggedUserInterface | null) => void;

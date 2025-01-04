@@ -81,7 +81,8 @@
 [x] commented some back code
 
 04/01/2025
-[ ] comment and refactor the remaining back code
+[x] comment and refactor the remaining back code
+[x] removed env backup values for safety
 
 TODO NEXT
 [ ] check if keeping default values for environment variables is necessary

@@ -1,8 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
 
-const JWT_SECRET = process.env.JWT_SECRET || "your-secret";
-
 // Export a function which takes a controller as an argument (wrapper), and returns a new function
 export default (
   controller: (req: Request, res: Response, next: NextFunction) => Promise<any>
@@ -15,12 +13,15 @@ export default (
       if (token) {
         try {
           // Decode the existing token
-          const decoded = jwt.verify(token, JWT_SECRET) as jwt.JwtPayload;
+          const decoded = jwt.verify(
+            token,
+            process.env.JWT_SECRET!
+          ) as jwt.JwtPayload;
           // Generate a new token with the decoded id, mail and role then refresh its expiration time
           const newToken = jwt.sign(
             { id: decoded.id, mail: decoded.mail, role: decoded.role },
-            JWT_SECRET,
-            { expiresIn: Number(process.env.JWT_EXPIRATION) } // Set expiration to 10 minutes
+            process.env.JWT_SECRET!,
+            { expiresIn: Number(process.env.JWT_EXPIRATION) }
           );
           // Set a HTTP-only cookie named "token" with the value of the new token (secure because not accessible by javascript, protecting against XSS)
           res.cookie("token", newToken, {

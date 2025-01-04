@@ -105,7 +105,7 @@ const authController = {
       // Create a jwt by encoding the user id, mail and role + the jwt secret, set an expiration time
       jwt.sign(
         { mail: user.mail, id: user.id, role: user.role },
-        process.env.JWT_SECRET as string,
+        process.env.JWT_SECRET!,
         { expiresIn: Number(process.env.JWT_EXPIRATION) },
         (err, token) => {
           if (err) throw err;
