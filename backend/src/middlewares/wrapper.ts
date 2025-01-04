@@ -3,32 +3,31 @@ import jwt from "jsonwebtoken";
 
 const JWT_SECRET = process.env.JWT_SECRET || "your-secret";
 
+// Export a function which takes a controller as an argument (wrapper), and returns a new function
 export default (
   controller: (req: Request, res: Response, next: NextFunction) => Promise<any>
 ) => {
   return async (req: Request, res: Response, next: NextFunction) => {
     try {
+      // Get the jwt token from the cookie
       const token = req.cookies.token;
-
-      // Refresh the token if it is still valid
+      // If the jwt token exists, refresh it if it is still valid
       if (token) {
         try {
-          // Verify the existing token
+          // Decode the existing token
           const decoded = jwt.verify(token, JWT_SECRET) as jwt.JwtPayload;
-
-          // Generate a new token with refreshed expiration
+          // Generate a new token with the decoded id, mail and role then refresh its expiration time
           const newToken = jwt.sign(
             { id: decoded.id, mail: decoded.mail, role: decoded.role },
             JWT_SECRET,
             { expiresIn: Number(process.env.JWT_EXPIRATION) } // Set expiration to 10 minutes
           );
-
-          // Set the new token in the HTTP-only cookie
+          // Set a HTTP-only cookie named "token" with the value of the new token (secure because not accessible by javascript, protecting against XSS)
           res.cookie("token", newToken, {
             httpOnly: true,
-            sameSite: "lax",
-            secure: false, // Set to true in production with HTTPS
-            maxAge: Number(process.env.JWT_EXPIRATION) * 1000, // 10 minutes
+            sameSite: "lax", // Set to "strict" for more security
+            secure: false, // Always set to true in production, to send cookies only over HTTPS (we use HTTP in development)
+            maxAge: Number(process.env.JWT_EXPIRATION) * 1000, // 1800 * 1000 = 30 minutes
           });
         } catch (err) {
           console.log("Token invalid or expired");
@@ -38,6 +37,7 @@ export default (
       // Call the controller
       await controller(req, res, next);
     } catch (err) {
+      // If error is an object with a status and a message, respond with the error status and message, otherwise error 500 internal server error
       if (
         err &&
         typeof err === "object" &&

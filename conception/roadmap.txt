@@ -77,8 +77,9 @@
 [x] remove logOut on inactivity bug
 [x] refactor and comment properly search page
 [x] refactor and comment properly components, hooks and contexts in the front
+[x] refactor and comment properly profile page
 
-[ ] refactor and comment properly profile page
+[ ] refactor and comment back code
 
 TODO NEXT
 [ ] create real database (all jobs, languages, remus, better names and descriptions and mails, update the front to add checkinputs)
