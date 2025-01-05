@@ -367,6 +367,30 @@ function Profile() {
                 "German.de",
                 "Japanese.jp",
                 "Russian.ru",
+                "Spanish.es",
+                "Portuguese.pt",
+                "Turkish.tr",
+                "Italian.it",
+                "Persian.ir",
+                "Dutch.nl",
+                "Polish.pl",
+                "Chinese.cn",
+                "Vietnamese.vn",
+                "Indonesian.id",
+                "Czech.cz",
+                "Korean.kr",
+                "Ukrainian.ua",
+                "Arabic.sa",
+                "Greek.gr",
+                "Hebrew.il",
+                "Swedish.se",
+                "Romanian.ro",
+                "Hungarian.hu",
+                "Thai.th",
+                "Danish.dk",
+                "Slovak.sk",
+                "Finnish.fi",
+                "Norwegian.no",
               ].map((language) => (
                 <CheckableItem
                   key={language}
@@ -389,7 +413,16 @@ function Profile() {
           <section className="spacingSection">
             <Label text="What jobs can you do" htmlFor="artist" />
             <div className="jobList">
-              {["Artist", "Sounds", "Dev"].map((job) => (
+              {[
+                "Code",
+                "Sprites",
+                "Models",
+                "Animations",
+                "Sounds",
+                "Musics",
+                "Story",
+                "Marketing",
+              ].map((job) => (
                 <CheckableItem
                   key={job}
                   text={job}
@@ -407,7 +440,7 @@ function Profile() {
           <section className="spacingSection">
             <Label text="What are you working for" htmlFor="nothing" />
             <div className="remunerationList">
-              {["Nothing", "Shares", "Freelance", "Salary"].map(
+              {["Fun", "Shares", "Commissions", "Salary"].map(
                 (remuneration) => (
                   <CheckableItem
                     key={remuneration}

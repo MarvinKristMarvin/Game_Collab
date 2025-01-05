@@ -173,6 +173,30 @@ function Search() {
                 "German.de",
                 "Japanese.jp",
                 "Russian.ru",
+                "Spanish.es",
+                "Portuguese.pt",
+                "Turkish.tr",
+                "Italian.it",
+                "Persian.ir",
+                "Dutch.nl",
+                "Polish.pl",
+                "Chinese.cn",
+                "Vietnamese.vn",
+                "Indonesian.id",
+                "Czech.cz",
+                "Korean.kr",
+                "Ukrainian.ua",
+                "Arabic.sa",
+                "Greek.gr",
+                "Hebrew.il",
+                "Swedish.se",
+                "Romanian.ro",
+                "Hungarian.hu",
+                "Thai.th",
+                "Danish.dk",
+                "Slovak.sk",
+                "Finnish.fi",
+                "Norwegian.no",
               ].map((language) => (
                 <CheckableItem
                   key={language}
@@ -195,7 +219,16 @@ function Search() {
           <section className="spacingSection">
             <Label text="Search people doing" htmlFor="code" />
             <div className="jobList">
-              {["Artist", "Sounds", "Dev"].map((job) => (
+              {[
+                "Code",
+                "Sprites",
+                "Models",
+                "Animations",
+                "Sounds",
+                "Musics",
+                "Story",
+                "Marketing",
+              ].map((job) => (
                 <CheckableItem
                   key={job}
                   text={job}
@@ -213,7 +246,7 @@ function Search() {
           <section className="spacingSection">
             <Label text="Search people working for" htmlFor="free" />
             <div className="remunerationList">
-              {["Nothing", "Shares", "Freelance", "Salary"].map(
+              {["Fun", "Shares", "Commissions", "Salary"].map(
                 (remuneration) => (
                   <CheckableItem
                     key={remuneration}

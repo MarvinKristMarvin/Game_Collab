@@ -17,7 +17,7 @@ CREATE TABLE "user" (
     "profile_mail" TEXT,                          
     "created_at" TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,                     
     "updated_at" TIMESTAMP,                                     
-    "role" INT NOT NULL DEFAULT 2, -- user                                   
+    "role" INT NOT NULL DEFAULT 2, -- User                                   
     CONSTRAINT fk_role FOREIGN KEY ("role") REFERENCES "role"("id")
 );
 
@@ -43,7 +43,7 @@ CREATE TABLE "user_job" (
     "job_id" INT NOT NULL,
     CONSTRAINT fk_user FOREIGN KEY ("user_id") REFERENCES "user"("id") ON DELETE CASCADE,
     CONSTRAINT fk_job FOREIGN KEY ("job_id") REFERENCES "job"("id") ON DELETE CASCADE,
-    CONSTRAINT user_job_unique UNIQUE (user_id, job_id) -- prevent duplicate entries
+    CONSTRAINT user_job_unique UNIQUE (user_id, job_id) -- Prevent duplicate entries
 );
 
 CREATE TABLE "user_language" (
@@ -64,7 +64,7 @@ CREATE TABLE "user_remuneration" (
     CONSTRAINT user_remuneration_unique UNIQUE (user_id, remuneration_id)
 );
 
--- reset id sequences
+-- Reset id sequences
 SELECT setval(pg_get_serial_sequence('"role"', 'id'), COALESCE((SELECT MAX(id) FROM "role"), 0) + 1, false);
 SELECT setval(pg_get_serial_sequence('"user"', 'id'), COALESCE((SELECT MAX(id) FROM "user"), 0) + 1, false);
 SELECT setval(pg_get_serial_sequence('"job"', 'id'), COALESCE((SELECT MAX(id) FROM "job"), 0) + 1, false);
@@ -73,6 +73,5 @@ SELECT setval(pg_get_serial_sequence('"remuneration"', 'id'), COALESCE((SELECT M
 SELECT setval(pg_get_serial_sequence('"user_job"', 'id'), COALESCE((SELECT MAX(id) FROM "user_job"), 0) + 1, false);
 SELECT setval(pg_get_serial_sequence('"user_language"', 'id'), COALESCE((SELECT MAX(id) FROM "user_language"), 0) + 1, false);
 SELECT setval(pg_get_serial_sequence('"user_remuneration"', 'id'), COALESCE((SELECT MAX(id) FROM "user_remuneration"), 0) + 1, false);
-
 
 COMMIT;

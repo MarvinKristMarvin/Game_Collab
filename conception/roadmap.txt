@@ -83,7 +83,6 @@
 04/01/2025
 [x] comment and refactor the remaining back code
 [x] removed env backup values for safety
-
 [x] delete getAll users route and controller function, it was unused
 [x] dont return filtered users connexion mail and role, it's useless for the front
 
@@ -95,5 +94,6 @@ TODO NEXT
 [ ] opti api : load only 20 profiles by 20 profiles
 [ ] opti api : don't load new profiles if the query string is the same as before
 [ ] ux : put a loader when waiting for profiles
+[ ] ui : add flags on checkinput languages
 [ ] SEO and website configuration
 [ ] deployment
