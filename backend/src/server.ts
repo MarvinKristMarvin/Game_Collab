@@ -4,12 +4,15 @@ import router from "./routes/router";
 import error404 from "./middlewares/error404";
 import cookieParser from "cookie-parser";
 import dotenv from "dotenv";
+import rateLimiter from "./middlewares/rateLimitation";
 
 // Enable environment variables
 dotenv.config();
 
 const app = express();
 
+// Use the rateLimiter middleware to limit requests from the same IP
+app.use(rateLimiter);
 // Enable req.body json payloads when requesting with POST etc
 app.use(express.json());
 // Enable url encoded data (querystrings) in req.body
