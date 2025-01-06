@@ -1,16 +1,49 @@
-import express, { Request, Response } from "express";
+import express, { NextFunction, Request, Response } from "express";
 import cors from "cors";
 import router from "./routes/router";
 import error404 from "./middlewares/error404";
 import cookieParser from "cookie-parser";
 import dotenv from "dotenv";
 import rateLimiter from "./middlewares/rateLimitation";
+import helmet from "helmet";
 
 // Enable environment variables
 dotenv.config();
 
 const app = express();
 
+// Set secure headers
+app.use(
+  helmet({
+    contentSecurityPolicy: {
+      directives: {
+        defaultSrc: ["'self'"],
+        scriptSrc: ["'self'", "https://trusted-cdn.com"],
+        styleSrc: ["'self'", "https://trusted-cdn.com"],
+        imgSrc: ["'self'", "data:"],
+        connectSrc: ["'self'", "https://api.yourdomain.com"],
+        objectSrc: ["'none'"],
+        upgradeInsecureRequests: [],
+      },
+    },
+    frameguard: {
+      action: "deny", // Prevent clickjacking
+    },
+    xContentTypeOptions: true, // Prevent MIME sniffing
+  })
+);
+// Block metadata access
+app.use((req: Request, res: Response, next: NextFunction): void => {
+  if (req.url.startsWith("/latest/metadata")) {
+    res.status(403).send("Access Denied");
+  } else {
+    next();
+  }
+});
+app.use((req, res, next) => {
+  res.set("X-Content-Type-Options", "nosniff");
+  next();
+});
 // Use the rateLimiter middleware to limit requests from the same IP
 app.use(rateLimiter);
 // Enable req.body json payloads when requesting with POST etc
@@ -19,7 +52,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 // Enable cookies (req.cookies)
 app.use(cookieParser());
-// Only front domain name can make requests to the server, credentials allows cookies and authentication headers to be included in requests from the origin
+// Only front domain can make requests to the server, credentials allows cookies and authentication headers to be included in requests from the origin
 app.use(cors({ origin: "http://localhost:5173", credentials: true }));
 // Use the imported router routes
 app.use(router);
