@@ -99,11 +99,13 @@
 
 07/01/2025
 [x] sanitize and validate data in back with validator
-[] protection from xss vulnerabilities : back sanitize and validation on every user input, output encoding (automatic with react), CSP header, no inline js, httponly, update dependencies 
-[] npm audit fix
+[x] protection from xss vulnerabilities : back sanitize and validation on every user input, output encoding (automatic with react), CSP header, no inline js, httponly, update dependencies 
+
+[x] npm audit fix
+[x] protect the app agaisnt sql injection : parametred queries ok, input validation ok, escape inputs ok 
 
 TODO NEXT
-[ ] create real database (all jobs, languages, remus, better names and descriptions and mails, update the front to add checkinputs)
+[ ] ask for 12 characters password
 [ ] on google, show scrollbar on hover for more beautiful website
 [ ] add accessibility
 [ ] opti : image minification

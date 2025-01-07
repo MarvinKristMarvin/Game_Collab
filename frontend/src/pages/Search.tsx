@@ -9,6 +9,7 @@ import removeLastCharacters from "../utils/removeLastCharacters.ts";
 import { toast } from "react-hot-toast";
 import useInactivityHandler from "../hooks/useInactivityHandler.ts";
 import { userInterface } from "../@types/components";
+import decodeSanitized from "../utils/decodeSanitized.ts";
 
 function Search() {
   axios.defaults.withCredentials = true;
@@ -308,7 +309,7 @@ function Search() {
                 <div className="profile" key={index}>
                   <section className="basicInformations">
                     <p className={"nameAge"}>
-                      {profile.name + ", "}
+                      {decodeSanitized(profile.name) + ", "}
                       {profile.age}
                     </p>
                     <div className="languages">
@@ -342,20 +343,22 @@ function Search() {
                     ))}
                   </section>
                   <section className="description">
-                    <p>{profile.description}</p>
+                    <p>{decodeSanitized(profile.description)}</p>
                   </section>
                   <section className="portfolio">
                     {profile.portfolio_url ? (
                       <a
                         href={
                           profile.portfolio_url.startsWith("http")
-                            ? profile.portfolio_url
-                            : `https://${profile.portfolio_url}`
+                            ? decodeSanitized(profile.portfolio_url)
+                            : `https://${decodeSanitized(
+                                profile.portfolio_url
+                              )}`
                         }
                         target="_blank"
                         rel="noopener noreferrer"
                       >
-                        {profile.portfolio_url}
+                        {decodeSanitized(profile.portfolio_url)}
                       </a>
                     ) : null}
                   </section>
