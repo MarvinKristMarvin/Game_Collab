@@ -1,23 +1,44 @@
 import { query, pool } from "../db";
 import { Request, Response } from "express";
+import validator from "validator";
 
 const userController = {
   // Get filtered users, all users by default (DOMAIN/api/users/filtered?languages=English,French&jobs=Dev&remunerations=Nothing&minAge=25&maxAge=40)
   getFiltered: async (req: Request, res: Response) => {
-    // If the language parameter exists in the query string, split it into an array, else it is null
+    // If the language parameter exists in the query string, split it into an array and sanitize each element, else it is null
     const languages = req.query.languages
-      ? (req.query.languages as string).split(",")
+      ? (req.query.languages as string)
+          .split(",")
+          .map((lang) => validator.trim(validator.escape(lang)))
       : null;
-    const jobs = req.query.jobs ? (req.query.jobs as string).split(",") : null;
+    const jobs = req.query.jobs
+      ? (req.query.jobs as string)
+          .split(",")
+          .map((job) => validator.trim(validator.escape(job)))
+      : null;
     const remunerations = req.query.remunerations
-      ? (req.query.remunerations as string).split(",")
+      ? (req.query.remunerations as string)
+          .split(",")
+          .map((rem) => validator.trim(validator.escape(rem)))
       : null;
     const minAge = req.query.minAge
-      ? parseInt(req.query.minAge as string, 10)
+      ? validator.isInt(req.query.minAge as string)
+        ? parseInt(req.query.minAge as string, 10)
+        : null
       : null;
+
     const maxAge = req.query.maxAge
-      ? parseInt(req.query.maxAge as string, 10)
+      ? validator.isInt(req.query.maxAge as string)
+        ? parseInt(req.query.maxAge as string, 10)
+        : null
       : null;
+
+    // Validate logical correctness of minAge and maxAge
+    if (minAge !== null && maxAge !== null && minAge > maxAge) {
+      return res
+        .status(400)
+        .json({ error: "minAge cannot be greater than maxAge" });
+    }
     // Get all users with the selected filters
     const result = await query(
       `
@@ -75,51 +96,70 @@ const userController = {
   updateUser: async (req: Request, res: Response) => {
     const { id } = req.params;
     const warnings = [];
+    // Sanitize inputs (remove potential risky characters from strings, avoiding XSS attacks)
+    const sanitizedData = {
+      // Trim removes whitespaces, escape removes special characters like < > " ' to prevent XSS
+      name: validator.trim(validator.escape(req.body.name || "")),
+      age: req.body.age ? parseInt(req.body.age, 10) : undefined,
+      languages: Array.isArray(req.body.languages)
+        ? req.body.languages.map((lang: string) =>
+            validator.trim(validator.escape(lang))
+          )
+        : [],
+      jobs: Array.isArray(req.body.jobs)
+        ? req.body.jobs.map((job: string) =>
+            validator.trim(validator.escape(job))
+          )
+        : [],
+      remunerations: Array.isArray(req.body.remunerations)
+        ? req.body.remunerations.map((rem: string) =>
+            validator.trim(validator.escape(rem))
+          )
+        : [],
+      description: validator.trim(validator.escape(req.body.description || "")),
+      profile_mail: validator.trim(req.body.profile_mail || ""), // The regex will protect from XSS
+      portfolio_url: validator.trim(
+        validator.escape(req.body.portfolio_url || "")
+      ),
+      available: false,
+    };
     // Data verification for warning purposes, still update the user, but make him available only if no warnings
-    if (!req.body.name || req.body.name.length < 2) {
+    if (!sanitizedData.name || sanitizedData.name.length < 2) {
       warnings.push("Enter a proper name");
     }
-    if (!req.body.age || req.body.age < 15 || req.body.age > 80) {
+    if (
+      sanitizedData.age === undefined ||
+      !validator.isInt(String(sanitizedData.age), { min: 15, max: 80 })
+    ) {
       warnings.push("Age must be between 15 and 80");
     }
     if (
-      !req.body.languages ||
-      req.body.languages.length < 1 ||
-      req.body.languages.length > 4
+      sanitizedData.languages.length < 1 ||
+      sanitizedData.languages.length > 4
     ) {
       warnings.push("Choose 1 to 4 languages");
     }
-    if (
-      !req.body.jobs ||
-      req.body.jobs.length < 1 ||
-      req.body.jobs.length > 8
-    ) {
+
+    if (sanitizedData.jobs.length < 1 || sanitizedData.jobs.length > 8) {
       warnings.push("Choose 1 to 8 jobs");
     }
-    if (!req.body.remunerations || req.body.remunerations.length < 1) {
+
+    if (sanitizedData.remunerations.length < 1) {
       warnings.push("Choose 1 to 4 remunerations");
     }
-    if (!req.body.description) {
+
+    if (!sanitizedData.description) {
       warnings.push("Enter a description");
-    } else {
-      if (req.body.description.length < 10) {
-        warnings.push("Enter a real description");
-      }
-      if (req.body.description.length > 2000) {
-        warnings.push(
-          "Your description has to be less than 2000 characters, it currently has " +
-            req.body.description.length +
-            " characters"
-        );
-      }
+    } else if (sanitizedData.description.length < 10) {
+      warnings.push("Enter a real description");
+    } else if (sanitizedData.description.length > 2000) {
+      warnings.push(
+        `Your description has to be less than 2000 characters, it currently has ${sanitizedData.description.length} characters`
+      );
     }
-    if (
-      !req.body.profile_mail ||
-      !/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/i.test(
-        req.body.profile_mail
-      )
-    ) {
-      warnings.push("Enter a valid mail");
+
+    if (!validator.isEmail(sanitizedData.profile_mail)) {
+      warnings.push("Enter a valid email");
     }
     // Get the user id from his jwt token (stored in res.locals.user in authorization middleware)
     const authenticatedUserId = res.locals.user.id;
@@ -131,7 +171,7 @@ const userController = {
       });
     }
     // If req.body is empty, return an error
-    const patchData = req.body;
+    const patchData = sanitizedData;
     if (!patchData || Object.keys(patchData).length === 0) {
       return res.status(400).json({ error: "No changes are sent" });
     }
@@ -254,6 +294,7 @@ const userController = {
   // Delete user
   deleteUser: async (req: Request, res: Response) => {
     const { id } = req.params;
+    // Id from the jwt token
     const authenticatedUserId = res.locals.user.id;
     if (authenticatedUserId !== Number(id)) {
       return res

@@ -2,22 +2,24 @@ import { query } from "../db";
 import { Request, Response } from "express";
 import { hashPassword, comparePassword } from "../helpers/auth";
 import jwt from "jsonwebtoken";
+import validator from "validator";
 
 const authController = {
   // Signup
   signupUser: async (req: Request, res: Response) => {
     // Get these fields from the request body
     const { mail, password, confirmation } = req.body;
+
     // Check if fields are correct or return toast errors
     if (!mail) {
       return res.json({
-        error: "Your mail is required",
+        error: "Your email is required",
       });
     }
     // Test the mail regex
-    if (!/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/i.test(mail)) {
+    if (!validator.isEmail(mail)) {
       return res.json({
-        error: "Your mail is not valid",
+        error: "Your email is not valid",
       });
     }
     if (!password || password.length < 8) {
@@ -57,6 +59,12 @@ const authController = {
   // Login
   loginUser: async (req: Request, res: Response) => {
     const { mail, password } = req.body;
+    // Check if invalid email
+    if (!validator.isEmail(mail)) {
+      return res.json({
+        error: "Invalid email",
+      });
+    }
     // Find the user using his mail
     const data = await query(
       `
