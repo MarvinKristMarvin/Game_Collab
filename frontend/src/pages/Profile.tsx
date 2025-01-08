@@ -11,6 +11,7 @@ import removeLastCharacters from "../utils/removeLastCharacters";
 import { useNavigate } from "react-router-dom";
 import useInactivityHandler from "../hooks/useInactivityHandler";
 import getCookie from "../utils/getCookie";
+import decodeSanitized from "../utils/decodeSanitized.ts";
 
 function Profile() {
   const navigate = useNavigate();
@@ -356,7 +357,7 @@ function Profile() {
                 inputName="name"
                 isNumber={false}
                 onChangeHandler={updateName}
-                actualValue={name != undefined ? name : ""}
+                actualValue={name != undefined ? decodeSanitized(name) : ""}
               />
               <InputField
                 placeholder="Age"
@@ -483,7 +484,9 @@ function Profile() {
               inputName="description"
               isNumber={false}
               onChangeHandler={updateDescription}
-              actualValue={description != undefined ? description : ""}
+              actualValue={
+                description != undefined ? decodeSanitized(description) : ""
+              }
             />
             <InputField
               placeholder="Portfolio Link  (Not required)"
@@ -492,7 +495,9 @@ function Profile() {
               inputName="portfolio"
               isNumber={false}
               onChangeHandler={updatePortfolio_url}
-              actualValue={portfolio_url != undefined ? portfolio_url : ""}
+              actualValue={
+                portfolio_url != undefined ? decodeSanitized(portfolio_url) : ""
+              }
             />
             <InputField
               placeholder="Contact mail"

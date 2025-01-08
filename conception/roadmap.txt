@@ -102,9 +102,10 @@
 [x] protection from xss vulnerabilities : back sanitize and validation on every user input, output encoding (automatic with react), CSP header, no inline js, httponly, update dependencies 
 [x] npm audit fix
 [x] protect the app agaisnt sql injection : parametred queries ok, input validation ok, escape inputs ok
+[x] protection against csrf vulnerabilities : cookie lax or strict ok, token csrf
 
-[] protection against csrf vulnerabilities : cookie lax or strict ok, token csrf
 [] decode properly description text on profile
+[] description text doesnt go to new line at the end of div
 
 TODO NEXT
 [ ] ask for 12 characters password
