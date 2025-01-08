@@ -34,7 +34,7 @@
 [x] creer l'html et css de base
 [x] creer la bdd et les scripts de test (create, insert, drop)
 [x] développer le MVP responsive (1)
-[ ] sécuriser l'authentification et failles courantes
+[x] sécuriser l'authentification et failles courantes
 [ ] réduction des coûts : optimisation des images, minification des fichiers, optimisation des requetes
 [ ] tests pour les fonctionnalités principales du projet
 [ ] accessibiliser aux normes WCAG
@@ -102,10 +102,12 @@
 [x] protection from xss vulnerabilities : back sanitize and validation on every user input, output encoding (automatic with react), CSP header, no inline js, httponly, update dependencies 
 [x] npm audit fix
 [x] protect the app agaisnt sql injection : parametred queries ok, input validation ok, escape inputs ok
-[x] protection against csrf vulnerabilities : cookie lax or strict ok, token csrf
 
-[] decode properly description text on profile
-[] description text doesnt go to new line at the end of div
+08/01/2025
+[x] protection against csrf vulnerabilities : cookie lax or strict ok, token csrf
+[x] decode properly description text on profile
+[x] description text doesnt go to new line at the end of div
+-> optimize images : png to webp, use minimum quality possible for the eye, lazy load, proper favicons compatibility, preload most used images, 
 
 TODO NEXT
 [ ] ask for 12 characters password

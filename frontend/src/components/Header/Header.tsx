@@ -1,7 +1,7 @@
 import { NavLink } from "react-router-dom";
-import logo from "../../assets/images/logo.png";
-import searchIcon from "../../assets/images/searchIcon.png";
-import profileIcon from "../../assets/images/profileIcon.png";
+import logo from "/logo.webp";
+import searchIcon from "/searchIcon.webp";
+import profileIcon from "/profileIcon.webp";
 import "./Header.css";
 
 // Header with navlinks

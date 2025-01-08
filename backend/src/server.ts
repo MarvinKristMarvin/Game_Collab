@@ -7,6 +7,7 @@ import dotenv from "dotenv";
 import rateLimiter from "./middlewares/rateLimitation";
 import helmet from "helmet";
 import csrf from "csurf";
+import path from "path";
 
 // Enable environment variables
 dotenv.config();
@@ -47,6 +48,17 @@ app.use((req, res, next) => {
 });
 // Use the rateLimiter middleware to limit requests from the same IP
 app.use(rateLimiter);
+// Serve static assets from React's public folder with caching
+app.use(
+  express.static(path.join(__dirname, "../frontend/public"), {
+    maxAge: "30d", // Cache for 30 days
+    immutable: true, // Files are not expected to change
+  })
+);
+//! Serve React app for all other routes
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "../frontend/public/index.html"));
+});
 // Enable req.body json payloads when requesting with POST etc
 app.use(express.json());
 // Enable url encoded data (querystrings) in req.body

@@ -322,6 +322,7 @@ function Search() {
                               src={`https://flagcdn.com/w40/${languageCode}.png`}
                               width="40"
                               alt={languageName}
+                              loading="lazy"
                             />
                           </div>
                         );
