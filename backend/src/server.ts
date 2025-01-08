@@ -6,6 +6,7 @@ import cookieParser from "cookie-parser";
 import dotenv from "dotenv";
 import rateLimiter from "./middlewares/rateLimitation";
 import helmet from "helmet";
+import csrf from "csurf";
 
 // Enable environment variables
 dotenv.config();
@@ -52,6 +53,21 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 // Enable cookies (req.cookies)
 app.use(cookieParser());
+// Enable CSRF protection
+/*const csrfProtection = csrf({ cookie: true });
+app.use(csrfProtection);
+app.get("/csrf-token", (req, res) => {
+  res.json({ csrfToken: req.csrfToken() });
+});
+app.use(
+  csrf({
+    cookie: {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "strict",
+    },
+  })
+);*/
 // Only front domain can make requests to the server, credentials allows cookies and authentication headers to be included in requests from the origin
 app.use(cors({ origin: "http://localhost:5173", credentials: true }));
 // Use the imported router routes

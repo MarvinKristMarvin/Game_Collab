@@ -3,6 +3,7 @@ import { Request, Response } from "express";
 import { hashPassword, comparePassword } from "../helpers/auth";
 import jwt from "jsonwebtoken";
 import validator from "validator";
+import crypto from "crypto";
 
 const authController = {
   // Signup
@@ -110,6 +111,7 @@ const authController = {
       } catch (error) {
         console.log(error + "Unable to update user's updated_at");
       }
+      const csrfToken = crypto.randomBytes(32).toString("hex");
       // Create a jwt by encoding the user id, mail and role + the jwt secret, set an expiration time
       jwt.sign(
         { mail: user.mail, id: user.id, role: user.role },
@@ -119,13 +121,21 @@ const authController = {
           if (err) throw err;
           // If successfull, send the token to the client in a cookie named "token" and send user data back as a response without the password
           const { password, ...userWithoutPassword } = user;
-          return res
-            .cookie("token", token, {
-              httpOnly: true,
-              sameSite: "lax",
-              secure: false, // true in production
-            })
-            .json(userWithoutPassword);
+          return (
+            res
+              .cookie("token", token, {
+                httpOnly: true,
+                sameSite: "lax",
+                secure: process.env.NODE_ENV === "production", // True when in production
+              })
+              // Also send the CSRF token
+              .cookie("csrfToken", csrfToken, {
+                httpOnly: false, // Make the cookie accessible by the frontend
+                sameSite: "lax",
+                secure: process.env.NODE_ENV === "production",
+              })
+              .json(userWithoutPassword)
+          );
         }
       );
     }

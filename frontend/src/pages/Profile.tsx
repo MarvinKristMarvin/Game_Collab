@@ -10,6 +10,7 @@ import { useLoggedUser } from "../context/userContext";
 import removeLastCharacters from "../utils/removeLastCharacters";
 import { useNavigate } from "react-router-dom";
 import useInactivityHandler from "../hooks/useInactivityHandler";
+import getCookie from "../utils/getCookie";
 
 function Profile() {
   const navigate = useNavigate();
@@ -205,6 +206,7 @@ function Profile() {
       (remuneration) => remuneration != null
     );
     if (loggedUser) {
+      const csrfToken = getCookie("csrfToken");
       try {
         const { data } = await axios.patch(
           `http://localhost:5000/api/user/${loggedUser.id}`,
@@ -217,6 +219,11 @@ function Profile() {
             jobs: cleanSelectedJobs,
             languages: cleanSelectedLanguages,
             remunerations: cleanSelectedRemunerations,
+          },
+          {
+            headers: {
+              "x-csrf-token": csrfToken, // Send the CSRF token in the header
+            },
           }
         );
         if (data.error) {
@@ -244,9 +251,15 @@ function Profile() {
   const deleteAccount = async () => {
     try {
       if (loggedUser) {
+        const csrfToken = getCookie("csrfToken");
         const response = await axios.delete(
           `http://localhost:5000/api/user/${loggedUser.id}`,
-          { withCredentials: true }
+          {
+            headers: {
+              "x-csrf-token": csrfToken, // Add the CSRF token to the headers
+            },
+            withCredentials: true,
+          }
         );
         if (response.status === 204 || response.status === 200) {
           setLoggedUser(null);

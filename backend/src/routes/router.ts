@@ -3,6 +3,7 @@ import userController from "../controllers/userController";
 import authController from "../controllers/authController";
 import wrapper from "../middlewares/wrapper";
 import authorization from "../middlewares/authorization";
+import validateCsrfToken from "../middlewares/validateCsrfToken";
 
 const router = express.Router();
 
@@ -12,12 +13,14 @@ router.get("/api/users/filtered", wrapper(userController.getFiltered));
 router.patch(
   "/api/user/:id",
   authorization,
+  validateCsrfToken,
   wrapper(userController.updateUser)
 );
 // Delete authenticated user
 router.delete(
   "/api/user/:id",
   authorization,
+  validateCsrfToken,
   wrapper(userController.deleteUser)
 );
 // Signup
