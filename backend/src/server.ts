@@ -56,9 +56,9 @@ app.use(
   })
 );
 //! Serve React app for all other routes
-app.get("*", (req, res) => {
+/*app.get("*", (req, res) => {
   res.sendFile(path.join(__dirname, "../frontend/public/index.html"));
-});
+});*/
 // Enable req.body json payloads when requesting with POST etc
 app.use(express.json());
 // Enable url encoded data (querystrings) in req.body

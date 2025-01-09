@@ -48,8 +48,7 @@
       li.logo {
         margin-inline: calc(17% - 2.75rem);
         img {
-          width: rem;
-          height: 4rem;
+          height: 3.5rem;
         }
       }
     }

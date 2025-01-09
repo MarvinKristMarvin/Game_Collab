@@ -309,7 +309,7 @@ function Search() {
                 <div className="profile" key={index}>
                   <section className="basicInformations">
                     <p className={"nameAge"}>
-                      {decodeSanitized(profile.name) + ", "}
+                      {decodeSanitized(decodeSanitized(profile.name)) + ", "}
                       {profile.age}
                     </p>
                     <div className="languages">
@@ -320,7 +320,6 @@ function Search() {
                           <div className="language" key={languageCode}>
                             <img
                               src={`https://flagcdn.com/w40/${languageCode}.png`}
-                              width="40"
                               alt={languageName}
                               loading="lazy"
                             />
@@ -344,22 +343,26 @@ function Search() {
                     ))}
                   </section>
                   <section className="description">
-                    <p>{decodeSanitized(profile.description)}</p>
+                    <p>
+                      {decodeSanitized(decodeSanitized(profile.description))}
+                    </p>
                   </section>
                   <section className="portfolio">
                     {profile.portfolio_url ? (
                       <a
                         href={
                           profile.portfolio_url.startsWith("http")
-                            ? decodeSanitized(profile.portfolio_url)
+                            ? decodeSanitized(
+                                decodeSanitized(profile.portfolio_url)
+                              )
                             : `https://${decodeSanitized(
-                                profile.portfolio_url
+                                decodeSanitized(profile.portfolio_url)
                               )}`
                         }
                         target="_blank"
                         rel="noopener noreferrer"
                       >
-                        {decodeSanitized(profile.portfolio_url)}
+                        {decodeSanitized(decodeSanitized(profile.description))}
                       </a>
                     ) : null}
                   </section>

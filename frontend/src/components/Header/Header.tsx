@@ -1,5 +1,5 @@
 import { NavLink } from "react-router-dom";
-import logo from "/logo.webp";
+import logo from "/logox200.webp";
 import searchIcon from "/searchIcon.webp";
 import profileIcon from "/profileIcon.webp";
 import "./Header.css";
