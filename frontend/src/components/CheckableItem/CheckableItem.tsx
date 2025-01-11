@@ -17,6 +17,7 @@ function CheckableItem({
       id={inputId}
       checked={checked}
       onChange={onChange}
+      aria-label={text + " checkbox"}
     />
   );
 }

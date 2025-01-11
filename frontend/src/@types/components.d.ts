@@ -28,6 +28,7 @@ export interface IInputField {
   onChangeHandler: (value: string) => void;
   isNumber: boolean;
   actualValue: string;
+  autoComplete?: string;
 }
 
 export interface ILabel {

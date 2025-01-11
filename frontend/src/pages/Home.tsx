@@ -10,8 +10,11 @@ function Home() {
   // Custom hook to handle inactivity logout in front and back then toasts the user
   useInactivityHandler();
   return (
-    <div className="homePage">
-      <p className="homeMessage">
+    <section className="homePage" aria-label="home page">
+      <p
+        className="homeMessage"
+        aria-label="short welcoming message with indications on Game Hearts functionalities"
+      >
         Welcome to Gamehearts, the ultimate platform for connecting with
         potential partners for your indie game projects!
         <br />
@@ -25,7 +28,7 @@ function Home() {
         Wishing you the best of luck on your indie game journey!
       </p>
       <Footer />
-    </div>
+    </section>
   );
 }
 

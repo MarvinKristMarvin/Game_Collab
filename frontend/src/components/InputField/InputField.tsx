@@ -10,6 +10,7 @@ function InputField({
   onChangeHandler,
   isNumber = false,
   actualValue,
+  autoComplete,
 }: IInputField) {
   if (inputType === "textarea") {
     return (
@@ -29,6 +30,9 @@ function InputField({
             : undefined
         }
         value={actualValue}
+        aria-label={inputName + " field"}
+        aria-required={inputName === "description" ? true : false}
+        autoComplete={autoComplete ? autoComplete : "off"}
       />
     );
   } else {
@@ -53,6 +57,9 @@ function InputField({
             : undefined
         }
         value={actualValue}
+        aria-label={inputName + " field"}
+        aria-required={inputName === "portfolio" ? false : true}
+        autoComplete=""
       ></input>
     );
   }

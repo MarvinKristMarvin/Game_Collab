@@ -38,7 +38,7 @@
 [x] réduction des coûts : optimisation des images, minification des fichiers, optimisation des requetes
 [ ] tests pour les fonctionnalités principales du projet
 [ ] accessibiliser aux normes WCAG
-[ ] SEO : maximiser le référencement du projet
+[-] SEO : maximiser le référencement du projet
 [ ] RGPD et mentions légales
 [ ] dockeriser
 [ ] déployer
@@ -106,7 +106,7 @@
 08/01/2025
 [x] protection against csrf vulnerabilities : cookie lax or strict ok, token csrf
 [x] decode properly description text on profile
-[x] description text doesnt go to new line at the end of div
+[x] make description text go to new line at the end of div
 
 09/01/2025
 [x] decode the description when browsing profiles
@@ -115,15 +115,31 @@
 [x] file minification will be automatic with vite build
 [x] optimize images : resize image to minimum for the eye, png to webp then compress the webp, lazy load, proper favicons compatibility, preload most used images, cdn for fast delivery images
 
+10/01/2025
+[x] reduce flag number before doing a list of all languages for visibility
+[x] wcag done on everything but the search page and its coomponents
+
+11/01/2025
+[] follow wcag AA rules (https://webaim.org/standards/wcag/checklist) : semantic tags, imgs alt, aria-labels/required, autoComplete, focus everywhere, contrast, zoom 200% (do better for form validation and errors to help the user) role="status/alert" and aria-live="polite/assertive" for success/warnings
+[] still got the sanitize/decode bug, do something for that (is there even a risk if i do not sanitize in the back ?)
+[] check if there are more tags like og for html head (check what is done for modern react apps in html index)
+[] tests for principal functionnallities
+
+12/02/2025
+-> RGPD
+-> docker
+-> deployment + procedure
+
+
+
 TODO NEXT
+[ ] put the save button fixed top, let log out and delete at the bottom (and later change style)
+[ ] reduce language number for now (db + front) until adding a dropdown
+[ ] page content goes behind fixed buttons on top
 [ ] ask for 12 characters password
-[ ] on google, show scrollbar on hover for more beautiful website
-[ ] add accessibility
-[ ] opti : image minification
-[ ] opti api : reduce nmber of api requests to strict minimum
-[ ] opti api : load only 20 profiles by 20 profiles
+[ ] on google, show scrollbar on hover for more beautiful website, and font is black, make it white
+[ ] opti api : load only 20 profiles by 20 profiles, and cache loaded profiles ?
 [ ] opti api : don't load new profiles if the query string is the same as before
 [ ] ux : put a loader when waiting for profiles
 [ ] ui : add flags on checkinput languages
-[ ] SEO and website configuration
 [ ] deployment

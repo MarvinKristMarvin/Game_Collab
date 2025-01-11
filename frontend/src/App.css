@@ -68,7 +68,7 @@ a {
   .jobList {
     display: grid;
     gap: 0.75rem;
-    grid-template-columns: repeat(auto-fit, minmax(8rem, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(7rem, 1fr));
     margin-bottom: 2rem;
   }
   .remunerationList {
@@ -81,7 +81,7 @@ a {
   .flagList {
     display: grid;
     gap: 0.75rem;
-    grid-template-columns: repeat(auto-fit, minmax(5rem, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(7rem, 1fr));
     margin-bottom: 2rem;
   }
 

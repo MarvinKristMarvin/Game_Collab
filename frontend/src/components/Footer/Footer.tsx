@@ -3,9 +3,9 @@ import "./Footer.css";
 // Footer which displays the contact email at the bottom of the page
 function Footer() {
   return (
-    <div className="footerComponent">
-      <p>gamehearts@gmail.com</p>
-    </div>
+    <footer className="footerComponent" aria-label="website footer">
+      <p aria-label="contact email">gamehearts@gmail.com</p>
+    </footer>
   );
 }
 

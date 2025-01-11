@@ -37,6 +37,18 @@ function App() {
         toastOptions={{
           duration: 5000,
           style: { fontSize: "1.125rem", paddingLeft: "1rem" },
+          success: {
+            ariaProps: {
+              role: "status",
+              "aria-live": "polite",
+            },
+          },
+          error: {
+            ariaProps: {
+              role: "alert",
+              "aria-live": "assertive",
+            },
+          },
         }}
       />
       <Routes>

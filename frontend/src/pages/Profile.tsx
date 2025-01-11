@@ -280,9 +280,9 @@ function Profile() {
   // If the user is not authentified, show the login and signup page, else show his profile page
   if (loggedUser === null) {
     return (
-      <div className="profilePage">
+      <main className="profilePage" aria-label="connexion page">
         {/* Login and signup forms */}
-        <form onSubmit={loginUser}>
+        <form onSubmit={loginUser} aria-label="Log in form">
           <Label text="Log in to modify your profile" htmlFor="login-email" />
           <InputField
             placeholder="Mail"
@@ -292,6 +292,7 @@ function Profile() {
             isNumber={false}
             onChangeHandler={updateLoginMail}
             actualValue={loginData.mail}
+            autoComplete="email"
           />
           <InputField
             placeholder="Password"
@@ -301,10 +302,11 @@ function Profile() {
             isNumber={false}
             onChangeHandler={updateLoginPassword}
             actualValue={loginData.password}
+            autoComplete="current-password"
           />
           <Button text="Log in" buttonType="submit" />
         </form>
-        <form onSubmit={signupUser}>
+        <form onSubmit={signupUser} aria-label="Sign up form">
           <Label
             text="Or sign up if you don't have an account yet !"
             htmlFor="signup-email"
@@ -317,6 +319,7 @@ function Profile() {
             isNumber={false}
             onChangeHandler={updateSignupMail}
             actualValue={signupData.mail}
+            autoComplete="email"
           />
           <InputField
             placeholder="Password  (Minimum 8 characters)"
@@ -326,6 +329,7 @@ function Profile() {
             isNumber={false}
             onChangeHandler={updateSignupPassword}
             actualValue={signupData.password}
+            autoComplete="new-password"
           />
           <InputField
             placeholder="Confirm password"
@@ -335,21 +339,22 @@ function Profile() {
             isNumber={false}
             onChangeHandler={updateSignupConfirmation}
             actualValue={signupData.confirmation}
+            autoComplete="new-password"
           />
           <Button text="Sign up" buttonType="submit" />
         </form>
-      </div>
+      </main>
     );
   } else if (loggedUser !== null) {
     // If user is authenticated show his profile page
     return (
-      <div className="profilePage">
+      <main className="profilePage" aria-label="profile page">
         <PositiveMessage text='Hello, edit your profile then click on "save", an incomplete profile will not be shown on our platform' />
-        <form action="">
+        <form action="" aria-label="profile modification form">
           {/* Name and age fields */}
-          <section className="spacingSection">
+          <div className="spacingSection">
             <Label text="Enter your name and age" htmlFor="name" />
-            <div className="nameAndAgeList">
+            <div className="nameAndAgeList" aria-label="name and age fields">
               <InputField
                 placeholder="Name"
                 inputType="text"
@@ -369,12 +374,12 @@ function Profile() {
                 actualValue={age != undefined ? age.toString() : ""}
               />
             </div>
-          </section>
+          </div>
 
           {/* Languages checkboxes */}
-          <section className="spacingSection">
+          <div className="spacingSection">
             <Label text="Select your languages" htmlFor="english.gb" />
-            <div className="flagList">
+            <div className="flagList" aria-label="languages checkboxes">
               {[
                 "English.gb",
                 "French.fr",
@@ -386,25 +391,25 @@ function Profile() {
                 "Turkish.tr",
                 "Italian.it",
                 "Persian.ir",
-                "Dutch.nl",
-                "Polish.pl",
-                "Chinese.cn",
-                "Vietnamese.vn",
-                "Indonesian.id",
-                "Czech.cz",
-                "Korean.kr",
-                "Ukrainian.ua",
-                "Arabic.sa",
-                "Greek.gr",
-                "Hebrew.il",
-                "Swedish.se",
-                "Romanian.ro",
-                "Hungarian.hu",
-                "Thai.th",
-                "Danish.dk",
-                "Slovak.sk",
-                "Finnish.fi",
-                "Norwegian.no",
+                // "Dutch.nl",
+                // "Polish.pl",
+                // "Chinese.cn",
+                // "Vietnamese.vn",
+                // "Indonesian.id",
+                // "Czech.cz",
+                // "Korean.kr",
+                // "Ukrainian.ua",
+                // "Arabic.sa",
+                // "Greek.gr",
+                // "Hebrew.il",
+                // "Swedish.se",
+                // "Romanian.ro",
+                // "Hungarian.hu",
+                // "Thai.th",
+                // "Danish.dk",
+                // "Slovak.sk",
+                // "Finnish.fi",
+                // "Norwegian.no",
               ].map((language) => (
                 <CheckableItem
                   key={language}
@@ -421,12 +426,12 @@ function Profile() {
                 />
               ))}
             </div>
-          </section>
+          </div>
 
           {/* Jobs checkboxes */}
-          <section className="spacingSection">
+          <div className="spacingSection">
             <Label text="What jobs can you do" htmlFor="artist" />
-            <div className="jobList">
+            <div className="jobList" aria-label="jobs checkboxes">
               {[
                 "Code",
                 "Sprites",
@@ -448,12 +453,15 @@ function Profile() {
                 />
               ))}
             </div>
-          </section>
+          </div>
 
           {/* Remunerations checkboxes */}
-          <section className="spacingSection">
+          <div className="spacingSection">
             <Label text="What are you working for" htmlFor="nothing" />
-            <div className="remunerationList">
+            <div
+              className="remunerationList"
+              aria-label="remunerations checkboxes"
+            >
               {["Fun", "Shares", "Commissions", "Salary"].map(
                 (remuneration) => (
                   <CheckableItem
@@ -472,10 +480,10 @@ function Profile() {
                 )
               )}
             </div>
-          </section>
+          </div>
 
           {/* Description, portfolio and contact mail fields */}
-          <section className="spacingSection">
+          <div className="spacingSection">
             <Label text="Other informations" htmlFor="description" />
             <InputField
               placeholder="Describe yourself, your skills, experience etc..."
@@ -507,10 +515,11 @@ function Profile() {
               isNumber={false}
               onChangeHandler={updateProfile_mail}
               actualValue={profile_mail != undefined ? profile_mail : ""}
+              autoComplete="email"
             />
-          </section>
+          </div>
           {/* Save, log out and delete my account buttons */}
-          <Button text="Save" func={saveUser} />
+          <Button text="Save my profile" func={saveUser} />
           <Button text="Log out" func={logOut} color="orangeButton" />
           <Button
             text="Delete my account"
@@ -518,7 +527,7 @@ function Profile() {
             color="orangeButton"
           />
         </form>
-      </div>
+      </main>
     );
   }
 }
