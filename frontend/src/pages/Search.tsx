@@ -113,6 +113,14 @@ function Search() {
       .get<userInterface[]>(dataURL + filterString)
       .then((response) => {
         if (response.data && response.data.length > 0) {
+          // Decode sanitized data
+          response.data.forEach((user) => {
+            user.name = decodeSanitized(user.name);
+            user.description = decodeSanitized(user.description);
+            if (user.portfolio_url) {
+              user.portfolio_url = decodeSanitized(user.portfolio_url);
+            }
+          });
           setLoadedProfiles(response.data);
           toast.success(
             response.data.length + " profiles matches your filters"
@@ -325,7 +333,7 @@ function Search() {
                     aria-label="profile basic informations"
                   >
                     <p className={"nameAge"}>
-                      {decodeSanitized(decodeSanitized(profile.name)) + ", "}
+                      {decodeSanitized(profile.name) + ", "}
                       {profile.age}
                     </p>
                     <div className="languages" aria-label="profile languages">
@@ -365,26 +373,22 @@ function Search() {
                     className="description"
                     aria-label="profile description"
                   >
-                    <p>
-                      {decodeSanitized(decodeSanitized(profile.description))}
-                    </p>
+                    <p>{decodeSanitized(profile.description)}</p>
                   </section>
                   <section className="portfolio" aria-label="profile portfolio">
                     {profile.portfolio_url ? (
                       <a
                         href={
                           profile.portfolio_url.startsWith("http")
-                            ? decodeSanitized(
-                                decodeSanitized(profile.portfolio_url)
-                              )
+                            ? decodeSanitized(profile.portfolio_url)
                             : `https://${decodeSanitized(
-                                decodeSanitized(profile.portfolio_url)
+                                profile.portfolio_url
                               )}`
                         }
                         target="_blank"
                         rel="noopener noreferrer"
                       >
-                        {decodeSanitized(decodeSanitized(profile.description))}
+                        {decodeSanitized(profile.description)}
                       </a>
                     ) : null}
                   </section>

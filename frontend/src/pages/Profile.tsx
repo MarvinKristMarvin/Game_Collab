@@ -56,6 +56,11 @@ function Profile() {
       } else {
         toast.success("Log in successfull ! You can now modify your profile.");
         setLoginData({ mail: "", password: "" });
+        console.log(data);
+        data.name = decodeSanitized(data.name);
+        data.description = decodeSanitized(data.description);
+        data.portfolio_url = decodeSanitized(data.portfolio_url);
+        console.log(data);
         setLoggedUser(data);
       }
     } catch (error) {
