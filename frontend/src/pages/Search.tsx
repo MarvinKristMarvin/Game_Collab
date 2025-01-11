@@ -133,16 +133,19 @@ function Search() {
   // If filtering is true => show filters page, else, browse profiles */
   if (filtering === true) {
     return (
-      <div className="searchPage">
+      <main className="searchPage" aria-label="filter profiles page">
         <FixedButtons
           filtering={filtering}
           getFilteredProfiles={getFilteredProfiles}
         />
-        <form action="">
+        <form action="" aria-label="filters form">
           {/* Choose an age limit for the search string*/}
-          <section className="spacingSection">
+          <div className="spacingSection">
             <Label text="Search for minimum and maximum age" htmlFor="minAge" />
-            <div className="nameAndAgeList">
+            <div
+              className="nameAndAgeList"
+              aria-label="minimum and maximum age filtering fields"
+            >
               <InputField
                 placeholder="Minimum age"
                 inputType="text"
@@ -162,12 +165,15 @@ function Search() {
                 actualValue={maximumAge.toString()}
               />
             </div>
-          </section>
+          </div>
 
           {/* Add languages to the search string */}
-          <section className="spacingSection">
+          <div className="spacingSection">
             <Label text="Search people talking" htmlFor="english" />
-            <div className="flagList">
+            <div
+              className="flagList"
+              aria-label="languages filtering checkboxes"
+            >
               {[
                 "English.gb",
                 "French.fr",
@@ -214,12 +220,12 @@ function Search() {
                 />
               ))}
             </div>
-          </section>
+          </div>
 
           {/* Add jobs to the search string */}
-          <section className="spacingSection">
+          <div className="spacingSection">
             <Label text="Search people doing" htmlFor="code" />
-            <div className="jobList">
+            <div className="jobList" aria-label="jobs filtering checkboxes">
               {[
                 "Code",
                 "Sprites",
@@ -241,12 +247,15 @@ function Search() {
                 />
               ))}
             </div>
-          </section>
+          </div>
 
           {/* Add remunerations to the search string */}
-          <section className="spacingSection">
+          <div className="spacingSection">
             <Label text="Search people working for" htmlFor="free" />
-            <div className="remunerationList">
+            <div
+              className="remunerationList"
+              aria-label="remunerations filtering checkboxes"
+            >
               {["Fun", "Shares", "Commissions", "Salary"].map(
                 (remuneration) => (
                   <CheckableItem
@@ -265,10 +274,10 @@ function Search() {
                 )
               )}
             </div>
-          </section>
+          </div>
 
           {/* Add keywords to the search string (not implemented yet) */}
-          <section className="spacingSection ">
+          <div className="spacingSection ">
             <Label text="Search for description keywords" htmlFor="keywords" />
             <InputField
               placeholder="Keywords separated by space"
@@ -279,21 +288,21 @@ function Search() {
               actualValue={keywords != undefined ? keywords : ""}
               onChangeHandler={updateKeywords}
             />
-          </section>
+          </div>
         </form>
-      </div>
+      </main>
     );
   } else {
     return (
       // If filtering is false, show the "browse profiles" page
-      <div className="searchPage">
+      <main className="searchPage" aria-label="browse profiles page">
         <FixedButtons
           filtering={filtering}
           updateFilteringToTrue={updateFilteringToTrue}
         />
         {/* Show profile info only if profiles are loaded */}
         {loadedProfiles.length > 0 ? (
-          <div className="profileInformations">
+          <section className="profileInformations">
             {loadedProfiles.map((profile, index) => {
               // Create arrays from strings for languages, jobs and remunerations for the current profile
               const languages = profile.languages
@@ -306,13 +315,20 @@ function Search() {
 
               // Create a card for each profile
               return (
-                <div className="profile" key={index}>
-                  <section className="basicInformations">
+                <article
+                  className="profile"
+                  key={index}
+                  aria-label={"profile " + index}
+                >
+                  <section
+                    className="basicInformations"
+                    aria-label="profile basic informations"
+                  >
                     <p className={"nameAge"}>
                       {decodeSanitized(decodeSanitized(profile.name)) + ", "}
                       {profile.age}
                     </p>
-                    <div className="languages">
+                    <div className="languages" aria-label="profile languages">
                       {languages.map((language) => {
                         const [languageName, languageCode] =
                           language.split(".");
@@ -328,26 +344,32 @@ function Search() {
                       })}
                     </div>
                   </section>
-                  <section className="jobs">
+                  <section className="jobs" aria-label="profile jobs">
                     {jobs.map((job, i) => (
                       <div className="job" key={i}>
                         {job}
                       </div>
                     ))}
                   </section>
-                  <section className="remunerations">
+                  <section
+                    className="remunerations"
+                    aria-label="profile remunerations"
+                  >
                     {remunerations.map((remuneration, i) => (
                       <div className="remuneration" key={i}>
                         {remuneration}
                       </div>
                     ))}
                   </section>
-                  <section className="description">
+                  <section
+                    className="description"
+                    aria-label="profile description"
+                  >
                     <p>
                       {decodeSanitized(decodeSanitized(profile.description))}
                     </p>
                   </section>
-                  <section className="portfolio">
+                  <section className="portfolio" aria-label="profile portfolio">
                     {profile.portfolio_url ? (
                       <a
                         href={
@@ -366,19 +388,19 @@ function Search() {
                       </a>
                     ) : null}
                   </section>
-                  <section className="mail">
+                  <section className="mail" aria-label="profile mail">
                     <p>{profile.profile_mail}</p>
                   </section>
-                </div>
+                </article>
               );
             })}
-          </div>
+          </section>
         ) : (
-          <p>
+          <p aria-label="no profiles found message">
             No profiles found with those filters, please try with other ones
           </p>
         )}
-      </div>
+      </main>
     );
   }
 }

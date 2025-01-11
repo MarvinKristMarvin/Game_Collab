@@ -12,7 +12,10 @@ function FixedButtons({
     return (
       <div className="fixedButtonsComponent">
         <div className="buttonsContainer">
-          <Button text="Search profiles" func={getFilteredProfiles} />
+          <Button
+            text="Search profiles with these filters"
+            func={getFilteredProfiles}
+          />
         </div>
       </div>
     );
