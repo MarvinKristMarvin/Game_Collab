@@ -121,8 +121,8 @@
 
 11/01/2025
 [x] follow wcag AA rules (https://webaim.org/standards/wcag/checklist) : semantic tags, images alt, aria-labels/required, autoComplete, focus everywhere, contrast, zoom 200% (do better for form validation and errors to help the user) role="status/alert" and aria-live="polite/assertive" for success/warnings
+[x] correct the sanitize/decode bug, do something for that (is there even a risk if i do not sanitize in the back ?)
 
-[] still got the sanitize/decode bug, do something for that (is there even a risk if i do not sanitize in the back ?)
 [] check if there are more tags like og for html head (check what is done for modern react apps in html index)
 [] tests for principal functionnallities
 

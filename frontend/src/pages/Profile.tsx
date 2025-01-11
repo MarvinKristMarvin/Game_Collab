@@ -12,6 +12,7 @@ import { useNavigate } from "react-router-dom";
 import useInactivityHandler from "../hooks/useInactivityHandler";
 import getCookie from "../utils/getCookie";
 import decodeSanitized from "../utils/decodeSanitized.ts";
+import { Helmet } from "react-helmet";
 
 function Profile() {
   const navigate = useNavigate();
@@ -285,254 +286,266 @@ function Profile() {
   // If the user is not authentified, show the login and signup page, else show his profile page
   if (loggedUser === null) {
     return (
-      <main className="profilePage" aria-label="connexion page">
-        {/* Login and signup forms */}
-        <form onSubmit={loginUser} aria-label="Log in form">
-          <Label text="Log in to modify your profile" htmlFor="login-email" />
-          <InputField
-            placeholder="Mail"
-            inputType="email"
-            inputId="login-email"
-            inputName="login-email"
-            isNumber={false}
-            onChangeHandler={updateLoginMail}
-            actualValue={loginData.mail}
-            autoComplete="email"
-          />
-          <InputField
-            placeholder="Password"
-            inputType="password"
-            inputId="login-password"
-            inputName="login-password"
-            isNumber={false}
-            onChangeHandler={updateLoginPassword}
-            actualValue={loginData.password}
-            autoComplete="current-password"
-          />
-          <Button text="Log in" buttonType="submit" />
-        </form>
-        <form onSubmit={signupUser} aria-label="Sign up form">
-          <Label
-            text="Or sign up if you don't have an account yet !"
-            htmlFor="signup-email"
-          />
-          <InputField
-            placeholder="Mail"
-            inputType="email"
-            inputId="signup-email"
-            inputName="signup-email"
-            isNumber={false}
-            onChangeHandler={updateSignupMail}
-            actualValue={signupData.mail}
-            autoComplete="email"
-          />
-          <InputField
-            placeholder="Password  (Minimum 8 characters)"
-            inputType="password"
-            inputId="signup-password"
-            inputName="signup-password"
-            isNumber={false}
-            onChangeHandler={updateSignupPassword}
-            actualValue={signupData.password}
-            autoComplete="new-password"
-          />
-          <InputField
-            placeholder="Confirm password"
-            inputType="password"
-            inputId="confirm-password"
-            inputName="confirm-password"
-            isNumber={false}
-            onChangeHandler={updateSignupConfirmation}
-            actualValue={signupData.confirmation}
-            autoComplete="new-password"
-          />
-          <Button text="Sign up" buttonType="submit" />
-        </form>
-      </main>
+      <>
+        <Helmet>
+          <title>Game Hearts - Connexion</title>
+        </Helmet>
+        <main className="profilePage" aria-label="connexion page">
+          {/* Login and signup forms */}
+          <form onSubmit={loginUser} aria-label="Log in form">
+            <Label text="Log in to modify your profile" htmlFor="login-email" />
+            <InputField
+              placeholder="Mail"
+              inputType="email"
+              inputId="login-email"
+              inputName="login-email"
+              isNumber={false}
+              onChangeHandler={updateLoginMail}
+              actualValue={loginData.mail}
+              autoComplete="email"
+            />
+            <InputField
+              placeholder="Password"
+              inputType="password"
+              inputId="login-password"
+              inputName="login-password"
+              isNumber={false}
+              onChangeHandler={updateLoginPassword}
+              actualValue={loginData.password}
+              autoComplete="current-password"
+            />
+            <Button text="Log in" buttonType="submit" />
+          </form>
+          <form onSubmit={signupUser} aria-label="Sign up form">
+            <Label
+              text="Or sign up if you don't have an account yet !"
+              htmlFor="signup-email"
+            />
+            <InputField
+              placeholder="Mail"
+              inputType="email"
+              inputId="signup-email"
+              inputName="signup-email"
+              isNumber={false}
+              onChangeHandler={updateSignupMail}
+              actualValue={signupData.mail}
+              autoComplete="email"
+            />
+            <InputField
+              placeholder="Password  (Minimum 8 characters)"
+              inputType="password"
+              inputId="signup-password"
+              inputName="signup-password"
+              isNumber={false}
+              onChangeHandler={updateSignupPassword}
+              actualValue={signupData.password}
+              autoComplete="new-password"
+            />
+            <InputField
+              placeholder="Confirm password"
+              inputType="password"
+              inputId="confirm-password"
+              inputName="confirm-password"
+              isNumber={false}
+              onChangeHandler={updateSignupConfirmation}
+              actualValue={signupData.confirmation}
+              autoComplete="new-password"
+            />
+            <Button text="Sign up" buttonType="submit" />
+          </form>
+        </main>
+      </>
     );
   } else if (loggedUser !== null) {
     // If user is authenticated show his profile page
     return (
-      <main className="profilePage" aria-label="profile page">
-        <PositiveMessage text='Hello, edit your profile then click on "save", an incomplete profile will not be shown on our platform' />
-        <form action="" aria-label="profile modification form">
-          {/* Name and age fields */}
-          <div className="spacingSection">
-            <Label text="Enter your name and age" htmlFor="name" />
-            <div className="nameAndAgeList" aria-label="name and age fields">
-              <InputField
-                placeholder="Name"
-                inputType="text"
-                inputId="name"
-                inputName="name"
-                isNumber={false}
-                onChangeHandler={updateName}
-                actualValue={name != undefined ? decodeSanitized(name) : ""}
-              />
-              <InputField
-                placeholder="Age"
-                inputType="text"
-                inputId="age"
-                inputName="age"
-                isNumber={true}
-                onChangeHandler={updateAge}
-                actualValue={age != undefined ? age.toString() : ""}
-              />
-            </div>
-          </div>
-
-          {/* Languages checkboxes */}
-          <div className="spacingSection">
-            <Label text="Select your languages" htmlFor="english.gb" />
-            <div className="flagList" aria-label="languages checkboxes">
-              {[
-                "English.gb",
-                "French.fr",
-                "German.de",
-                "Japanese.jp",
-                "Russian.ru",
-                "Spanish.es",
-                "Portuguese.pt",
-                "Turkish.tr",
-                "Italian.it",
-                "Persian.ir",
-                // "Dutch.nl",
-                // "Polish.pl",
-                // "Chinese.cn",
-                // "Vietnamese.vn",
-                // "Indonesian.id",
-                // "Czech.cz",
-                // "Korean.kr",
-                // "Ukrainian.ua",
-                // "Arabic.sa",
-                // "Greek.gr",
-                // "Hebrew.il",
-                // "Swedish.se",
-                // "Romanian.ro",
-                // "Hungarian.hu",
-                // "Thai.th",
-                // "Danish.dk",
-                // "Slovak.sk",
-                // "Finnish.fi",
-                // "Norwegian.no",
-              ].map((language) => (
-                <CheckableItem
-                  key={language}
-                  text={removeLastCharacters(language, 3)}
-                  inputId={language.toLowerCase()}
-                  onChange={() =>
-                    addOrRemoveFromDataList(
-                      language,
-                      "languages",
-                      selectedLanguages
-                    )
-                  }
-                  checked={selectedLanguages.includes(language)}
+      <>
+        <Helmet>
+          <title>Game Hearts - Profile</title>
+        </Helmet>
+        <main className="profilePage" aria-label="profile page">
+          <PositiveMessage text='Hello, edit your profile then click on "save", an incomplete profile will not be shown on our platform' />
+          <form action="" aria-label="profile modification form">
+            {/* Name and age fields */}
+            <div className="spacingSection">
+              <Label text="Enter your name and age" htmlFor="name" />
+              <div className="nameAndAgeList" aria-label="name and age fields">
+                <InputField
+                  placeholder="Name"
+                  inputType="text"
+                  inputId="name"
+                  inputName="name"
+                  isNumber={false}
+                  onChangeHandler={updateName}
+                  actualValue={name != undefined ? decodeSanitized(name) : ""}
                 />
-              ))}
-            </div>
-          </div>
-
-          {/* Jobs checkboxes */}
-          <div className="spacingSection">
-            <Label text="What jobs can you do" htmlFor="artist" />
-            <div className="jobList" aria-label="jobs checkboxes">
-              {[
-                "Code",
-                "Sprites",
-                "Models",
-                "Animations",
-                "Sounds",
-                "Musics",
-                "Story",
-                "Marketing",
-              ].map((job) => (
-                <CheckableItem
-                  key={job}
-                  text={job}
-                  inputId={job.toLowerCase()}
-                  onChange={() =>
-                    addOrRemoveFromDataList(job, "jobs", selectedJobs)
-                  }
-                  checked={selectedJobs.includes(job)}
+                <InputField
+                  placeholder="Age"
+                  inputType="text"
+                  inputId="age"
+                  inputName="age"
+                  isNumber={true}
+                  onChangeHandler={updateAge}
+                  actualValue={age != undefined ? age.toString() : ""}
                 />
-              ))}
+              </div>
             </div>
-          </div>
 
-          {/* Remunerations checkboxes */}
-          <div className="spacingSection">
-            <Label text="What are you working for" htmlFor="nothing" />
-            <div
-              className="remunerationList"
-              aria-label="remunerations checkboxes"
-            >
-              {["Fun", "Shares", "Commissions", "Salary"].map(
-                (remuneration) => (
+            {/* Languages checkboxes */}
+            <div className="spacingSection">
+              <Label text="Select your languages" htmlFor="english.gb" />
+              <div className="flagList" aria-label="languages checkboxes">
+                {[
+                  "English.gb",
+                  "French.fr",
+                  "German.de",
+                  "Japanese.jp",
+                  "Russian.ru",
+                  "Spanish.es",
+                  "Portuguese.pt",
+                  "Turkish.tr",
+                  "Italian.it",
+                  "Persian.ir",
+                  // "Dutch.nl",
+                  // "Polish.pl",
+                  // "Chinese.cn",
+                  // "Vietnamese.vn",
+                  // "Indonesian.id",
+                  // "Czech.cz",
+                  // "Korean.kr",
+                  // "Ukrainian.ua",
+                  // "Arabic.sa",
+                  // "Greek.gr",
+                  // "Hebrew.il",
+                  // "Swedish.se",
+                  // "Romanian.ro",
+                  // "Hungarian.hu",
+                  // "Thai.th",
+                  // "Danish.dk",
+                  // "Slovak.sk",
+                  // "Finnish.fi",
+                  // "Norwegian.no",
+                ].map((language) => (
                   <CheckableItem
-                    key={remuneration}
-                    text={remuneration}
-                    inputId={remuneration.toLowerCase()}
+                    key={language}
+                    text={removeLastCharacters(language, 3)}
+                    inputId={language.toLowerCase()}
                     onChange={() =>
                       addOrRemoveFromDataList(
-                        remuneration,
-                        "remunerations",
-                        selectedRemunerations
+                        language,
+                        "languages",
+                        selectedLanguages
                       )
                     }
-                    checked={selectedRemunerations.includes(remuneration)}
+                    checked={selectedLanguages.includes(language)}
                   />
-                )
-              )}
+                ))}
+              </div>
             </div>
-          </div>
 
-          {/* Description, portfolio and contact mail fields */}
-          <div className="spacingSection">
-            <Label text="Other informations" htmlFor="description" />
-            <InputField
-              placeholder="Describe yourself, your skills, experience etc..."
-              inputType="textarea"
-              inputId="description"
-              inputName="description"
-              isNumber={false}
-              onChangeHandler={updateDescription}
-              actualValue={
-                description != undefined ? decodeSanitized(description) : ""
-              }
+            {/* Jobs checkboxes */}
+            <div className="spacingSection">
+              <Label text="What jobs can you do" htmlFor="artist" />
+              <div className="jobList" aria-label="jobs checkboxes">
+                {[
+                  "Code",
+                  "Sprites",
+                  "Models",
+                  "Animations",
+                  "Sounds",
+                  "Musics",
+                  "Story",
+                  "Marketing",
+                ].map((job) => (
+                  <CheckableItem
+                    key={job}
+                    text={job}
+                    inputId={job.toLowerCase()}
+                    onChange={() =>
+                      addOrRemoveFromDataList(job, "jobs", selectedJobs)
+                    }
+                    checked={selectedJobs.includes(job)}
+                  />
+                ))}
+              </div>
+            </div>
+
+            {/* Remunerations checkboxes */}
+            <div className="spacingSection">
+              <Label text="What are you working for" htmlFor="nothing" />
+              <div
+                className="remunerationList"
+                aria-label="remunerations checkboxes"
+              >
+                {["Fun", "Shares", "Commissions", "Salary"].map(
+                  (remuneration) => (
+                    <CheckableItem
+                      key={remuneration}
+                      text={remuneration}
+                      inputId={remuneration.toLowerCase()}
+                      onChange={() =>
+                        addOrRemoveFromDataList(
+                          remuneration,
+                          "remunerations",
+                          selectedRemunerations
+                        )
+                      }
+                      checked={selectedRemunerations.includes(remuneration)}
+                    />
+                  )
+                )}
+              </div>
+            </div>
+
+            {/* Description, portfolio and contact mail fields */}
+            <div className="spacingSection">
+              <Label text="Other informations" htmlFor="description" />
+              <InputField
+                placeholder="Describe yourself, your skills, experience etc..."
+                inputType="textarea"
+                inputId="description"
+                inputName="description"
+                isNumber={false}
+                onChangeHandler={updateDescription}
+                actualValue={
+                  description != undefined ? decodeSanitized(description) : ""
+                }
+              />
+              <InputField
+                placeholder="Portfolio Link  (Not required)"
+                inputType="text"
+                inputId="portfolio"
+                inputName="portfolio"
+                isNumber={false}
+                onChangeHandler={updatePortfolio_url}
+                actualValue={
+                  portfolio_url != undefined
+                    ? decodeSanitized(portfolio_url)
+                    : ""
+                }
+              />
+              <InputField
+                placeholder="Contact mail"
+                inputType="text"
+                inputId="mail"
+                inputName="mail"
+                isNumber={false}
+                onChangeHandler={updateProfile_mail}
+                actualValue={profile_mail != undefined ? profile_mail : ""}
+                autoComplete="email"
+              />
+            </div>
+            {/* Save, log out and delete my account buttons */}
+            <Button text="Save my profile" func={saveUser} />
+            <Button text="Log out" func={logOut} color="orangeButton" />
+            <Button
+              text="Delete my account"
+              func={deleteAccount}
+              color="orangeButton"
             />
-            <InputField
-              placeholder="Portfolio Link  (Not required)"
-              inputType="text"
-              inputId="portfolio"
-              inputName="portfolio"
-              isNumber={false}
-              onChangeHandler={updatePortfolio_url}
-              actualValue={
-                portfolio_url != undefined ? decodeSanitized(portfolio_url) : ""
-              }
-            />
-            <InputField
-              placeholder="Contact mail"
-              inputType="text"
-              inputId="mail"
-              inputName="mail"
-              isNumber={false}
-              onChangeHandler={updateProfile_mail}
-              actualValue={profile_mail != undefined ? profile_mail : ""}
-              autoComplete="email"
-            />
-          </div>
-          {/* Save, log out and delete my account buttons */}
-          <Button text="Save my profile" func={saveUser} />
-          <Button text="Log out" func={logOut} color="orangeButton" />
-          <Button
-            text="Delete my account"
-            func={deleteAccount}
-            color="orangeButton"
-          />
-        </form>
-      </main>
+          </form>
+        </main>
+      </>
     );
   }
 }
