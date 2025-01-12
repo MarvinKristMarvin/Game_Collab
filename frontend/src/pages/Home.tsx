@@ -10,26 +10,22 @@ function Home() {
   axios.defaults.withCredentials = true;
   // Custom hook to handle inactivity logout in front and back then toasts the user
   useInactivityHandler();
+  // Set the Helmet
+  const pageURL = "https://domain.com/";
+  const pageTitle = "Game Hearts - Home";
+  const pageDescription =
+    "Welcome to Game Hearts! Find and collaborate with indie game artists, developers, composers and more!";
   return (
     <>
       <Helmet>
-        <title>Game Hearts - Find and collaborate with indie game lovers</title>
-        <meta
-          name="description"
-          content="Welcome to Game Hearts! Find and collaborate with indie game lovers."
-        />
-        <meta
-          property="og:title"
-          content="Game Hearts - Find and collaborate with indie game lovers"
-        />
-        <meta
-          property="og:description"
-          content="Find and collaborate with indie game lovers"
-        />
-        <meta property="og:image" content="/logox200.webp" />
-        <meta property="og:image:alt" content="Game Hearts homepage logo" />
-        <meta property="og:url" content="https://domain.com/home" />
-        <meta property="og:type" content="website" />
+        <title>{pageTitle}</title>
+        <meta name="description" content={pageDescription} />
+        <link rel="canonical" href={pageURL} />
+        <meta property="og:title" content={pageTitle} />
+        <meta property="og:description" content={pageDescription} />
+        <meta property="og:url" content={pageURL} />
+        <meta name="twitter:title" content={pageTitle} />
+        <meta name="twitter:description" content={pageDescription} />
       </Helmet>
       <section className="homePage" aria-label="home page">
         <p

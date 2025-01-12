@@ -139,13 +139,47 @@ function Search() {
     updateFilteringToFalse();
   };
 
+  // Helmet states
+  const [pageURL, setPageURL] = useState("");
+  const [pageTitle, setPageTitle] = useState("");
+  const [pageDescription, setPageDescription] = useState("");
+
+  // Helmet update
+  useEffect(() => {
+    if (filtering) {
+      setPageURL("https://domain.com/search");
+      setPageTitle("Game Hearts - Filter profiles");
+      setPageDescription("Refine your profile search with filters!");
+    } else {
+      setPageURL("https://domain.com/search");
+      setPageTitle("Game Hearts - Browse profiles");
+      setPageDescription(
+        "Browse profiles and contact potential partners for your indie game project!"
+      );
+    }
+  }, [filtering]);
+
+  // Function to create the helmet
+  const createHelmet = () => {
+    return (
+      <Helmet>
+        <title>{pageTitle}</title>
+        <meta name="description" content={pageDescription} />
+        <link rel="canonical" href={pageURL} />
+        <meta property="og:title" content={pageTitle} />
+        <meta property="og:description" content={pageDescription} />
+        <meta property="og:url" content={pageURL} />
+        <meta name="twitter:title" content={pageTitle} />
+        <meta name="twitter:description" content={pageDescription} />
+      </Helmet>
+    );
+  };
+
   // If filtering is true => show filters page, else, browse profiles */
   if (filtering === true) {
     return (
       <>
-        <Helmet>
-          <title>Game Hearts - Filter profiles</title>
-        </Helmet>
+        {createHelmet()}
         <main className="searchPage" aria-label="filter profiles page">
           <FixedButtons
             filtering={filtering}
@@ -314,11 +348,10 @@ function Search() {
     );
   } else {
     // If filtering is false show the "browse profiles" page
+
     return (
       <>
-        <Helmet>
-          <title>Game Hearts - Browse profiles</title>
-        </Helmet>
+        {createHelmet()}
         <main className="searchPage" aria-label="browse profiles page">
           <FixedButtons
             filtering={filtering}

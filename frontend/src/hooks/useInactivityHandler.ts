@@ -5,7 +5,6 @@ import { useLoggedUser } from "../context/userContext";
 
 // Handle inactivity
 const useInactivityHandler = () => {
-  console.log("called useInactivityHandler");
   const { loggedUser, setLoggedUser } = useLoggedUser();
 
   // A ref to store the timeout ID for the inactivity timer

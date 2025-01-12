@@ -283,13 +283,49 @@ function Profile() {
     }
   };
 
+  // Helmet states
+  const [pageURL, setPageURL] = useState("");
+  const [pageTitle, setPageTitle] = useState("");
+  const [pageDescription, setPageDescription] = useState("");
+
+  // Helmet update
+  useEffect(() => {
+    if (loggedUser) {
+      setPageURL("https://domain.com/profile");
+      setPageTitle("Game Hearts - Profile");
+      setPageDescription(
+        "Modify and share your profile to others, you will get contacted by potential partners!"
+      );
+    } else {
+      setPageURL("https://domain.com/profile");
+      setPageTitle("Game Hearts - Connexion");
+      setPageDescription(
+        "Log in to create and share your profile, it's free and it takes a minute!"
+      );
+    }
+  }, [loggedUser]);
+
+  // Function to create the helmet
+  const createHelmet = () => {
+    return (
+      <Helmet>
+        <title>{pageTitle}</title>
+        <meta name="description" content={pageDescription} />
+        <link rel="canonical" href={pageURL} />
+        <meta property="og:title" content={pageTitle} />
+        <meta property="og:description" content={pageDescription} />
+        <meta property="og:url" content={pageURL} />
+        <meta name="twitter:title" content={pageTitle} />
+        <meta name="twitter:description" content={pageDescription} />
+      </Helmet>
+    );
+  };
+
   // If the user is not authentified, show the login and signup page, else show his profile page
   if (loggedUser === null) {
     return (
       <>
-        <Helmet>
-          <title>Game Hearts - Connexion</title>
-        </Helmet>
+        {createHelmet()}
         <main className="profilePage" aria-label="connexion page">
           {/* Login and signup forms */}
           <form onSubmit={loginUser} aria-label="Log in form">
@@ -360,9 +396,7 @@ function Profile() {
     // If user is authenticated show his profile page
     return (
       <>
-        <Helmet>
-          <title>Game Hearts - Profile</title>
-        </Helmet>
+        {createHelmet()}
         <main className="profilePage" aria-label="profile page">
           <PositiveMessage text='Hello, edit your profile then click on "save", an incomplete profile will not be shown on our platform' />
           <form action="" aria-label="profile modification form">
