@@ -10,7 +10,9 @@ import csrf from "csurf";
 import path from "path";
 
 // Enable environment variables
-dotenv.config();
+//dotenv.config();
+
+dotenv.config({ path: path.join(__dirname, "../../.env") });
 
 const app = express();
 
@@ -55,10 +57,6 @@ app.use(
     immutable: true, // Files are not expected to change
   })
 );
-//! Serve React app for all other routes
-/*app.get("*", (req, res) => {
-  res.sendFile(path.join(__dirname, "../frontend/public/index.html"));
-});*/
 // Enable req.body json payloads when requesting with POST etc
 app.use(express.json());
 // Enable url encoded data (querystrings) in req.body
@@ -81,7 +79,7 @@ app.use(
   })
 );*/
 // Only front domain can make requests to the server, credentials allows cookies and authentication headers to be included in requests from the origin
-app.use(cors({ origin: "http://localhost:5173", credentials: true }));
+app.use(cors({ origin: process.env.DOMAIN, credentials: true }));
 // Use the imported router routes
 app.use(router);
 // If no matching route is found return 404

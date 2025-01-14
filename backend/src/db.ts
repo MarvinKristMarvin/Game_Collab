@@ -1,7 +1,9 @@
 import { Pool, QueryResult } from "pg";
 import dotenv from "dotenv";
+import path from "path";
 
-dotenv.config();
+dotenv.config({ path: path.join(__dirname, "../../.env") });
+//dotenv.config();
 
 // The pool manages multiple connections to the db, it reuses connections to optimize resource usage
 export const pool = new Pool({

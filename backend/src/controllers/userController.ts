@@ -117,7 +117,7 @@ const userController = {
           )
         : [],
       description: validator.trim(validator.escape(req.body.description || "")),
-      profile_mail: validator.trim(req.body.profile_mail || ""), // The regex will protect from XSS
+      profile_mail: validator.trim(req.body.profile_mail || ""),
       portfolio_url: validator.trim(
         validator.escape(req.body.portfolio_url || "")
       ),

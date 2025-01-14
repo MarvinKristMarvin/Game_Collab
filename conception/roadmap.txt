@@ -37,8 +37,8 @@
 [x] sécuriser l'authentification et failles courantes
 [x] réduction des coûts : optimisation des images, minification des fichiers, optimisation des requetes
 [ ] tests pour les fonctionnalités principales du projet
-[-] accessibiliser aux normes WCAG
-[-] SEO : maximiser le référencement du projet
+[x] accessibiliser aux normes WCAG
+[x] SEO : maximiser le référencement du projet
 [ ] RGPD et mentions légales
 [ ] dockeriser
 [ ] déployer
@@ -125,10 +125,12 @@
 [x] add react helmet
 
 12/02/2025
-[] check if there are more tags like og for html head (check what is done for modern react apps in html index)
-[] tests for principal functionnallities
+[x] check if there are more tags like og for html head (check what is done for modern react apps in html index)
+[x] complete react helmet
+
 
 13/02/2025
+[] tests for principal functionnallities
 -> RGPD
 -> docker
 -> deployment + procedure

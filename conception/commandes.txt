@@ -10,3 +10,6 @@ npx ts-node paramrequest.ts => execute un fichier .ts
 SELECT last_value FROM user_id_seq; => voir la sequence id de la table "user"
 SELECT MAX(id) FROM "user";
 ALTER SEQUENCE user_id_seq RESTART WITH <valeur_maximale + 1>; => remet la sequence id à la bonne valeur
+
+# Connexion à la bdd conteneurisée
+docker exec -it postgres_db psql -U marvin -d gameheartsdb
