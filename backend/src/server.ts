@@ -38,7 +38,14 @@ app.use(
 );
 
 // Only front domain can make requests to the server, credentials allows cookies and authentication headers to be included in requests from the origin
-app.use(cors({ origin: process.env.DOMAIN, credentials: true }));
+app.use(
+  cors({
+    origin: process.env.DOMAIN,
+    credentials: true,
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+  })
+);
 // Block metadata access
 app.use((req: Request, res: Response, next: NextFunction): void => {
   if (req.url.startsWith("/latest/metadata")) {

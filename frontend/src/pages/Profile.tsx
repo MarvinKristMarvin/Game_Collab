@@ -250,6 +250,7 @@ function Profile() {
             headers: {
               "x-csrf-token": csrfToken, // Send the CSRF token in the header
             },
+            withCredentials: true,
           }
         );
         if (data.error) {

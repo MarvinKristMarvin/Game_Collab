@@ -125,13 +125,13 @@ const authController = {
             res
               .cookie("token", token, {
                 httpOnly: true,
-                sameSite: "lax",
+                sameSite: "none",
                 secure: process.env.NODE_ENV === "production", // True when in production
               })
               // Also send the CSRF token
               .cookie("csrfToken", csrfToken, {
                 httpOnly: false, // Make the cookie accessible by the frontend
-                sameSite: "lax",
+                sameSite: "none",
                 secure: process.env.NODE_ENV === "production",
               })
               .json(userWithoutPassword)
@@ -150,7 +150,7 @@ const authController = {
     res.cookie("token", "", {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
-      sameSite: "lax", // Prevent CSRF
+      sameSite: "none", // Prevent CSRF
       expires: new Date(0), // Tells the browser to remove the cookie
     });
     return res.status(200).send("Logged out and cookie cleared.");

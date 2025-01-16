@@ -26,7 +26,7 @@ export default (
           // Set a HTTP-only cookie named "token" with the value of the new token (secure because not accessible by javascript, protecting against XSS)
           res.cookie("token", newToken, {
             httpOnly: true,
-            sameSite: "lax", // Set to "strict" for more security
+            sameSite: "none", // Set to "strict" for more security
             secure: true, // Always set to true in production, to send cookies only over HTTPS (we use HTTP in development)
             maxAge: Number(process.env.JWT_EXPIRATION) * 1000, // 1800 * 1000 = 30 minutes
           });
