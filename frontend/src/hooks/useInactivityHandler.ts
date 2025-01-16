@@ -17,7 +17,9 @@ const useInactivityHandler = () => {
     setLoggedUser(null);
     toast.success("You have been logged out successfully.");
     try {
-      await axios.post("http://localhost:5000/logout", {});
+      await axios.post(`${import.meta.env.VITE_API_URL}/logout`, {
+        withCredentials: true,
+      });
     } catch (error) {
       console.error("Error during logout:", error);
     }

@@ -19,6 +19,19 @@ function Profile() {
   const { loggedUser, setLoggedUser } = useLoggedUser();
   axios.defaults.withCredentials = true;
 
+  useEffect(() => {
+    const testBack = async () => {
+      try {
+        const test = await axios.get(import.meta.env.VITE_API_URL + "/test");
+        console.log(test);
+      } catch (error) {
+        console.error(error, "error while testing the back");
+      }
+    };
+
+    testBack();
+  }, []);
+
   // Get logOut function from the inactivity handler hook to be able to use logOut in the logout button
   const { logOut } = useInactivityHandler();
 
@@ -47,10 +60,13 @@ function Profile() {
     e.preventDefault();
     const { mail, password } = loginData;
     try {
-      const { data } = await axios.post("http://localhost:5000/login", {
-        mail,
-        password,
-      });
+      const { data } = await axios.post(
+        import.meta.env.VITE_API_URL + "/login",
+        {
+          mail,
+          password,
+        }
+      );
       // Destructured "data" comes from axios
       if (data.error) {
         toast.error(data.error);
@@ -101,11 +117,14 @@ function Profile() {
     e.preventDefault();
     const { mail, password, confirmation } = signupData;
     try {
-      const { data } = await axios.post("http://localhost:5000/signup", {
-        mail,
-        password,
-        confirmation,
-      });
+      const { data } = await axios.post(
+        import.meta.env.VITE_API_URL + "/signup",
+        {
+          mail,
+          password,
+          confirmation,
+        }
+      );
       if (data.error) {
         toast.error(data.error);
       } else {
@@ -216,7 +235,7 @@ function Profile() {
       const csrfToken = getCookie("csrfToken");
       try {
         const { data } = await axios.patch(
-          `http://localhost:5000/api/user/${loggedUser.id}`,
+          `${import.meta.env.VITE_API_URL}/api/user/${loggedUser.id}`,
           {
             age: age,
             name: name,
@@ -260,7 +279,7 @@ function Profile() {
       if (loggedUser) {
         const csrfToken = getCookie("csrfToken");
         const response = await axios.delete(
-          `http://localhost:5000/api/user/${loggedUser.id}`,
+          `${import.meta.env.VITE_API_URL}/api/user/${loggedUser.id}`,
           {
             headers: {
               "x-csrf-token": csrfToken, // Add the CSRF token to the headers
@@ -291,13 +310,13 @@ function Profile() {
   // Helmet update
   useEffect(() => {
     if (loggedUser) {
-      setPageURL("https://domain.com/profile");
+      setPageURL(`${import.meta.env.VITE_FRONT_URL}/profile`);
       setPageTitle("Game Hearts - Profile");
       setPageDescription(
         "Modify and share your profile to others, you will get contacted by potential partners!"
       );
     } else {
-      setPageURL("https://domain.com/profile");
+      setPageURL(`${import.meta.env.VITE_FRONT_URL}/profile`);
       setPageTitle("Game Hearts - Connexion");
       setPageDescription(
         "Log in to create and share your profile, it's free and it takes a minute!"

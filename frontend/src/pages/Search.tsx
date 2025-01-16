@@ -38,14 +38,15 @@ function Search() {
   );
 
   // Create the filter string which will get modified on "search profiles" submit button
-  const dataURL = "http://localhost:5000/";
   const [filterString, setFilterString] =
     useState<string>("api/users/filtered");
 
   // Load non filtered profiles on first render and setLoadedProfiles (filtered without parameters gets all profiles)
   useEffect(() => {
     axios
-      .get<userInterface[]>("http://localhost:5000/api/users/filtered")
+      .get<userInterface[]>(
+        `${import.meta.env.VITE_API_URL}/api/users/filtered`
+      )
       .then((response) => {
         if (response.data && response.data.length > 0) {
           setLoadedProfiles(response.data);
@@ -111,7 +112,7 @@ function Search() {
       setMaximumAge(minimumAge);
     }
     axios
-      .get<userInterface[]>(dataURL + filterString)
+      .get<userInterface[]>(import.meta.env.VITE_API_URL + "/" + filterString)
       .then((response) => {
         if (response.data && response.data.length > 0) {
           // Decode sanitized data
@@ -147,11 +148,11 @@ function Search() {
   // Helmet update
   useEffect(() => {
     if (filtering) {
-      setPageURL("https://domain.com/search");
+      setPageURL(`${import.meta.env.VITE_FRONT_URL}/search`);
       setPageTitle("Game Hearts - Filter profiles");
       setPageDescription("Refine your profile search with filters!");
     } else {
-      setPageURL("https://domain.com/search");
+      setPageURL(`${import.meta.env.VITE_FRONT_URL}/search`);
       setPageTitle("Game Hearts - Browse profiles");
       setPageDescription(
         "Browse profiles and contact potential partners for your indie game project!"

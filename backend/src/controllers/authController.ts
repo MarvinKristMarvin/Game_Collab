@@ -149,8 +149,8 @@ const authController = {
     // Give the "token" an empty value
     res.cookie("token", "", {
       httpOnly: true,
-      // secure: true, (in production)
-      sameSite: "strict", // Prevent CSRF
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "lax", // Prevent CSRF
       expires: new Date(0), // Tells the browser to remove the cookie
     });
     return res.status(200).send("Logged out and cookie cleared.");

@@ -129,11 +129,20 @@
 [x] complete react helmet
 
 
-13/02/2025
-[] tests for principal functionnallities
--> RGPD
--> docker
--> deployment + procedure
+14/02/2025
+[x] docker and docker-compose
+
+15/02/2025
+[x] deploy back and db on render
+
+16/02/2025
+[ ] finish deployment and procedure (automatic deployment on branch production)
+
+17/02/2025
+[ ] tests
+
+18/02/2025
+[ ] rgpd and finalisations
 
 
 

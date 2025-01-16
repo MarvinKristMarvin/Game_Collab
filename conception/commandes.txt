@@ -19,3 +19,6 @@ git checkout mabranche
 
 # Lister les branches
 git branch
+
+# Se connecter à une bdd distante
+psql DB_URL
