@@ -36,6 +36,9 @@ app.use(
     xContentTypeOptions: true, // Prevent MIME sniffing
   })
 );
+
+// Only front domain can make requests to the server, credentials allows cookies and authentication headers to be included in requests from the origin
+app.use(cors({ origin: process.env.DOMAIN, credentials: true }));
 // Block metadata access
 app.use((req: Request, res: Response, next: NextFunction): void => {
   if (req.url.startsWith("/latest/metadata")) {
@@ -50,13 +53,6 @@ app.use((req, res, next) => {
 });
 // Use the rateLimiter middleware to limit requests from the same IP
 app.use(rateLimiter);
-// Serve static assets from React's public folder with caching
-/*app.use(
-  express.static(path.join(__dirname, "../frontend/public"), {
-    maxAge: "30d", // Cache for 30 days
-    immutable: true, // Files are not expected to change
-  })
-);*/
 // Enable req.body json payloads when requesting with POST etc
 app.use(express.json());
 // Enable url encoded data (querystrings) in req.body
@@ -78,8 +74,7 @@ app.use(
     },
   })
 );*/
-//! Only front domain can make requests to the server, credentials allows cookies and authentication headers to be included in requests from the origin
-/*app.use(cors({ origin: process.env.DOMAIN, credentials: true }));*/
+
 // Use the imported router routes
 app.use(router);
 // If no matching route is found return 404
