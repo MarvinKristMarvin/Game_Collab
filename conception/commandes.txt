@@ -22,3 +22,6 @@ git branch
 
 # Se connecter à une bdd distante
 psql DB_URL
+
+# Executer des scripts sur la bdd distante
+\i C:/Tout/Projets_Dev/collabjv/backend/db/create_tables.sql
