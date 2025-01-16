@@ -13,3 +13,9 @@ ALTER SEQUENCE user_id_seq RESTART WITH <valeur_maximale + 1>; => remet la seque
 
 # Connexion à la bdd conteneurisée
 docker exec -it postgres_db psql -U marvin -d gameheartsdb
+
+# Changer de branche actuelle
+git checkout mabranche
+
+# Lister les branches
+git branch

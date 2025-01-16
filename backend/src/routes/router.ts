@@ -7,6 +7,10 @@ import validateCsrfToken from "../middlewares/validateCsrfToken";
 
 const router = express.Router();
 
+// Test route
+router.get("/test", (req, res) => {
+  res.status(200).json({ message: "Backend is running!" });
+});
 // Get filtered users
 router.get("/api/users/filtered", wrapper(userController.getFiltered));
 // Patch authenticated user

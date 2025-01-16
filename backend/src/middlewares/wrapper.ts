@@ -27,7 +27,7 @@ export default (
           res.cookie("token", newToken, {
             httpOnly: true,
             sameSite: "lax", // Set to "strict" for more security
-            secure: false, // Always set to true in production, to send cookies only over HTTPS (we use HTTP in development)
+            secure: true, // Always set to true in production, to send cookies only over HTTPS (we use HTTP in development)
             maxAge: Number(process.env.JWT_EXPIRATION) * 1000, // 1800 * 1000 = 30 minutes
           });
         } catch (err) {
