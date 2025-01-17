@@ -41,11 +41,15 @@ app.use(
 // Only front domain can make requests to the server, credentials allows cookies and authentication headers to be included in requests from the origin
 app.use(
   cors({
-    origin: process.env.DOMAIN,
-    credentials: true,
-    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"],
+    origin: process.env.DOMAIN, // Allow frontend domain
+    credentials: true, // Allow cookies
+    methods: ["GET", "POST", "PUT", "DELETE", "PATCH"], // Specify allowed methods
+    allowedHeaders: ["Content-Type", "Authorization", "x-csrf-token"], // Include headers used in your requests
   })
 );
+// Handle preflight requests explicitly
+app.options("*", cors());
+
 //! Block metadata access
 /*app.use((req: Request, res: Response, next: NextFunction): void => {
   if (req.url.startsWith("/latest/metadata")) {
