@@ -233,6 +233,7 @@ function Profile() {
     );
     if (loggedUser) {
       const csrfToken = getCookie("csrfToken");
+      console.log("csrfToken", csrfToken);
       try {
         const { data } = await axios.patch(
           `${import.meta.env.VITE_API_URL}/api/user/${loggedUser.id}`,
