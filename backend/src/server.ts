@@ -30,10 +30,11 @@ app.use(
         upgradeInsecureRequests: [],
       },
     },*/
-    frameguard: {
+    /*frameguard: {
       action: "deny", // Prevent clickjacking
     },
-    xContentTypeOptions: true, // Prevent MIME sniffing
+    xContentTypeOptions: true,*/
+    // Prevent MIME sniffing
   })
 );
 
@@ -43,11 +44,10 @@ app.use(
     origin: process.env.DOMAIN,
     credentials: true,
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"],
-    allowedHeaders: ["Content-Type", "Authorization"],
   })
 );
-// Block metadata access
-app.use((req: Request, res: Response, next: NextFunction): void => {
+//! Block metadata access
+/*app.use((req: Request, res: Response, next: NextFunction): void => {
   if (req.url.startsWith("/latest/metadata")) {
     res.status(403).send("Access Denied");
   } else {
@@ -57,7 +57,7 @@ app.use((req: Request, res: Response, next: NextFunction): void => {
 app.use((req, res, next) => {
   res.set("X-Content-Type-Options", "nosniff");
   next();
-});
+});*/
 // Use the rateLimiter middleware to limit requests from the same IP
 app.use(rateLimiter);
 // Enable req.body json payloads when requesting with POST etc
