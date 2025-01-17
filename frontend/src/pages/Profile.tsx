@@ -58,7 +58,9 @@ function Profile() {
   // Login function on button "Log in", post login data, if success setLoggedUser
   const loginUser = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    console.log("loginData", loginData);
     const { mail, password } = loginData;
+
     try {
       const { data } = await axios.post(
         import.meta.env.VITE_API_URL + "/login",

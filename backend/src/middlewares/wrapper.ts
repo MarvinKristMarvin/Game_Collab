@@ -6,6 +6,7 @@ export default (
   controller: (req: Request, res: Response, next: NextFunction) => Promise<any>
 ) => {
   return async (req: Request, res: Response, next: NextFunction) => {
+    console.log("Calling wrapper");
     try {
       // Get the jwt token from the cookie
       const token = req.cookies.token;
@@ -37,6 +38,7 @@ export default (
       }
 
       // Call the controller
+      console.log("Calling wrapper controller");
       await controller(req, res, next);
     } catch (err) {
       // If error is an object with a status and a message, respond with the error status and message, otherwise error 500 internal server error

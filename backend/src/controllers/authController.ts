@@ -59,6 +59,7 @@ const authController = {
 
   // Login
   loginUser: async (req: Request, res: Response) => {
+    console.log("loginUser controller");
     const { mail, password } = req.body;
     // Check if invalid email
     if (!validator.isEmail(mail)) {
@@ -97,6 +98,7 @@ const authController = {
     }
     // Check if the sent password matches the database hashed password
     const match = await comparePassword(password, user.password);
+    console.log("match : ", match);
     if (match) {
       // Update the updated_at field, serves to show active users first in the browsing profiles page
       try {
@@ -112,6 +114,7 @@ const authController = {
         console.log(error + "Unable to update user's updated_at");
       }
       const csrfToken = crypto.randomBytes(32).toString("hex");
+      console.log("csrfToken", csrfToken);
       // Create a jwt by encoding the user id, mail and role + the jwt secret, set an expiration time
       jwt.sign(
         { mail: user.mail, id: user.id, role: user.role },
@@ -121,6 +124,7 @@ const authController = {
           if (err) throw err;
           // If successfull, send the token to the client in a cookie named "token" and send user data back as a response without the password
           const { password, ...userWithoutPassword } = user;
+          console.log("rescookies");
           return (
             res
               .cookie("token", token, {
