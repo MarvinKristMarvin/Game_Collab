@@ -60,6 +60,7 @@ const authController = {
   // Login
   loginUser: async (req: Request, res: Response) => {
     console.log("loginUser controller");
+    return res.status(200).send("login works");
     /*const { mail, password } = req.body;
     // Check if invalid email
     if (!validator.isEmail(mail)) {
