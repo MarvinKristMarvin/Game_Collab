@@ -34,8 +34,8 @@ export default (
             maxAge: Number(process.env.JWT_EXPIRATION) * 1000, // 1800 * 1000 = 30 minutes
           });
         } catch (err) {
-          console.error("Error setting cookies:", err);
-          return res.status(500).json({ error: "Failed to set cookies" });
+          console.error(err);
+          res.status(500).json("Internal server error, try again later.");
         }
       }
 
