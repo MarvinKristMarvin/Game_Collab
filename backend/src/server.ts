@@ -37,7 +37,7 @@ app.use(
     // Prevent MIME sniffing
   })
 );
-
+app.enable("trust proxy");
 // Only front domain can make requests to the server, credentials allows cookies and authentication headers to be included in requests from the origin
 app.use(
   cors({

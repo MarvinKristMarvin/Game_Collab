@@ -134,6 +134,7 @@ const authController = {
                 sameSite: "none",
                 secure: process.env.NODE_ENV === "production", // True when in production
                 //domain: "gamehearts.onrender.com", // Changed from full URL to just domain
+                maxAge: Number(process.env.JWT_EXPIRATION) * 1000, // 30 minutes
                 path: "/",
                 partitioned: true,
               })
@@ -143,6 +144,7 @@ const authController = {
                 sameSite: "none",
                 secure: process.env.NODE_ENV === "production",
                 //domain: "gamehearts.onrender.com", // Changed from full URL to just domain
+                maxAge: 24 * 60 * 60 * 1000, // 24 hours
                 path: "/",
                 partitioned: true,
               })
