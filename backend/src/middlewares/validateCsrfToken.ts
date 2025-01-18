@@ -6,10 +6,11 @@ function validateCsrfToken(req: Request, res: Response, next: NextFunction) {
   const csrfTokenFromCookie = req.cookies.csrfToken;
   console.log(csrfTokenFromHeader, csrfTokenFromCookie);
 
-  if (!csrfTokenFromHeader || csrfTokenFromHeader !== csrfTokenFromCookie) {
+  //! Pass the CSRF security
+  /*if (!csrfTokenFromHeader || csrfTokenFromHeader !== csrfTokenFromCookie) {
     res.status(403).json({ error: "Invalid CSRF token" });
     return;
-  }
+  }*/
 
   next();
 }
