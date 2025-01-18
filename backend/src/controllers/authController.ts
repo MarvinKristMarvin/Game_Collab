@@ -60,8 +60,7 @@ const authController = {
   // Login
   loginUser: async (req: Request, res: Response) => {
     console.log("loginUser controller");
-    return res.status(200).send("login works");
-    /*const { mail, password } = req.body;
+    const { mail, password } = req.body;
     // Check if invalid email
     if (!validator.isEmail(mail)) {
       return res.json({
@@ -126,6 +125,8 @@ const authController = {
           // If successfull, send the token to the client in a cookie named "token" and send user data back as a response without the password
           const { password, ...userWithoutPassword } = user;
           console.log("rescookies");
+          console.log("userWithoutPassword", userWithoutPassword);
+          return res.status(200).send("return before cookies");
           return (
             res
               .cookie("token", token, {
@@ -149,7 +150,6 @@ const authController = {
     if (!match) {
       return res.json({ error: "Wrong password" });
     }
-  */
   },
 
   // Logout
