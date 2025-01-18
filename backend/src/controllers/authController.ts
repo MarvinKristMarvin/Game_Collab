@@ -126,7 +126,7 @@ const authController = {
           const { password, ...userWithoutPassword } = user;
           console.log("rescookies");
           console.log("userWithoutPassword", userWithoutPassword);
-          return res.status(200).send("return before cookies");
+          // return res.status(200).send("return before cookies");
           return (
             res
               .cookie("token", token, {
