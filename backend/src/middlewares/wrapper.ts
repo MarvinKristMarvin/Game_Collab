@@ -29,11 +29,13 @@ export default (
             httpOnly: true,
             sameSite: "none", // Set to "strict" for more security
             secure: true, // Always set to true in production, to send cookies only over HTTPS (we use HTTP in development)
-            domain: process.env.DOMAIN,
+            domain: ".onrender.com", // Changed from full URL to just domain
+            path: "/",
             maxAge: Number(process.env.JWT_EXPIRATION) * 1000, // 1800 * 1000 = 30 minutes
           });
         } catch (err) {
-          console.log("Token invalid or expired");
+          console.error("Error setting cookies:", err);
+          return res.status(500).json({ error: "Failed to set cookies" });
         }
       }
 
