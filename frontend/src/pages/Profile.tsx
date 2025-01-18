@@ -67,13 +67,10 @@ function Profile() {
         {
           mail,
           password,
-        }
-        /*{
+        },
+        {
           withCredentials: true, // Ensures cookies are sent
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }*/
+        }
       );
       // Destructured "data" comes from axios
       if (data.error) {
