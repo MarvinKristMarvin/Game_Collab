@@ -45,6 +45,7 @@ app.use(
     credentials: true, // Allow cookies
     methods: ["GET", "POST", "PUT", "DELETE", "PATCH"], // Specify allowed methods
     allowedHeaders: ["Content-Type", "Authorization", "x-csrf-token"], // Include headers used in your requests
+    exposedHeaders: ["set-cookie"], // Gives front the authorization to access the cookies
   })
 );
 // Handle preflight requests explicitly
