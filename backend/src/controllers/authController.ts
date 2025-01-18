@@ -135,6 +135,7 @@ const authController = {
                 secure: process.env.NODE_ENV === "production", // True when in production
                 //domain: "gamehearts.onrender.com", // Changed from full URL to just domain
                 path: "/",
+                partitioned: true,
               })
               // Also send the CSRF token
               .cookie("csrfToken", csrfToken, {
@@ -143,6 +144,7 @@ const authController = {
                 secure: process.env.NODE_ENV === "production",
                 //domain: "gamehearts.onrender.com", // Changed from full URL to just domain
                 path: "/",
+                partitioned: true,
               })
               .json(userWithoutPassword)
           );
@@ -164,6 +166,7 @@ const authController = {
       //domain: "gamehearts.onrender.com", // Changed from full URL to just domain
       path: "/",
       expires: new Date(0), // Tells the browser to remove the cookie
+      partitioned: true,
     });
     return res.status(200).send("Logged out and cookie cleared.");
   },

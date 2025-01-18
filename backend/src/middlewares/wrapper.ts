@@ -32,6 +32,7 @@ export default (
             //domain: "gamehearts.onrender.com", // Changed from full URL to just domain
             path: "/",
             maxAge: Number(process.env.JWT_EXPIRATION) * 1000, // 1800 * 1000 = 30 minutes
+            partitioned: true,
           });
         } catch (err) {
           console.error(err);
