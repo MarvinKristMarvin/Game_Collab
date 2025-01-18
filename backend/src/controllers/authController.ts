@@ -60,7 +60,7 @@ const authController = {
   // Login
   loginUser: async (req: Request, res: Response) => {
     console.log("loginUser controller");
-    const { mail, password } = req.body;
+    /*const { mail, password } = req.body;
     // Check if invalid email
     if (!validator.isEmail(mail)) {
       return res.json({
@@ -148,6 +148,7 @@ const authController = {
     if (!match) {
       return res.json({ error: "Wrong password" });
     }
+  */
   },
 
   // Logout
