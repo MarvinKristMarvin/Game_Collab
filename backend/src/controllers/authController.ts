@@ -133,7 +133,7 @@ const authController = {
                 httpOnly: true,
                 sameSite: "none",
                 secure: process.env.NODE_ENV === "production", // True when in production
-                domain: ".onrender.com", // Changed from full URL to just domain
+                domain: "gamehearts.onrender.com", // Changed from full URL to just domain
                 path: "/",
               })
               // Also send the CSRF token
@@ -141,7 +141,7 @@ const authController = {
                 httpOnly: false, // Make the cookie accessible by the frontend
                 sameSite: "none",
                 secure: process.env.NODE_ENV === "production",
-                domain: ".onrender.com", // Changed from full URL to just domain
+                domain: "gamehearts.onrender.com", // Changed from full URL to just domain
                 path: "/",
               })
               .json(userWithoutPassword)
@@ -161,7 +161,7 @@ const authController = {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
       sameSite: "none", // Prevent CSRF
-      domain: ".onrender.com", // Changed from full URL to just domain
+      domain: "gamehearts.onrender.com", // Changed from full URL to just domain
       path: "/",
       expires: new Date(0), // Tells the browser to remove the cookie
     });
