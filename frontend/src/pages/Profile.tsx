@@ -19,6 +19,23 @@ function Profile() {
   const { loggedUser, setLoggedUser } = useLoggedUser();
   axios.defaults.withCredentials = true;
 
+  //! Add this check in your component
+  useEffect(() => {
+    // Check if cookies are enabled
+    if (navigator.cookieEnabled) {
+      console.log("Cookies are enabled");
+    } else {
+      console.log("Cookies are disabled");
+    }
+
+    // Check cookie attributes
+    console.log("Cookie settings:", {
+      domain: window.location.hostname,
+      path: window.location.pathname,
+      protocol: window.location.protocol,
+    });
+  }, []);
+
   useEffect(() => {
     const testBack = async () => {
       try {
