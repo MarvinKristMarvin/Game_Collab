@@ -136,10 +136,10 @@
 [x] deploy back and db on render
 
 16/02/2025
-[ ] finish deployment and procedure (automatic deployment on branch production)
+[x] finish deployment and procedure (automatic deployment on branch production)
 
-17/02/2025
-[ ] tests
+20/02/2025
+[x] unit tests front and back
 
 18/02/2025
 [ ] rgpd and finalisations
