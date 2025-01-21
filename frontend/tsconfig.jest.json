@@ -8,8 +8,12 @@
     "strict": true, // Strong typing
     "types": ["jest", "node"], // Add Jest types for testing
     "allowImportingTsExtensions": true, // Enable importing .ts and .tsx extensions directly
-    "noEmit": true // Prevent emitting output, since we only need type-checking
+    "noEmit": true, // Prevent emitting output, since we only need type-checking
+
+    "isolatedModules": true,
+    "skipLibCheck": true
   },
-  "include": ["src", "tests"],
+  "extends": "./tsconfig.json",
+  "include": ["tests/**/*.ts", "tests/**/*.tsx"],
   "exclude": ["node_modules"]
 }
