@@ -6,7 +6,7 @@
     "test": "cross-env NODE_ENV=test jest --verbose",
     "start": "ts-node src/server.ts",
     "build": "tsc",
-    "startbuild": "node dist/server.js",
+    "startbuild": "node dist/server.ts",
     "dev": "nodemon src/server.ts"
   },
   "keywords": [],
