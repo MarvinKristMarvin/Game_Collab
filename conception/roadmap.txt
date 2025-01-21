@@ -36,13 +36,13 @@
 [x] développer le MVP responsive (1)
 [x] sécuriser l'authentification et failles courantes
 [x] réduction des coûts : optimisation des images, minification des fichiers, optimisation des requetes
-[ ] tests pour les fonctionnalités principales du projet
+[x] tests pour les fonctionnalités principales du projet
 [x] accessibiliser aux normes WCAG
 [x] SEO : maximiser le référencement du projet
 [ ] RGPD et mentions légales
-[ ] dockeriser
-[ ] déployer
-[ ] rédiger la procédure de déploiement (CICD bonus)
+[x] dockeriser
+[x] déployer
+[x] rédiger la procédure de déploiement (CICD bonus)
 [ ] ajout de nouvelles features
 [ ] améliorer le design du site
 
@@ -124,22 +124,28 @@
 [x] correct the sanitize/decode bug, do something for that (is there even a risk if i do not sanitize in the back ?)
 [x] add react helmet
 
-12/02/2025
+12/01/2025
 [x] check if there are more tags like og for html head (check what is done for modern react apps in html index)
 [x] complete react helmet
 
 
-14/02/2025
+14/01/2025
 [x] docker and docker-compose
 
-15/02/2025
+15/01/2025
 [x] deploy back and db on render
 
-16/02/2025
+16/01/2025
 [x] finish deployment and procedure (automatic deployment on branch production)
 
-20/02/2025
+20/01/2025
 [x] unit tests front and back
+
+21/01/2025
+[x] correct bugs on deployment which come from config files
+[x] write de deployment procedure
+
+[] add rgpd
 
 18/02/2025
 [ ] rgpd and finalisations

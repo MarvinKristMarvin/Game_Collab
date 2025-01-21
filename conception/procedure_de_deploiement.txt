@@ -1,0 +1,29 @@
+Procédure de déploiement continu :
+
+    Vérifier le bon fonctionnement du projet localement: Avant de déployer, s'assurer application fonctionne correctement en local
+    S'assurer que les variables d'environnement sont utilisées aux bons endroits dans le code
+    Executer les tests (npm run test) pour vérifier s'il n'y a pas eu de régressions
+    Pusher sur la branche "production", render est configuré pour redéployer automatiquement le code lors d'un push sur cette branche
+
+Procédure de déploiement à partir de zéro :
+
+    Vérifier le bon fonctionnement du projet localement: Avant de déployer, s'assurer application fonctionne correctement en local
+    S'assurer que les variables d'environnement sont utilisées aux bons endroits dans le code
+    Executer les tests (npm run test) pour vérifier s'il n'y a pas eu de régressions
+    Créer et pusher sur la branche "production", render sera configuré pour redéployer automatiquement le code lors d'un push sur cette branche
+
+    Créer un compte sur Render.com, puis aller sur le dashboard
+
+    Ajouter un service PostgresSQL, la configurer (nom, utilisateur, region, version)
+    Utiliser l'url de la bdd donnée pour éxecuter les scripts d'initiation de la bdd
+        - psql DB_URL pour se connecter à la bdd distante
+        - \i C:/chemin/backend/db/create_tables.sql pour creer les tables
+        - \i C:/chemin/backend/db/populate_tables.sql pour hydrater les tables
+
+    Ajouter un service Static Site pour le frontend
+    Lier le site au repo, indiquer le nom du site, la branche de production pour le déploiement auto, le dossier utilisé, la commande utilisée pour build et les variables d'environnement
+
+    Ajouter un service Web Service pour le backend
+    Lier le service au repo, indiquer le nom, language, region, dossier, commandes de build et start, puis les variables d'environnement, le PORT est automatiquement à 10000
+
+    Consulter les logs des differents services et et tester si tout fonctionne ensemble (il arrive souvent qu'en local tout fonctionne, mais il y a des bugs au déploiment)
