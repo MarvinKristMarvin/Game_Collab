@@ -14,6 +14,6 @@
     "skipLibCheck": true
   },
   "extends": "./tsconfig.json",
-  "include": ["tests/**/*.ts", "tests/**/*.tsx"],
+  "include": ["tests/**/*.ts", "tests/**/*.tsx", "src/**/*"],
   "exclude": ["node_modules"]
 }
