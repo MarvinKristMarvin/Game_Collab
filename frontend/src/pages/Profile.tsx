@@ -36,6 +36,7 @@ function Profile() {
     });
   }, []);
 
+  //! Test the back connection
   useEffect(() => {
     const testBack = async () => {
       try {

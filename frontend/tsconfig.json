@@ -2,6 +2,12 @@
   "files": [],
   "references": [
     { "path": "./tsconfig.app.json" },
-    { "path": "./tsconfig.node.json" }
-  ]
+    { "path": "./tsconfig.node.json" },
+    { "path": "./tsconfig.jest.json" }
+  ],
+  // Test here
+  "compilerOptions": {
+    "esModuleInterop": true,
+    "module": "es2020"
+  }
 }

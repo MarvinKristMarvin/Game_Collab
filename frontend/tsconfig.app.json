@@ -19,7 +19,14 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
-    "noUncheckedSideEffectImports": true
+    "noUncheckedSideEffectImports": true,
+
+    /* Add Jest types here */
+    "types": ["jest", "node"],
+
+    /* Optional: Enable esModuleInterop for better CommonJS compatibility */
+    "esModuleInterop": true
   },
-  "include": ["src"]
+  "include": ["src", "tests", "jest.setup.ts"],
+  "exclude": ["node_modules"]
 }

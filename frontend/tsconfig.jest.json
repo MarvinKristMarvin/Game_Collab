@@ -1,0 +1,15 @@
+{
+  "compilerOptions": {
+    "module": "esnext", // Keep esnext for Jest compatibility with import.meta
+    "target": "es2020", // Compatibility for modern JavaScript features
+    "moduleResolution": "node", // Jest prefers node module resolution
+    "esModuleInterop": true, // Ensures CommonJS compatibility
+    "jsx": "react-jsx", // JSX handling for React projects
+    "strict": true, // Strong typing
+    "types": ["jest", "node"], // Add Jest types for testing
+    "allowImportingTsExtensions": true, // Enable importing .ts and .tsx extensions directly
+    "noEmit": true // Prevent emitting output, since we only need type-checking
+  },
+  "include": ["src", "tests"],
+  "exclude": ["node_modules"]
+}

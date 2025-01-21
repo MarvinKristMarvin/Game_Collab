@@ -20,7 +20,11 @@ function Header() {
             </NavLink>
           </li>
           <li className="logo">
-            <NavLink to="/" className="navlink logolink">
+            <NavLink
+              to="/"
+              className="navlink logolink"
+              aria-label="go to homepage"
+            >
               <img src={logo} alt="Game Hearts logo" />
             </NavLink>
           </li>

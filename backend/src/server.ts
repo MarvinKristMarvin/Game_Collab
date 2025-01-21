@@ -37,7 +37,7 @@ app.use(
     // Prevent MIME sniffing
   })
 );
-app.enable("trust proxy");
+//! put it back if prod doent work app.enable("trust proxy");
 // Only front domain can make requests to the server, credentials allows cookies and authentication headers to be included in requests from the origin
 app.use(
   cors({
@@ -64,7 +64,9 @@ app.use((req, res, next) => {
   next();
 });*/
 // Use the rateLimiter middleware to limit requests from the same IP
-app.use(rateLimiter);
+if (process.env.NODE_ENV === "production") {
+  app.use(rateLimiter);
+}
 // Enable req.body json payloads when requesting with POST etc
 app.use(express.json());
 // Enable url encoded data (querystrings) in req.body
@@ -93,6 +95,11 @@ app.use(router);
 app.use(error404);
 // Launch the server on port 5000
 const PORT = process.env.PORT;
-app.listen(PORT, () => {
-  console.log(`Server running on url:${PORT}`);
-});
+if (process.env.NODE_ENV !== "test") {
+  app.listen(PORT, () => {
+    console.log(`Server port : ${PORT}`);
+  });
+}
+
+// Export for tests scripts
+export { app };
