@@ -151,17 +151,15 @@
 [x] create a cypress end to end test
 
 23/01/2025
+[x] add footer compoenent to all pages
+[x] rgpd
 
-[x] added footer compoenent to all pages
-[ ] rgpd and finalisations
+[x] remove some style issues (button filter, home message margin, footer margin)
+[x] handle the "not found" page when refreshing the page
 
 
 
 TODO NEXT
-[ ] put the save button fixed top, let log out and delete at the bottom (and later change style)
-[ ] reduce language number for now (db + front) until adding a dropdown
-[ ] page content goes behind fixed buttons on top
-[ ] ask for 12 characters password
 [ ] on google, show scrollbar on hover for more beautiful website, and font is black, make it white
 [ ] opti api : load only 20 profiles by 20 profiles, and cache loaded profiles ?
 [ ] opti api : don't load new profiles if the query string is the same as before

@@ -2,11 +2,11 @@
   width: 100%;
   background-color: rgb(15, 15, 22);
   position: sticky;
-  top: 7.125rem;
+  top: 6.625rem;
   z-index: 2;
   display: flex;
   justify-content: center;
-  padding-bottom: 0.25rem;
+  padding-bottom: 0rem;
   margin-bottom: 1rem;
 
   .buttonsContainer {

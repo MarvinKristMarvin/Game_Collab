@@ -21,7 +21,7 @@ function Contact() {
         <meta name="twitter:description" content={pageDescription} />
       </Helmet>
       <section className="contactPage" aria-label="contact page">
-        <h1>How to contact us</h1>
+        <h1>Contact us on our email or facebook</h1>
         <p className="reducedMargin">Email : gamehearts@gmail.com</p>
         <p>Facebook : Game Hearts</p>
       </section>
