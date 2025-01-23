@@ -24,14 +24,16 @@ export default (
             { expiresIn: Number(process.env.JWT_EXPIRATION) }
           );
           // Set a HTTP-only cookie named "token" with the value of the new token (secure because not accessible by javascript, protecting against XSS)
+          const sameSiteConfig =
+            process.env.NODE_ENV === "production" ? "none" : "lax";
           res.cookie("token", newToken, {
             httpOnly: true,
-            sameSite: "none", // Set to "strict" for more security
+            sameSite: sameSiteConfig, // Set to "strict" for more security
             secure: process.env.NODE_ENV === "production", // Always set to true in production, to send cookies only over HTTPS (we use HTTP in development)
             //domain: "gamehearts.onrender.com", // Changed from full URL to just domain
             path: "/",
             maxAge: Number(process.env.JWT_EXPIRATION) * 1000, // 1800 * 1000 = 30 minutes
-            partitioned: true,
+            partitioned: process.env.NODE_ENV === "production",
           });
         } catch (err) {
           console.error(err);

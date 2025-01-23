@@ -126,27 +126,29 @@ const authController = {
           const { password, ...userWithoutPassword } = user;
           console.log("rescookies");
           console.log("userWithoutPassword", userWithoutPassword);
+          const sameSiteConfig =
+            process.env.NODE_ENV === "production" ? "none" : "lax";
           // return res.status(200).send("return before cookies");
           return (
             res
               .cookie("token", token, {
                 httpOnly: true,
-                sameSite: "none",
+                sameSite: sameSiteConfig,
                 secure: process.env.NODE_ENV === "production", // True when in production
                 //domain: "gamehearts.onrender.com", // Changed from full URL to just domain
                 maxAge: Number(process.env.JWT_EXPIRATION) * 1000, // 30 minutes
                 path: "/",
-                partitioned: true,
+                partitioned: process.env.NODE_ENV === "production",
               })
               // Also send the CSRF token
               .cookie("csrfToken", csrfToken, {
                 httpOnly: false, // Make the cookie accessible by the frontend
-                sameSite: "none",
+                sameSite: sameSiteConfig,
                 secure: process.env.NODE_ENV === "production",
                 //domain: "gamehearts.onrender.com", // Changed from full URL to just domain
                 maxAge: 24 * 60 * 60 * 1000, // 24 hours
                 path: "/",
-                partitioned: true,
+                partitioned: process.env.NODE_ENV === "production",
               })
               .json(userWithoutPassword)
           );
@@ -161,14 +163,16 @@ const authController = {
   // Logout
   logoutUser: async (req: Request, res: Response) => {
     // Give the "token" an empty value
+    const sameSiteConfig =
+      process.env.NODE_ENV === "production" ? "none" : "lax";
     res.cookie("token", "", {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
-      sameSite: "none", // Prevent CSRF
+      sameSite: sameSiteConfig, // Prevent CSRF
       //domain: "gamehearts.onrender.com", // Changed from full URL to just domain
       path: "/",
       expires: new Date(0), // Tells the browser to remove the cookie
-      partitioned: true,
+      partitioned: process.env.NODE_ENV === "production",
     });
     return res.status(200).send("Logged out and cookie cleared.");
   },
