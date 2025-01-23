@@ -11,6 +11,11 @@ SELECT last_value FROM user_id_seq; => voir la sequence id de la table "user"
 SELECT MAX(id) FROM "user";
 ALTER SEQUENCE user_id_seq RESTART WITH <valeur_maximale + 1>; => remet la sequence id à la bonne valeur
 
+# Git 
+git checkout mabranche => changer de branche
+git merge development => update production avec les changements de development
+
+
 # Connexion à la bdd conteneurisée
 docker exec -it postgres_db psql -U marvin -d gameheartsdb
 

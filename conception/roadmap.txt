@@ -150,9 +150,7 @@
 [x] bugfix the portfolio_url in the front which shows description
 [x] create a cypress end to end test
 
-[] add rgpd
-
-18/02/2025
+23/01/2025
 [ ] rgpd and finalisations
 
 
