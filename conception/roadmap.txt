@@ -153,9 +153,8 @@
 23/01/2025
 [x] add footer compoenent to all pages
 [x] rgpd
-
 [x] remove some style issues (button filter, home message margin, footer margin)
-[x] handle the "not found" page when refreshing the page
+[x] handle the "not found" page when refreshing the page in production
 
 
 
@@ -165,4 +164,3 @@ TODO NEXT
 [ ] opti api : don't load new profiles if the query string is the same as before
 [ ] ux : put a loader when waiting for profiles
 [ ] ui : add flags on checkinput languages
-[ ] deployment

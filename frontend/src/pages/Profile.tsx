@@ -76,7 +76,7 @@ function Profile() {
   // Login function on button "Log in", post login data, if success setLoggedUser
   const loginUser = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log("loginData", loginData);
+    toast("We are logging you in, please wait...");
     const { mail, password } = loginData;
 
     try {
@@ -103,6 +103,7 @@ function Profile() {
         setLoggedUser(data);
       }
     } catch (error) {
+      toast.error("Log in failed, please try again later.");
       console.log(error);
     }
   };
@@ -138,6 +139,7 @@ function Profile() {
   const signupUser = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const { mail, password, confirmation } = signupData;
+    toast("We are creating your account, please wait...");
     try {
       const { data } = await axios.post(
         import.meta.env.VITE_API_URL + "/signup",
@@ -256,6 +258,7 @@ function Profile() {
     if (loggedUser) {
       const csrfToken = getCookie("csrfToken");
       console.log("csrfToken", csrfToken);
+      toast("Your profile is being saved, please wait...");
       try {
         const { data } = await axios.patch(
           `${import.meta.env.VITE_API_URL}/api/user/${loggedUser.id}`,
@@ -292,6 +295,9 @@ function Profile() {
           }
         }
       } catch (error) {
+        toast.error(
+          "We are unable to save your profile at the moment, please try again later"
+        );
         console.log(error);
       }
     }
@@ -302,7 +308,7 @@ function Profile() {
     try {
       if (loggedUser) {
         const csrfToken = getCookie("csrfToken");
-        console.log("csrfToken", csrfToken);
+        toast("Your account is being deleted, please wait...");
         const response = await axios.delete(
           `${import.meta.env.VITE_API_URL}/api/user/${loggedUser.id}`,
           {
@@ -317,12 +323,15 @@ function Profile() {
           toast.success("Your account has been deleted successfully.");
           navigate("/profile");
         } else {
-          toast.success(
+          toast.error(
             "We are unable to delete your account at the moment, please log out and try again."
           );
         }
       }
     } catch (error) {
+      toast.error(
+        "We are unable to delete your account at the moment, please try again later"
+      );
       console.error("Error during account deletion:", error);
     }
   };

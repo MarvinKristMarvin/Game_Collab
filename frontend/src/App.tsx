@@ -39,7 +39,7 @@ function App() {
       <Toaster
         position="bottom-center"
         toastOptions={{
-          duration: 5000,
+          duration: 3000,
           style: { fontSize: "1.125rem", paddingLeft: "1rem" },
           success: {
             ariaProps: {

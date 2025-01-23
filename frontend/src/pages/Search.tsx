@@ -43,6 +43,7 @@ function Search() {
 
   // Load non filtered profiles on first render and setLoadedProfiles (filtered without parameters gets all profiles)
   useEffect(() => {
+    toast("Loading profiles, please wait...");
     axios
       .get<userInterface[]>(
         `${import.meta.env.VITE_API_URL}/api/users/filtered`
@@ -111,6 +112,7 @@ function Search() {
     if (maximumAge < minimumAge) {
       setMaximumAge(minimumAge);
     }
+    toast("Loading profiles, please wait...");
     axios
       .get<userInterface[]>(import.meta.env.VITE_API_URL + "/" + filterString)
       .then((response) => {
@@ -133,6 +135,7 @@ function Search() {
         }
       })
       .catch((error) => {
+        toast.error("Error loading profiles");
         console.error("Error getting filtered profiles:", error);
       });
 
