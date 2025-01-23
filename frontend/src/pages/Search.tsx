@@ -349,7 +349,6 @@ function Search() {
     );
   } else {
     // If filtering is false show the "browse profiles" page
-
     return (
       <>
         {createHelmet()}
@@ -443,7 +442,7 @@ function Search() {
                           target="_blank"
                           rel="noopener noreferrer"
                         >
-                          {decodeSanitized(profile.description)}
+                          {decodeSanitized(profile.portfolio_url)}
                         </a>
                       ) : null}
                     </section>
