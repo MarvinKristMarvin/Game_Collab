@@ -210,10 +210,12 @@ function Privacypolicy() {
           If you have any questions or concerns about this Privacy Policy or how
           we handle your personal data, please contact us at:
         </p>
-        <p className="reducedMargin">Your Name or Business Name</p>
-        <p className="reducedMargin">Your Email Address</p>
-        <p className="reducedMargin">Your Phone Number</p>
-        <p className="reducedMargin">Your Address</p>
+        <p className="reducedMargin">Game Hearts by Marvin KRIST</p>
+        <p className="reducedMargin">gamehearts@gmail.com</p>
+        <p className="reducedMargin">06 53 26 45 53</p>
+        <p className="reducedMargin">
+          9 Square des Roubignoles, 77240 Cesson, France
+        </p>
         <p>Last updated: January 23, 2025</p>
       </section>
     </>
