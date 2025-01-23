@@ -1,3 +1,10 @@
 .footerComponent {
   margin-block: 1rem;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  a {
+    margin: 0.375rem;
+    text-decoration: underline;
+  }
 }

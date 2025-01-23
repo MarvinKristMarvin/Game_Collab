@@ -11,22 +11,16 @@ SELECT last_value FROM user_id_seq; => voir la sequence id de la table "user"
 SELECT MAX(id) FROM "user";
 ALTER SEQUENCE user_id_seq RESTART WITH <valeur_maximale + 1>; => remet la sequence id à la bonne valeur
 
-# Git 
+# Git development to production
+git branch => verifier la branche actuelle
 git checkout mabranche => changer de branche
 git merge development => update production avec les changements de development
-
 
 # Connexion à la bdd conteneurisée
 docker exec -it postgres_db psql -U marvin -d gameheartsdb
 
-# Changer de branche actuelle
-git checkout mabranche
-
-# Lister les branches
-git branch
-
 # Se connecter à une bdd distante
 psql DB_URL
 
-# Executer des scripts sur la bdd distante
+# Executer des scripts sur la bdd distante une fois connecté
 \i C:/Tout/Projets_Dev/collabjv/backend/db/create_tables.sql

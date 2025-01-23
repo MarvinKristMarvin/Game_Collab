@@ -151,6 +151,8 @@
 [x] create a cypress end to end test
 
 23/01/2025
+
+[x] added footer compoenent to all pages
 [ ] rgpd and finalisations
 
 

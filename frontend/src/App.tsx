@@ -4,9 +4,13 @@ import Home from "./pages/Home";
 import Profile from "./pages/Profile";
 import Search from "./pages/Search";
 import Header from "./components/Header/Header";
+import Privacypolicy from "./pages/Privacypolicy";
+import Contact from "./pages/Contact";
+import Page404 from "./pages/404";
 import { Toaster } from "react-hot-toast";
 import { useEffect } from "react";
 import { useLoggedUser } from "./context/userContext";
+import Footer from "./components/Footer/Footer";
 
 function App() {
   const { loggedUser, setLoggedUser } = useLoggedUser();
@@ -55,7 +59,11 @@ function App() {
         <Route path="/" element={<Home />}></Route>
         <Route path="/profile" element={<Profile />}></Route>
         <Route path="/search" element={<Search />}></Route>
+        <Route path="/privacypolicy" element={<Privacypolicy />}></Route>
+        <Route path="/contact" element={<Contact />}></Route>
+        <Route path="*" element={<Page404 />}></Route>
       </Routes>
+      <Footer />
     </div>
   );
 }

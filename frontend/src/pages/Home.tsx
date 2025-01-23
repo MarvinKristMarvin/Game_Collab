@@ -1,6 +1,5 @@
 // import components
 import axios from "axios";
-import Footer from "../components/Footer/Footer";
 import { Link } from "react-router-dom";
 import useInactivityHandler from "../hooks/useInactivityHandler";
 import { Helmet } from "react-helmet";
@@ -44,7 +43,6 @@ function Home() {
           <br />
           Wishing you the best of luck on your indie game journey!
         </p>
-        <Footer />
       </section>
     </>
   );
