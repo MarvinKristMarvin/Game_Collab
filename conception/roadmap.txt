@@ -128,7 +128,6 @@
 [x] check if there are more tags like og for html head (check what is done for modern react apps in html index)
 [x] complete react helmet
 
-
 14/01/2025
 [x] docker and docker-compose
 
@@ -163,4 +162,3 @@
 TODO NEXT
 [ ] opti api : load only 20 profiles by 20 profiles, and cache loaded profiles ?
 [ ] opti api : don't load new profiles if the query string is the same as before
-[ ] ui : add flags on checkinput languages
