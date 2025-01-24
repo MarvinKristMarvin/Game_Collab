@@ -162,3 +162,9 @@
 TODO NEXT
 [ ] opti api : load only 20 profiles by 20 profiles, and cache loaded profiles ?
 [ ] opti api : don't load new profiles if the query string is the same as before
+- css to sass ? (ca fait pas ouf pour la presentation le css indenté)
+- enlever les logs 
+- ecrire gamehearts en dessous du logo ?
+- recheck le code, décommenter des endroits et retester en prod, ajout de commentaires
+- diviser le cahier des charges en plusieurs documents
+- mettre a jour les documents
