@@ -1,5 +1,5 @@
 import { IInputField } from "../../@types/components";
-import "./InputField.css";
+import "./InputField.scss";
 
 // Displays an input field, which can be a text input or a textarea
 function InputField({

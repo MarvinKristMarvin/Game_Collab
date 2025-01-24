@@ -10,7 +10,7 @@ function Home() {
   // Custom hook to handle inactivity logout in front and back then toasts the user
   useInactivityHandler();
   // Set the Helmet
-  const pageURL = `${import.meta.env.VITE_FRONT_URL}`;
+  const pageURL = `${import.meta.env.VITE_FRONT_URL}/#`;
   const pageTitle = "Game Hearts - Home";
   const pageDescription =
     "Welcome to Game Hearts! Find and collaborate with indie game artists, developers, composers and more!";

@@ -4,7 +4,7 @@ import { Helmet } from "react-helmet";
 function Contact() {
   useInactivityHandler();
   // Set the Helmet
-  const pageURL = `${import.meta.env.VITE_FRONT_URL}/contact`;
+  const pageURL = `${import.meta.env.VITE_FRONT_URL}/#/contact`;
   const pageTitle = "Game Hearts - Contact us";
   const pageDescription =
     "Welcome to Game Hearts! Find and collaborate with indie game artists, developers, composers and more!";

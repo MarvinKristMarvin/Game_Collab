@@ -162,11 +162,11 @@ function Search() {
   // Helmet update
   useEffect(() => {
     if (filtering) {
-      setPageURL(`${import.meta.env.VITE_FRONT_URL}/search`);
+      setPageURL(`${import.meta.env.VITE_FRONT_URL}/#/search`);
       setPageTitle("Game Hearts - Filter profiles");
       setPageDescription("Refine your profile search with filters!");
     } else {
-      setPageURL(`${import.meta.env.VITE_FRONT_URL}/search`);
+      setPageURL(`${import.meta.env.VITE_FRONT_URL}/#/search`);
       setPageTitle("Game Hearts - Browse profiles");
       setPageDescription(
         "Browse profiles and contact potential partners for your indie game project!"

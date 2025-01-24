@@ -4,7 +4,7 @@ import { Helmet } from "react-helmet";
 function Page404() {
   useInactivityHandler();
   // Set the Helmet
-  const pageURL = `${import.meta.env.VITE_FRONT_URL}/404`;
+  const pageURL = `${import.meta.env.VITE_FRONT_URL}/#/404`;
   const pageTitle = "Game Hearts - 404";
   const pageDescription =
     "Oops! 404! The page you were looking for could not be found.";

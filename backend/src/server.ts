@@ -97,7 +97,7 @@ app.use(error404);
 const PORT = process.env.PORT;
 if (process.env.NODE_ENV !== "test") {
   app.listen(PORT, () => {
-    console.log(`Server port : ${PORT}`);
+    console.log(`Server started`);
   });
 }
 

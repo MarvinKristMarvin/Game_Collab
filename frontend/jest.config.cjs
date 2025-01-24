@@ -11,6 +11,6 @@ module.exports = {
   },
   moduleNameMapper: {
     "\\.webp$": "<rootDir>/webpMock.ts", // Mock WebP files
-    "\\.css$": "<rootDir>/styleMock.ts", // Mock CSS files
+    "\\.scss$": "<rootDir>/styleMock.ts", // Mock SCSS files
   },
 };

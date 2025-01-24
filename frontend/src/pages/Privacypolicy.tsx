@@ -4,7 +4,7 @@ import { Helmet } from "react-helmet";
 function Privacypolicy() {
   useInactivityHandler();
   // Set the Helmet
-  const pageURL = `${import.meta.env.VITE_FRONT_URL}/privacypolicy`;
+  const pageURL = `${import.meta.env.VITE_FRONT_URL}/#/privacypolicy`;
   const pageTitle = "Game Hearts - Privacy Policy";
   const pageDescription =
     "Welcome to Game Hearts! Find and collaborate with indie game artists, developers, composers and more!";

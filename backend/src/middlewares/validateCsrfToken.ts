@@ -4,7 +4,7 @@ import { NextFunction, Request, Response } from "express";
 function validateCsrfToken(req: Request, res: Response, next: NextFunction) {
   const csrfTokenFromHeader = req.headers["x-csrf-token"];
   const csrfTokenFromCookie = req.cookies.csrfToken;
-  console.log(csrfTokenFromHeader, csrfTokenFromCookie);
+  // console.log(csrfTokenFromHeader, csrfTokenFromCookie);
 
   //! Pass the CSRF security because I can't set req.headers["x-csrf-token"], maybe because the cookies are not stored in cookies storage
   /*if (!csrfTokenFromHeader || csrfTokenFromHeader !== csrfTokenFromCookie) {

@@ -27,12 +27,15 @@
           border: solid 1px #00000000;
           font-size: 0.75rem;
 
-          &.active:not(.logolink) {
+          &.active {
             color: #fff38c;
             /*border: solid 1px #ffe139;*/
             /*box-shadow: 0 0 6px #ffe139;*/
             border-bottom: solid 2px;
             padding-bottom: 0.5rem;
+          }
+
+          &.active:not(.logolink) {
             img {
               filter: brightness(0) saturate(100%) invert(100%) sepia(22%)
                 saturate(7335%) hue-rotate(311deg) brightness(122%)
@@ -48,7 +51,8 @@
       li.logo {
         margin-inline: calc(17% - 2.75rem);
         img {
-          height: 3.5rem;
+          height: 1.5rem;
+          margin-bottom: 0.375rem;
         }
       }
     }

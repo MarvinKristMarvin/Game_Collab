@@ -1,0 +1,28 @@
+
+COMMANDES UTILES
+
+psql -d postgres -U postgres => Connection postgres
+psql -d postgres -U marvin; => Connection postgres avec role marvin
+\du => Voir roles et permissions
+\q => Quitter postgres
+\c gameheartsdb => Connection à la base de données
+\list => Lister les bdd
+\dt => Montrer les tables de la bdd
+\i C:/Tout/Projets_Dev/collabjv/backend/db/create_tables.sql => Executer un script sql
+
+npx ts-node paramrequest.ts => Execute un fichier .ts
+
+SELECT last_value FROM user_id_seq; => Voir la sequence id de la table "user"
+SELECT MAX(id) FROM "user"; => Voir l'id le plus élevé
+ALTER SEQUENCE user_id_seq RESTART WITH <valeur_maximale + 1>; => Remet la sequence id à la bonne valeur
+
+git branch => Verifier la branche actuelle
+git checkout mabranche => Changer de branche
+git merge development => Update production avec les changements de development
+
+docker exec -it postgres_db psql -U marvin -d gameheartsdb => Connexion à la bdd conteneurisée
+psql DB_URL => Se connecter à une bdd distante
+\i C:/Tout/Projets_Dev/collabjv/backend/db/create_tables.sql => Executer des scripts sur la bdd distante une fois connecté
+
+npx cypress open => Execute cypress
+npm run test => Execute les tests unitaires/integrations

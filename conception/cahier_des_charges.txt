@@ -1,52 +1,77 @@
-Présentation du projet : Game Hearts est une application de rencontre entre les personnes travaillant dans le secteur du jeu video, afin de former
+
+CAHIER DES CHARGES
+
+Présentation du projet : 
+ Game Hearts est une application de rencontre entre les personnes travaillant dans le secteur du jeu video, afin de former
 des equipes. Les utilisateurs peuvent s'inscrire et creer un profil pour se rendre disponible au recrutement, mais aussi découvrir tous les profils et les contacter.
-Il est possible d'utiliser des filtres de recherche (métiers, description, age, langues etc) afin de trouver des collaborateurs adaptés à son projet.
+Il est possible d'utiliser des filtres de recherche (métiers, age, langues etc) afin de trouver des collaborateurs adaptés à son projet.
 
-Besoins et objectifs : Souvent, les développeurs sont contraints de créer des jeux seuls, car ils ne trouvent parsonne avec qui travailler. Avec Game Hearts,
-il sera possible de se regrouper autour de projets de jeux vidéos, afin de créer des jeux vidéos de meilleure qualité, plus rapidement et sans isolement.
-Game Hearts doit simplifier la recherche de profils au maximum.
+Besoins et objectifs : 
+ Souvent, les développeurs sont contraints de créer des jeux seuls, car ils ne trouvent personne avec qui travailler. Avec Game Hearts,
+il sera possible de se regrouper autour de projets de jeux vidéos, afin de créer des jeux vidéos de meilleur qualité, plus rapidement et en groupe.
+Game Hearts doit simplifier la recherche de collaborateurs au maximum.
 
-Cible : L'application cible tous les acteurs du jeu vidéo (developpeur, artiste, modeliste, musicien, sound designer, compositeur, etc...)
+Cible : 
+ L'application cible tous les acteurs du jeu vidéo (developpeur, artiste, animateur, modeliste, musicien, sound designer, compositeur, etc...)
 
-Minimum viable product : permettre aux utilisateurs de trouver des profils qui correspondent au besoinx de leur projet de jeu vidéo, notemment grâce à des filtres de recherche.
+Charte graphique :
+- description : l'application doit rappeler le secteur du jeu vidéo -> couleurs contrastées, thème principal sombre. Interface épurée et rapide à comprendre.
+- couleurs : rouge #F1005C, violet #BB0072, jaune #FFD840, orange #FF9900, noir rougeâtre #0A0808
+- fonts : Noto Sans
+- drapeaux : https://flagpedia.net/download/icons
+
+Minimum viable product : 
+ permettre aux utilisateurs de trouver des profils qui correspondent au besoins de leur projet de jeu vidéo grâce à des filtres de recherche.
 
 Améliorations futures possibles :
+- Recherche par mots clés (cherchant dans la description des profils)
 - Chat direct dans l'application à la place du mail
-- Ajout d'images dans le profil
+- Ajout d'images ou autres documents dans le profil
 - Acces à un profil détaillé
 - Possibilité de créer des présentations de projets, sur lesquels les utilisateurs peuvent swiper et demander de participer
 (Au lieu de contacter par mail, cela pourrait devenir une invitation à participer au projet, si le profil accepte, alors les participants au projet peuvent chatter ensemble)
 - Ajout d'un systeme d'abonnement premium (pour avoir plus de visibilité par exemple)
 
 Technologies :
-- React : simplifie la création et la gestion des composants, favorise leur réutilisabilité et garantit la scalabilité si l'application se développe.
-- Vite : bundler et transpiler.
-- Express : léger et simple à configurer, permet de gérer facilement les routes et les requêtes.
-- Node : léger et permet d'utiliser du javascript côté serveur, simplifiant le développement avec un langage unique.
-- Nodemon : accélère le développement de la partie backend
-- Cors : autorise certaines url à accéder au backend
-- PostgresSQL : besoin de stocker et modifier les données des utilisateurs, donc il faut une bdd relationnelle, de plus, c'est fiable, puissant, open source, et offre des
-fonctionnalités avancées tout en restant adapté aux petits projets.
-- Typescript : améliore la fiabilité grâce au typage, facilite la maintenance du code et réduit les erreurs dès le développement.
+- React : Simplifie la création et la gestion des composants, favorise leur réutilisabilité et garantit la scalabilité si l'application se développe.
+- Vite : Bundler et transpileur rapide, optimisé pour le développement moderne. Il permet une meilleure expérience développeur grâce au hot module replacement (HMR) performant.
+- Sass : Superset de CSS qui permet l'indentation, l'utilisation de variables, de mixins, et de fonctionnalités avancées pour une meilleure gestion des styles.
+- Axios : Simplifie les requêtes HTTP vers le backend, avec une API claire, support des promesses et gestion des erreurs facile.
+- Cypress : Framework de tests end-to-end moderne, rapide et fiable, utilisé pour valider le comportement complet de l'application en interaction utilisateur.
+- Jest : Bibliothèque pour créer et exécuter des tests unitaires et d'intégration, avec un support natif de TypeScript et une configuration flexible.
+- Express : Framework backend léger et simple à configurer, permet de gérer facilement les routes, les requêtes HTTP, et de construire des API.
+- TypeScript : Améliore la fiabilité grâce au typage statique, facilite la maintenance du code et réduit les erreurs dès le développement.
+- Node.js : Environnement JavaScript côté serveur léger et performant, permettant un développement unifié entre frontend et backend.
+- Nodemon : Accélère le développement backend en redémarrant automatiquement le serveur lors des modifications du code.
+- Cors : Middleware qui permet de configurer les autorisations d'accès au backend pour certaines URL, améliorant la sécurité.
+- Bcrypt : Bibliothèque pour hacher et sécuriser les mots de passe avant de les stocker dans la base de données.
+- Csurf : Middleware pour protéger les applications contre les attaques CSRF (Cross-Site Request Forgery), garantissant une meilleure sécurité.
+- Validator : Bibliothèque de validation des données, utile pour vérifier et nettoyer les entrées utilisateur (exemple : validation d'email, de mots de passe).
+- Jsonwebtoken (JWT) : Permet de générer et vérifier des jetons JWT pour l'authentification sécurisée des utilisateurs et la gestion des sessions.
+- PostgreSQL : Base de données relationnelle puissante et open source, idéale pour stocker, organiser et interroger les données utilisateur. Elle est fiable, performante et propose des fonctionnalités avancées (comme les transactions et les types personnalisés), tout en restant adaptée aux petits et grands projets.
+
+Logiciels utilisés :
+- VSCode
+- pgAdmin
+- Postman
+- Docker Desktop
 
 Routes :
-homepage/ -> accueil et explications de l'app
-search/ -> page de présentations des profils trouvés selon des critères de recherche
-profile/ -> connexion et inscription, si connecté montre sa page de modification de profil
+- /homepage -> accueil et explications de l'app
+- /search -> page de présentations des profils trouvés selon des critères de recherche
+- /profile -> connexion et inscription, si connecté montre sa page de modification de profil
+- /contact -> informations de contact du site
+- /privacypolicy -> rgpd et mentions légales
+- /404 -> page 404
 
-Routes API :
-GET /api/users/filtered?name=xxx&age=xxx,xxx&language=xxx,xxx&jobs=xxx,xxx&keywords=xxx,xxx&remuneration=xxx,xxx -> Recherche des profils en utilisant des filtres
-PATCH /api/user/:id -> Modifier son profil
-DELETE /api/user/:id -> Supprimer son profil
-POST /signup -> Créer son profil
-POST /login -> Se connecter
-POST /logout -> Se déconnecter
-
-Charte graphique :
-- description : l'application doit rappeler le secteur du jeu vidéo -> couleurs contrastées, thème principal sombre. Interface très épurée et rapide à comprendre.
-- couleurs : rouge #F1005C, violet #BB0072, jaune #FFD840, orange #FF9900, noir rougeâtre #0A0808
-- fonts : Noto Sans
-- drapeaux : https://flagpedia.net/download/icons
+API :
+- GET /test -> Tester la connexion au backend
+- GET /api/users/filtered?name=xxx&age=xxx,xxx&language=xxx,xxx&jobs=xxx,xxx&keywords=xxx,xxx&remuneration=xxx,xxx -> Recherche des profils en utilisant des filtres
+- PATCH /api/user/:id -> Modifier son profil
+- DELETE /api/user/:id -> Supprimer son profil
+- POST /signup -> Créer son profil
+- POST /login -> Se connecter
+- POST /logout -> Se déconnecter
 
 Recueil de données :
 NOM | DESCRIPTION | TYPE | ENTITE

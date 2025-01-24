@@ -2,15 +2,13 @@
 
 html {
   scrollbar-gutter: stable;
-}
-
-html::-webkit-scrollbar {
-  width: 0.75rem; /* Adjust width */
-}
-
-html::-webkit-scrollbar-thumb {
-  background-color: rgba(41, 41, 41, 0.5); /* Color of the scrollbar thumb */
-  border-radius: 16px; /* Optional: rounded corners */
+  &::-webkit-scrollbar {
+    width: 0.75rem; /* Adjust width */
+  }
+  &::-webkit-scrollbar-thumb {
+    background-color: rgba(41, 41, 41, 0.5); /* Color of the scrollbar thumb */
+    border-radius: 16px; /* Optional: rounded corners */
+  }
 }
 
 body {
@@ -43,14 +41,13 @@ a {
 .homePage {
   display: flex;
   flex-direction: column;
-  align-items: center;
   text-align: left;
   font-size: 1rem;
   font-weight: 400;
   line-height: 1.25;
   .homeMessage {
     /*border: solid 1px rgba(255, 255, 255, 0.24);*/
-    padding: 1rem;
+    padding-inline: 1rem;
     border-radius: 0.5rem;
   }
   a {

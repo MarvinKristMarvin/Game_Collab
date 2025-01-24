@@ -1,4 +1,4 @@
-import "./CheckableItem.css";
+import "./CheckableItem.scss";
 import { ICheckableItem } from "../../@types/components";
 
 // An item of a list of checkable items

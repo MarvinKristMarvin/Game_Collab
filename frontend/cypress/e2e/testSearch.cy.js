@@ -1,4 +1,4 @@
-const url = "http://localhost:5173/search";
+const url = "http://localhost:5173/#/search";
 
 describe("Search Page", () => {
   // Verify the title and meta description (created dynamically with Helmet in the Search.tsx page)

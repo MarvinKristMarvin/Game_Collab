@@ -1,5 +1,5 @@
 import { IPositiveMessage } from "../../@types/components";
-import "./PositiveMessage.css";
+import "./PositiveMessage.scss";
 
 // Displays a text surrounded by a green hashed border
 function PositiveMessage({ text }: IPositiveMessage) {

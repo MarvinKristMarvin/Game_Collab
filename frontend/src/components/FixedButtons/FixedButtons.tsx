@@ -1,4 +1,4 @@
-import "./FixedButtons.css";
+import "./FixedButtons.scss";
 import Button from "../Button/Button";
 import { IFixedButtons } from "../../@types/components";
 

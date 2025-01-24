@@ -19,37 +19,6 @@ function Profile() {
   const { loggedUser, setLoggedUser } = useLoggedUser();
   axios.defaults.withCredentials = true;
 
-  //! Add this check in your component
-  useEffect(() => {
-    // Check if cookies are enabled
-    if (navigator.cookieEnabled) {
-      console.log("Cookies are enabled");
-    } else {
-      console.log("Cookies are disabled");
-    }
-
-    // Check cookie attributes
-    console.log("Cookie settings:", {
-      domain: window.location.hostname,
-      path: window.location.pathname,
-      protocol: window.location.protocol,
-    });
-  }, []);
-
-  //! Test the back connection
-  useEffect(() => {
-    const testBack = async () => {
-      try {
-        const test = await axios.get(import.meta.env.VITE_API_URL + "/test");
-        console.log(test);
-      } catch (error) {
-        console.error(error, "error while testing the back");
-      }
-    };
-
-    testBack();
-  }, []);
-
   // Get logOut function from the inactivity handler hook to be able to use logOut in the logout button
   const { logOut } = useInactivityHandler();
 
@@ -99,7 +68,6 @@ function Profile() {
         data.name = decodeSanitized(data.name);
         data.description = decodeSanitized(data.description);
         data.portfolio_url = decodeSanitized(data.portfolio_url);
-        console.log(data);
         setLoggedUser(data);
       }
     } catch (error) {
@@ -257,7 +225,6 @@ function Profile() {
     );
     if (loggedUser) {
       const csrfToken = getCookie("csrfToken");
-      console.log("csrfToken", csrfToken);
       toast("Your profile is being saved, please wait...");
       try {
         const { data } = await axios.patch(
@@ -344,13 +311,13 @@ function Profile() {
   // Helmet update
   useEffect(() => {
     if (loggedUser) {
-      setPageURL(`${import.meta.env.VITE_FRONT_URL}/profile`);
+      setPageURL(`${import.meta.env.VITE_FRONT_URL}/#/profile`);
       setPageTitle("Game Hearts - Profile");
       setPageDescription(
         "Modify and share your profile to others, you will get contacted by potential partners!"
       );
     } else {
-      setPageURL(`${import.meta.env.VITE_FRONT_URL}/profile`);
+      setPageURL(`${import.meta.env.VITE_FRONT_URL}/#/profile`);
       setPageTitle("Game Hearts - Connexion");
       setPageDescription(
         "Log in to create and share your profile, it's free and it takes a minute!"

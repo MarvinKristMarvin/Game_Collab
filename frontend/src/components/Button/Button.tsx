@@ -1,4 +1,4 @@
-import "./Button.css";
+import "./Button.scss";
 import { IButton } from "../../@types/components";
 
 // A button which execute a function

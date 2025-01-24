@@ -8,7 +8,6 @@ const authorization = async (
   next: NextFunction
 ) => {
   const token = req.cookies.token;
-  console.log("token", token);
   if (!token) {
     return next({ status: 401, message: "Unauthorized or expired ?" });
   }

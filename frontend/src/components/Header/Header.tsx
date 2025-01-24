@@ -2,7 +2,7 @@ import { NavLink } from "react-router-dom";
 import logo from "/logox200.webp";
 import searchIcon from "/searchIcon.webp";
 import profileIcon from "/profileIcon.webp";
-import "./Header.css";
+import "./Header.scss";
 
 // Header with navlinks
 function Header() {
@@ -26,6 +26,7 @@ function Header() {
               aria-label="go to homepage"
             >
               <img src={logo} alt="Game Hearts logo" />
+              GAME HEARTS
             </NavLink>
           </li>
           <li>

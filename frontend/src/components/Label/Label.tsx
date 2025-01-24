@@ -1,5 +1,5 @@
 import { ILabel } from "../../@types/components";
-import "./Label.css";
+import "./Label.scss";
 
 // Displays a text label which when clicked, focuses the next input
 function Label({ text, htmlFor }: ILabel) {
