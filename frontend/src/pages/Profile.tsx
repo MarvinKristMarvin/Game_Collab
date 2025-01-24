@@ -525,6 +525,7 @@ function Profile() {
                       )
                     }
                     checked={selectedLanguages.includes(language)}
+                    language={removeLastCharacters(language, 3).toLowerCase()}
                   />
                 ))}
               </div>

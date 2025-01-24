@@ -13,18 +13,43 @@
 
     &.english {
       background-image: url("https://flagcdn.com/w160/gb.png");
+      color: transparent;
     }
     &.french {
       background-image: url("https://flagcdn.com/w160/fr.png");
+      color: transparent;
     }
     &.german {
       background-image: url("https://flagcdn.com/w160/de.png");
+      color: transparent;
     }
     &.japanese {
       background-image: url("https://flagcdn.com/w160/jp.png");
+      color: transparent;
     }
     &.russian {
       background-image: url("https://flagcdn.com/w160/ru.png");
+      color: transparent;
+    }
+    &.spanish {
+      background-image: url("https://flagcdn.com/w160/es.png");
+      color: transparent;
+    }
+    &.portuguese {
+      background-image: url("https://flagcdn.com/w160/pt.png");
+      color: transparent;
+    }
+    &.turkish {
+      background-image: url("https://flagcdn.com/w160/tr.png");
+      color: transparent;
+    }
+    &.italian {
+      background-image: url("https://flagcdn.com/w160/it.png");
+      color: transparent;
+    }
+    &.persian {
+      background-image: url("https://flagcdn.com/w160/ir.png");
+      color: transparent;
     }
     background-size: 100% 100%;
     background-position: 50% 50%;

@@ -152,16 +152,15 @@
 
 23/01/2025
 [x] add footer compoenent to all pages
-[x] rgpd
+[x] rgpd (and the mentions légales ??)
 [x] remove some style issues (button filter, home message margin, footer margin)
 [x] handle the "not found" page when refreshing the page in production
 [x] change color of checkable items text to white
 [x] prevent layout shift and style scrolling bar for google
 [x] added a loader text waiting for profiles result
+[x] change languages checkboxes to be flags instead of text
 
 TODO NEXT
-[ ] on google, show scrollbar on hover for more beautiful website, and font is black, make it white
 [ ] opti api : load only 20 profiles by 20 profiles, and cache loaded profiles ?
 [ ] opti api : don't load new profiles if the query string is the same as before
-[ ] ux : put a loader when waiting for profiles
 [ ] ui : add flags on checkinput languages
