@@ -157,6 +157,7 @@
 [x] handle the "not found" page when refreshing the page in production
 [x] change color of checkable items text to white
 [x] prevent layout shift and style scrolling bar for google
+[x] added a loader text waiting for profiles result
 
 TODO NEXT
 [ ] on google, show scrollbar on hover for more beautiful website, and font is black, make it white

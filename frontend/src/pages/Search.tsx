@@ -25,6 +25,9 @@ function Search() {
     setFiltering(false);
   };
 
+  // State to show the loader when waiting results
+  const [loading, setLoading] = useState(false);
+
   // Loaded profiles to display of type userInterface
   const [loadedProfiles, setLoadedProfiles] = useState<userInterface[]>([]);
 
@@ -44,6 +47,7 @@ function Search() {
   // Load non filtered profiles on first render and setLoadedProfiles (filtered without parameters gets all profiles)
   useEffect(() => {
     toast("Loading profiles, please wait...");
+    setLoading(true);
     axios
       .get<userInterface[]>(
         `${import.meta.env.VITE_API_URL}/api/users/filtered`
@@ -55,6 +59,9 @@ function Search() {
       })
       .catch((error) => {
         console.error("Error getting non filtered profiles:", error);
+      })
+      .finally(() => {
+        setLoading(false); // Set loading state to false after the data is fetched
       });
   }, []);
 
@@ -113,6 +120,7 @@ function Search() {
       setMaximumAge(minimumAge);
     }
     toast("Loading profiles, please wait...");
+    setLoading(true);
     axios
       .get<userInterface[]>(import.meta.env.VITE_API_URL + "/" + filterString)
       .then((response) => {
@@ -137,6 +145,9 @@ function Search() {
       .catch((error) => {
         toast.error("Error loading profiles");
         console.error("Error getting filtered profiles:", error);
+      })
+      .finally(() => {
+        setLoading(false); // Set loading state to false after the data is fetched
       });
 
     // Updates the page to browse profiles (filtering = false)
@@ -361,105 +372,119 @@ function Search() {
             updateFilteringToTrue={updateFilteringToTrue}
           />
           {/* Show profile info only if profiles are loaded */}
-          {loadedProfiles.length > 0 ? (
-            <section className="profileInformations">
-              {loadedProfiles.map((profile, index) => {
-                // Create arrays from strings for languages, jobs and remunerations for the current profile
-                const languages = profile.languages
-                  ? commaStringToArray(profile.languages)
-                  : [];
-                const jobs = profile.jobs
-                  ? commaStringToArray(profile.jobs)
-                  : [];
-                const remunerations = profile.remunerations
-                  ? commaStringToArray(profile.remunerations)
-                  : [];
-
-                // Create a card for each profile
-                return (
-                  <article
-                    className="profile"
-                    key={index}
-                    aria-label={"profile " + index}
-                  >
-                    <section
-                      className="basicInformations"
-                      aria-label="profile basic informations"
-                    >
-                      <p className={"nameAge"}>
-                        {decodeSanitized(profile.name) + ", "}
-                        {profile.age}
-                      </p>
-                      <div className="languages" aria-label="profile languages">
-                        {languages.map((language) => {
-                          const [languageName, languageCode] =
-                            language.split(".");
-                          return (
-                            <div className="language" key={languageCode}>
-                              <img
-                                src={`https://flagcdn.com/w40/${languageCode}.png`}
-                                alt={languageName}
-                                loading="lazy"
-                              />
-                            </div>
-                          );
-                        })}
-                      </div>
-                    </section>
-                    <section className="jobs" aria-label="profile jobs">
-                      {jobs.map((job, i) => (
-                        <div className="job" key={i}>
-                          {job}
-                        </div>
-                      ))}
-                    </section>
-                    <section
-                      className="remunerations"
-                      aria-label="profile remunerations"
-                    >
-                      {remunerations.map((remuneration, i) => (
-                        <div className="remuneration" key={i}>
-                          {remuneration}
-                        </div>
-                      ))}
-                    </section>
-                    <section
-                      className="description"
-                      aria-label="profile description"
-                    >
-                      <p>{decodeSanitized(profile.description)}</p>
-                    </section>
-                    <section
-                      className="portfolio"
-                      aria-label="profile portfolio"
-                    >
-                      {profile.portfolio_url ? (
-                        <a
-                          href={
-                            profile.portfolio_url.startsWith("http")
-                              ? decodeSanitized(profile.portfolio_url)
-                              : `https://${decodeSanitized(
-                                  profile.portfolio_url
-                                )}`
-                          }
-                          target="_blank"
-                          rel="noopener noreferrer"
-                        >
-                          {decodeSanitized(profile.portfolio_url)}
-                        </a>
-                      ) : null}
-                    </section>
-                    <section className="mail" aria-label="profile mail">
-                      <p>{profile.profile_mail}</p>
-                    </section>
-                  </article>
-                );
-              })}
-            </section>
+          {loading ? (
+            <p style={{ textAlign: "center" }}>
+              Loading profiles please wait a moment...
+            </p> // Display loader while waiting for the profiles
           ) : (
-            <p aria-label="no profiles found message">
-              No profiles found with those filters, please try with other ones
-            </p>
+            // Show profile info only if profiles are loaded
+            <section className="profileInformations">
+              {loadedProfiles.length > 0 ? (
+                loadedProfiles.map((profile, index) => {
+                  // Create arrays from strings for languages, jobs and remunerations for the current profile
+                  const languages = profile.languages
+                    ? commaStringToArray(profile.languages)
+                    : [];
+                  const jobs = profile.jobs
+                    ? commaStringToArray(profile.jobs)
+                    : [];
+                  const remunerations = profile.remunerations
+                    ? commaStringToArray(profile.remunerations)
+                    : [];
+
+                  // Create a card for each profile
+                  return (
+                    <article
+                      className="profile"
+                      key={index}
+                      aria-label={"profile " + index}
+                    >
+                      <section
+                        className="basicInformations"
+                        aria-label="profile basic informations"
+                      >
+                        <p className={"nameAge"}>
+                          {decodeSanitized(profile.name) + ", "}
+                          {profile.age}
+                        </p>
+                        <div
+                          className="languages"
+                          aria-label="profile languages"
+                        >
+                          {languages.map((language) => {
+                            const [languageName, languageCode] =
+                              language.split(".");
+                            return (
+                              <div className="language" key={languageCode}>
+                                <img
+                                  src={`https://flagcdn.com/w40/${languageCode}.png`}
+                                  alt={languageName}
+                                  loading="lazy"
+                                />
+                              </div>
+                            );
+                          })}
+                        </div>
+                      </section>
+                      <section className="jobs" aria-label="profile jobs">
+                        {jobs.map((job, i) => (
+                          <div className="job" key={i}>
+                            {job}
+                          </div>
+                        ))}
+                      </section>
+                      <section
+                        className="remunerations"
+                        aria-label="profile remunerations"
+                      >
+                        {remunerations.map((remuneration, i) => (
+                          <div className="remuneration" key={i}>
+                            {remuneration}
+                          </div>
+                        ))}
+                      </section>
+                      <section
+                        className="description"
+                        aria-label="profile description"
+                      >
+                        <p>{decodeSanitized(profile.description)}</p>
+                      </section>
+                      <section
+                        className="portfolio"
+                        aria-label="profile portfolio"
+                      >
+                        {profile.portfolio_url ? (
+                          <a
+                            href={
+                              profile.portfolio_url.startsWith("http")
+                                ? decodeSanitized(profile.portfolio_url)
+                                : `https://${decodeSanitized(
+                                    profile.portfolio_url
+                                  )}`
+                            }
+                            target="_blank"
+                            rel="noopener noreferrer"
+                          >
+                            {decodeSanitized(profile.portfolio_url)}
+                          </a>
+                        ) : null}
+                      </section>
+                      <section className="mail" aria-label="profile mail">
+                        <p>{profile.profile_mail}</p>
+                      </section>
+                    </article>
+                  );
+                })
+              ) : (
+                <p
+                  aria-label="no profiles found message"
+                  style={{ textAlign: "center" }}
+                >
+                  No profiles found with those filters, please try with other
+                  ones
+                </p>
+              )}
+            </section>
           )}
         </main>
       </>
