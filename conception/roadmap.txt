@@ -39,7 +39,7 @@
 [x] tests pour les fonctionnalités principales du projet
 [x] accessibiliser aux normes WCAG
 [x] SEO : maximiser le référencement du projet
-[ ] RGPD et mentions légales
+[x] RGPD et mentions légales
 [x] dockeriser
 [x] déployer
 [x] rédiger la procédure de déploiement (CICD bonus)
@@ -155,8 +155,8 @@
 [x] rgpd
 [x] remove some style issues (button filter, home message margin, footer margin)
 [x] handle the "not found" page when refreshing the page in production
-
-
+[x] change color of checkable items text to white
+[x] prevent layout shift and style scrolling bar for google
 
 TODO NEXT
 [ ] on google, show scrollbar on hover for more beautiful website, and font is black, make it white
