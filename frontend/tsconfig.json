@@ -5,10 +5,8 @@
     { "path": "./tsconfig.node.json" },
     { "path": "./tsconfig.jest.json" }
   ],
-  // Test here
   "compilerOptions": {
     "esModuleInterop": true,
-    //"module": "es2020"
     "module": "commonjs",
     "target": "esnext",
     "skipLibCheck": true
